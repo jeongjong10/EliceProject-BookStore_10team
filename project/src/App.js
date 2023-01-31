@@ -5,7 +5,8 @@ import Main from './views/routes/Main'
 import Register from './views/routes/Register'
 import Login from './views/routes/Login'
 import Cart from './views/routes/Cart'
-
+import Detail from './views/routes/Detail'
+import List from './views/routes/List'
 
 function App() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ function App() {
           <Navbar.Brand href="#home">Navbar</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link onClick={() => {navigate('/')}}>HOME</Nav.Link>
-            {/* <Nav.Link onClick={() => {navigate('/detail')}}>PRODUCT</Nav.Link> */}
+            <Nav.Link onClick={() => {navigate('/product/list')}}>PRODUCT</Nav.Link>
           </Nav>
           <Nav className="ms-auto" >
           <Nav.Link onClick={() => {navigate('/register')}}>회원가입</Nav.Link>
@@ -35,6 +36,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/product/list" element={<List />} />
+        <Route path="/product/detail" element={<Detail />} />
       </Routes>
 
     </div>
