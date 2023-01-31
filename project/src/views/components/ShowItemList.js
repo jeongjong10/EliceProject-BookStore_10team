@@ -1,9 +1,10 @@
 import { Card, Row, Col, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-export const ShowItemList = ({ item }) => {
+import { item } from "../../temp"; // 상품 임시 데이터
+
+export const ShowItemList = () => {
   const navigate = useNavigate();
-  console.log(item);
   return (
     <Container>
       <Row>

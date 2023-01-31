@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Carousel, Card, Button, Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
-import { item } from "../../temp"; // 상품 임시 데이터
 import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
 
 const Main = () => {
@@ -37,7 +35,7 @@ const Main = () => {
         </Carousel.Item>
       </Carousel>
 
-      <ShowItemList item={item} />
+      <ShowItemList />
       {/* <Row>
           <Col>
             <Card onClick={() => navigate(`/product/detail`)}>
