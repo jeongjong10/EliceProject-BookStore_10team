@@ -3,7 +3,7 @@ import React from 'react'
 const Register = () => {
 
   return (
-    <div>메인</div>
+    <div>회원가입</div>
   )
 }
 

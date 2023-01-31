@@ -3,7 +3,7 @@ import React from 'react'
 const Login = () => {
 
   return (
-    <div>메인</div>
+    <div>로그인</div>
   )
 }
 

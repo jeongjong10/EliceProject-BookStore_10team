@@ -3,7 +3,7 @@ import React from 'react'
 const Cart = () => {
 
   return (
-    <div>메인</div>
+    <div>장바구니</div>
   )
 }
 
