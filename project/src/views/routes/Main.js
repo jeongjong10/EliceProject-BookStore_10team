@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Carousel, Card, Button, Container, Row, Col } from "react-bootstrap";
+import { Carousel } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
 
@@ -34,42 +34,9 @@ const Main = () => {
           ></img>
         </Carousel.Item>
       </Carousel>
+
+      {/* 아이템 리스트 component */}
       <ShowItemList />
-      {/* <Row>
-          <Col>
-            <Card onClick={() => navigate(`/product/detail`)}>
-              <div className="product-thumbnail">
-                <img src={`${process.env.PUBLIC_URL}/img/thumb1.png`} />
-              </div>
-              <Card.Body>
-                <Card.Title>{item[0].itemName}</Card.Title>
-                <Card.Text>30,000</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col>
-            <Card onClick={() => navigate(`/product/detail`)}>
-              <div className="product-thumbnail">
-                <img src={`${process.env.PUBLIC_URL}/img/thumb1.png`} />
-              </div>
-              <Card.Body>
-                <Card.Title>상품명</Card.Title>
-                <Card.Text>30,000</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col>
-            <Card onClick={() => navigate(`/product/detail`)}>
-              <div className="product-thumbnail">
-                <img src={`${process.env.PUBLIC_URL}/img/thumb1.png`} />
-              </div>
-              <Card.Body>
-                <Card.Title>상품명</Card.Title>
-                <Card.Text>30,000</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row> */}
     </>
   );
 };
