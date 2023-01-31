@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
+import { ShowItemList } from "../views/components/ShowItemList"; // 상품 list components
 
 const Main = () => {
   const navigate = useNavigate();
