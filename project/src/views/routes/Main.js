@@ -34,7 +34,6 @@ const Main = () => {
           ></img>
         </Carousel.Item>
       </Carousel>
-
       <ShowItemList />
       {/* <Row>
           <Col>
