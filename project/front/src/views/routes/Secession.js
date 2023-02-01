@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import SecessionModal from "./SecessionModal";
+
 const Secession = () => {
+  const [secessionModalOn, setSecessionModalOn] = useState(false);
   return (
     <div
       style={{
@@ -10,10 +13,18 @@ const Secession = () => {
         height: "80vh",
       }}
     >
+      <SecessionModal
+        show={secessionModalOn}
+        onHide={() => {
+          setSecessionModalOn(false);
+        }}
+      />
       <form style={{ display: "flex", flexDirection: "column" }}>
         <h3>비밀번호</h3>
         <input />
-        <button>확인</button>
+        <div>
+          <button onClick={() => setSecessionModalOn(true)}>확인</button>
+        </div>
         <br />
       </form>
     </div>

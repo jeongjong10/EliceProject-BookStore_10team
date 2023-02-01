@@ -41,7 +41,7 @@ const Privacy = () => {
       return alert("비밀번호가 비밀번호 확인과 일치하지 않습니다.");
     } else if (adress.length <= 0) {
       return alert("주소를 입력해주세요.");
-    } else if (number.length < 11) {
+    } else if (number.length !== 11) {
       return alert("전화번호를 다시 확인해주세요.");
     } else {
       return alert("저장이 완료되었습니다."), navigate("/");
@@ -62,7 +62,7 @@ const Privacy = () => {
             <br />
             <button
               onClick={() => {
-                navigate("/");
+                navigate("/secession");
               }}
             >
               회원 탈퇴
