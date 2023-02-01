@@ -23,7 +23,14 @@ const Secession = () => {
         <h3>비밀번호</h3>
         <input />
         <div>
-          <button onClick={() => setSecessionModalOn(true)}>확인</button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setSecessionModalOn(true);
+            }}
+          >
+            확인
+          </button>
         </div>
         <br />
       </form>
