@@ -12,6 +12,8 @@ const Secession = () => {
     >
       <form style={{ display: "flex", flexDirection: "column" }}>
         <h3>비밀번호</h3>
+        <input />
+        <button>확인</button>
         <br />
       </form>
     </div>
