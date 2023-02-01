@@ -1,6 +1,32 @@
 const { Schema } = require("mongoose");
 
 const UserSchema = new Schema({
+    address: {
+        postalCode: {
+            type: String,
+            required: false,
+        },
+        address1: {
+            type: String,
+            required: false,
+        },
+        address2: {
+            type: String,
+            required: false,
+        },
+        recieverName: {
+            type: String,
+            required: false,
+        },
+        recieverPhoneNumber: {
+            type: String,
+            required: false,
+        },
+    },
+    userId: {
+        type: String,
+        required: true,
+    },
     userName: {
         type: String,
         required: true,
@@ -12,10 +38,6 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
-    },
-    address: {
-        type: String,
-        required: false,
     },
     phone: {
         type: String,

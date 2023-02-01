@@ -6,26 +6,33 @@ const { User } = require("../models/index");
 
 // root 페이지
 router.get("/", (req, res, next) => {
-    res.send("root page, 서버연결 완료");
+    res.send("root page !!!");
 });
 
-router.get("/register", (req, res, next) => {
-    console.log("회원가입");
-});
-
+// 회원가입 패스 접근시 (회원가입 버튼 클릭시)
 router.post(
     "/register",
     asyncHandler(async(req, res) => {
-        const { username, email, password } = req.body;
-        const hashedPassword = getHash(password);
-        const user = await User.create({
-            username,
-            email,
-            password: hashedPassword,
-        });
+        try{
+            // 정보 확인
+            const { username, email, password } = req.body;
+            // 유효성 검사
 
-        console.log("신규 회원", user);
-        res.redirect("/");
+            // 유저 생성
+            const hashedPassword = getHash(password);
+            const user = await User.create({
+                username,
+                email,
+                password: hashedPassword,
+            });
+            
+            // 성공 메세지
+            console.log("신규 회원", user);
+            res.status(201).send("회원가입 성공");
+        } catch {
+            res.status().send("회원가입 실패") // 에러 전송
+        }
+  
     })
 );
 
