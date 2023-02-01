@@ -1,13 +1,13 @@
 import "./views/css/App.css";
 import { Nav, Navbar, Container } from "react-bootstrap";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import Main from "./routes/Main";
-import Register from "./routes/Register";
-import Login from "./routes/Login";
-import Cart from "./routes/Cart";
-import Detail from "./routes/Detail";
-import List from "./routes/List";
-import Registerdone from "./routes/Registerdone";
+import Main from "./views/routes/Main";
+import Register from "./views/routes/Register";
+import Login from "./views/routes/Login";
+import Cart from "./views/routes/Cart";
+import Detail from "./views/routes/Detail";
+import List from "./views/routes/List";
+import Registerdone from "./views/routes/Registerdone";
 
 function App() {
   const navigate = useNavigate();
