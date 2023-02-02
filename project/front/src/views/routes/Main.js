@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
+import cssMain from "../css/Main.module.css";
 
 const Main = () => {
   const navigate = useNavigate();
@@ -14,23 +15,27 @@ const Main = () => {
 
   return (
     <>
-      <Carousel activeIndex={index} onSelect={handleSelect}>
+      <Carousel
+        activeIndex={index}
+        onSelect={handleSelect}
+        className={cssMain.mainCarousel}
+      >
         <Carousel.Item>
           <img
             src={`${process.env.PUBLIC_URL}/img/banner1.png`}
-            className="main-bg"
+            className={cssMain.mainBg}
           ></img>
         </Carousel.Item>
         <Carousel.Item>
           <img
             src={`${process.env.PUBLIC_URL}/img/banner2.png`}
-            className="main-bg"
+            className={cssMain.mainBg}
           ></img>
         </Carousel.Item>
         <Carousel.Item>
           <img
             src={`${process.env.PUBLIC_URL}/img/banner3.png`}
-            className="main-bg"
+            className={cssMain.mainBg}
           ></img>
         </Carousel.Item>
       </Carousel>

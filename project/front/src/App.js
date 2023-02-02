@@ -12,6 +12,8 @@ import MyPage from "./views/routes/MyPage";
 import Privacy from "./views/routes/Privacy";
 import Secession from "./views/routes/Secession";
 import Productreg from "./views/routes/Productreg";
+import Order from "./views/routes/Order";
+import Complete from "./views/routes/Complete";
 
 function App() {
   const navigate = useNavigate();
@@ -67,17 +69,19 @@ function App() {
       {/* 라우터 */}
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="*" element={<p>404</p>} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/product/list" element={<List />} />
-        <Route path="/product/detail" element={<Detail />} />
+        <Route path="/product/detail/:id" element={<Detail />} />
         <Route path="/registerdone" element={<Registerdone />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/secession" element={<Secession />} />
         <Route path="/productreg" element={<Productreg />} />
+        <Route path="/order" element={<Order />} />
+        <Route path="/order/complete" element={<Complete />} />
+        <Route path="*" element={<p>404</p>} />
       </Routes>
     </div>
   );
