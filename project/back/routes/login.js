@@ -13,6 +13,7 @@ router.post("/", (req, res, next) => {
     try {
         // req에 담겨있는 정보 (아이디와 패스워드)를 받아서
         const { email, password } = req.body;
+        const test = "this is conflict test";
 
         // 데이터 베이스에 매칭되는 사용자 정보가 있는지 확인
         const user = User.findone({ email });
@@ -32,6 +33,11 @@ router.post("/", (req, res, next) => {
         // JWT 응답으로 전송
         res.send({
             message: "로그인 성공, 토큰 발급",
+            JWT: token,
+        });
+
+        res.send({
+            message: "충돌 테스트입니다.",
             JWT: token,
         });
     } catch (err) {

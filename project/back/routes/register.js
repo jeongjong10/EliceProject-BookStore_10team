@@ -27,7 +27,6 @@ router.post(
             });
 
             console.log("신규 회원", user);
-            res.status(201).send({ message: "유저 생성 성공" });
         } catch (e) {
             // ------ 에러2. 서버 관련 에러 ------
             res.status(500);
