@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, Container, Row, Col, ListGroup, Nav } from "react-bootstrap";
-import PopupDom from "./PopupDom";
+import PopupDom from "../components/PopupDom";
 import PopupPostCode from "../components/PopupPostCode";
 
 const Privacy = () => {
