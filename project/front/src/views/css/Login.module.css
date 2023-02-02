@@ -13,6 +13,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
 }
 
 .label {
@@ -30,6 +31,12 @@
   border-radius: 10px;
 }
 
-.linkBtn {
+.linkButton {
   align-items: center;
+}
+
+.errorMessageWrap {
+  margin-top: 8px;
+  color: red;
+  font-size: 12px;
 }
