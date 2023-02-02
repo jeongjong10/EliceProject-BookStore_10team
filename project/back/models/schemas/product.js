@@ -1,10 +1,8 @@
 const { Schema } = require("mongoose");
+const nanoId = require("./types/nano-id");
 
 const ProductSchema = new Schema({
-    productId: {
-        type: String,
-        required: true,
-    },
+    productId: nanoId,
     productName: {
         type: String,
         required: true,

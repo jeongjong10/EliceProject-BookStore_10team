@@ -5,6 +5,7 @@ const cors = require("cors");
 // --- 필요한 라우터 require ---
 const registerRouter = require("./routes/register");
 const loginRouter = require("./routes/login");
+const productRouter = require("./routes/products");
 
 // -------------------------
 
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 // ------ 라우터 등록 ------
 app.use("/register", registerRouter);
 app.use("/login", loginRouter); // 라우터 등록시 패쓰가 왜필요하지?
+app.use("/products", productRouter);
 //------------------------
 
 // ------ 오류처리 미들웨어 ------
