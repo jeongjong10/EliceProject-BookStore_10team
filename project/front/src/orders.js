@@ -1,0 +1,51 @@
+export const item = [
+  {
+    itemId: 1,
+    orderday: 20230101,
+    itemName: "검정셔츠",
+    amount: 3,
+    price: 30000,
+    deliver: "ready",
+  },
+  {
+    itemId: 2,
+    orderday: 20230102,
+    itemName: "노란바지",
+    amount: 1,
+    price: 45000,
+    deliver: "ready",
+  },
+  {
+    itemId: 3,
+    orderday: 20230103,
+    itemName: "핑크양말",
+    amount: 4,
+    price: 9000,
+    deliver: "state",
+  },
+  {
+    itemId: 4,
+    orderday: 20230104,
+    itemName: "검정바지",
+    amount: 5,
+    price: 45000,
+    deliver: "state",
+  },
+  {
+    itemId: 5,
+    orderday: 20230104,
+    itemName: "무지개양말",
+    amount: 6,
+    price: 9000,
+    deliver: "done",
+  },
+
+  {
+    itemId: 6,
+    orderday: 20230105,
+    itemName: "패딩",
+    amount: 6,
+    price: 150000,
+    deliver: "cancel",
+  },
+];
