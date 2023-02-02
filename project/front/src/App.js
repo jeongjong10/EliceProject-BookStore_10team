@@ -8,6 +8,9 @@ import Cart from "./views/routes/Cart";
 import Detail from "./views/routes/Detail";
 import List from "./views/routes/List";
 import Registerdone from "./views/routes/Registerdone";
+import Privacy from "./views/routes/Privacy";
+import Secession from "./views/routes/Secession";
+import Productreg from "./views/routes/Productreg";
 
 function App() {
   const navigate = useNavigate();
@@ -70,6 +73,9 @@ function App() {
         <Route path="/product/list" element={<List />} />
         <Route path="/product/detail" element={<Detail />} />
         <Route path="/registerdone" element={<Registerdone />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/secession" element={<Secession />} />
+        <Route path="/productreg" element={<Productreg />} />
       </Routes>
     </div>
   );
