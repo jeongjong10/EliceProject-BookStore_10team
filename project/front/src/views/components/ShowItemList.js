@@ -22,7 +22,7 @@ export const ShowItemList = () => {
               </div>
               <Card.Body>
                 <Card.Title>{item.itemName}</Card.Title>
-                <Card.Text>{item.price}</Card.Text>
+                <Card.Text>{item.price.toLocaleString("en-US")}</Card.Text>
               </Card.Body>
             </Card>
           );

@@ -60,3 +60,7 @@
   border-top: 1px solid #dee2e6;
   padding: 24px 12px 0px 12px;
 }
+
+.emptyCart {
+  height: 300px;
+}
