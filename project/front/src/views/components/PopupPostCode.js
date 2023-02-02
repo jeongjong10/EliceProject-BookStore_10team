@@ -1,6 +1,6 @@
 import React from "react";
 import DaumPostcode from "react-daum-postcode";
-import Privacy from "./Privacy";
+import Privacy from "../routes/Privacy";
 
 const PopupPostCode = (props) => {
   // 우편번호 검색 후 주소 클릭 시 실행될 함수
