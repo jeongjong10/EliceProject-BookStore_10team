@@ -16,7 +16,7 @@ import {
 import cssCart from "../css/Cart.module.css";
 import { item } from "../../orders";
 
-export const OrderEnd = () => {
+export const AdminDeliverEnd = () => {
   return (
     <>
       <Container className="subContainer">

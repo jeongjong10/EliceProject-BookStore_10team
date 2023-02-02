@@ -16,7 +16,7 @@ import {
 import cssCart from "../css/Cart.module.css";
 import { item } from "../../orders";
 
-export const Orderby = () => {
+export const AdminOrderby = () => {
   const HandlerPlus = (e) => {
     e.amount += 1;
   };
@@ -44,7 +44,7 @@ export const Orderby = () => {
               </thead>
               <tbody>
                 {item.map((item, index) => {
-                  if (item.deliver === "state") {
+                  if (item.deliver === "state" || item.deliver === "ready") {
                     return (
                       <tr>
                         {/* table start */}
@@ -84,28 +84,6 @@ export const Orderby = () => {
                         <td>
                           <Button>주문취소</Button>
                         </td>
-                      </tr>
-                    );
-                  } else if (item.deliver === "ready") {
-                    return (
-                      <tr>
-                        {/* table start */}
-                        <td>{item.itemId}</td>
-                        <td className={cssCart.tdAlignLeft}>
-                          <img
-                            src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssCart.productThumbnail}`}
-                          />
-                          {item.itemName}
-                        </td>
-                        <td>{item.orderday}</td>
-                        <td>
-                          <p className={cssCart.qty}>{item.amount}</p>
-                        </td>
-                        <td>배송중</td>
-                        <td>{item.amount * item.price}</td>
-                        <td></td>
-                        <td></td>
                       </tr>
                     );
                   }

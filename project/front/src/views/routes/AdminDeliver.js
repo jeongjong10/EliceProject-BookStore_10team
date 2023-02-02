@@ -11,8 +11,8 @@ import {
   Tab,
   Tabs,
 } from "react-bootstrap";
-import { Orderby } from "../components/Orderby";
-import { OrderEnd } from "../components/OrderEnd";
+import { AdminDeliverEnd } from "../components/AdminDeliverEnd";
+import { AdminOrderby } from "../components/AdminOrderby";
 
 const AdminDeliver = () => {
   // const {id} = useParams()
@@ -38,11 +38,15 @@ const AdminDeliver = () => {
               fill
             >
               <Tab eventKey="orderby" title="배송중">
-                <div></div>
+                <div>
+                  <AdminOrderby />
+                </div>
               </Tab>
 
               <Tab eventKey="orderEnd" title="배송완료">
-                <div></div>
+                <div>
+                  <AdminDeliverEnd />
+                </div>
               </Tab>
             </Tabs>
           </Col>
