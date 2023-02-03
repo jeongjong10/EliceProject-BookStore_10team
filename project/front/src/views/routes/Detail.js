@@ -24,13 +24,11 @@ const Detail = () => {
     price: "",
   });
 
-  // ! api 구동 확인 필요 (git merge 후 확인예정)
   async function getData() {
-    // const params = { _id: id };
     return await axios
-      .get("http://localhost:3001/products/:_id", { _id: id })
+      .get(`http://localhost:3001/products/${id}`)
       .then((res) => {
-        setProduct(res.data[0]);
+        setProduct(res.data);
         console.log(res.data);
       })
       .catch((err) => console.log(err));
@@ -46,7 +44,7 @@ const Detail = () => {
         "cart",
         JSON.stringify([
           {
-            itemId: id,
+            _id: product._id,
             count,
           },
         ])
