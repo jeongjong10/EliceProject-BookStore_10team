@@ -1,22 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button, Container, Row, Col, Form } from "react-bootstrap";
+import axios from "axios";
 
 import cssDetail from "../css/Detail.module.css";
 import cssItemList from "../css/ShowItemList.module.css";
 
-import { item } from "../../temp"; // 상품 임시 데이터
+// import { item } from "../../temp"; // 상품 임시 데이터
 
 const Detail = () => {
   const { id } = useParams();
-  const selected = item.find((x) => x.itemId == id);
 
+  // 수량
   const [count, setCount] = useState(1);
-
   function getCount(e) {
     setCount(Number(e.target.value));
   }
 
+  // 데이터 get
+  const [product, setProduct] = useState({
+    productName: "",
+    detail: "",
+    price: "",
+  });
+
+  async function getData() {
+    return await axios
+      // .get("http://localhost:3001/products/:productId", { productId: id })
+      .get("http://localhost:3001/products")
+      .then((res) => {
+        const temp = res.data.filter((data) => data._id == id);
+        setProduct(temp[0]);
+        // setProduct(res.data[0]);
+        console.log(res.data);
+        console.log(id);
+      })
+      .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // 장바구니 추가
   function addCart() {
     if (!localStorage.key("cart")) {
       localStorage.setItem(
@@ -56,9 +81,9 @@ const Detail = () => {
             </div>
           </Col>
           <Col className={cssDetail.productDescription}>
-            <h2>{selected.itemName}</h2>
-            <h4>{selected.price.toLocaleString("en-US")}</h4>
-            <p>{selected.note}</p>
+            <h2>{product.productName}</h2>
+            <h4>{product.price.toLocaleString("en-US")}</h4>
+            <p>{product.detail}</p>
             <div>
               <Form>
                 <Form.Group className="mb-1">
