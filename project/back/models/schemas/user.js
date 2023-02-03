@@ -34,15 +34,15 @@ const UserSchema = new Schema({
         required: false,
     },
     admin: {
-        type: Boolean, // String?
+        type: Boolean,
         required: false,
+        default: false,
     },
-    // 사용자 계정 활성화 비활성화
-    //
-    // activate : {
-    //     type : Boolean,
-    //     required : true,
-    // }
+    activate: {
+        type: Boolean,
+        required: true,
+        default: true,
+    },
 }, {
     timestamps: true,
 });
