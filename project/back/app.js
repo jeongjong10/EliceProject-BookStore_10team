@@ -22,7 +22,7 @@ const app = express();
 
 // ------ 미들웨어 등록 ------
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // post 메서드를 받기 위함 : req.body를 읽을 수 있음
 app.use(express.urlencoded({ extended: false }));
 //------------------------
 
