@@ -1,11 +1,28 @@
 const express = require("express");
 const router = express.Router();
-const { Product, User } = require("../models/index");
+const { Product } = require("../models/index");
+const mongoose = require("mongoose");
 
 // ------ USER: 전체 상품 조회 ------
 router.get("/", async(req, res, next) => {
     try {
-        const products = await Product.find({});
+        // ------ 쿼리 스트링 ------
+        const idList = req.query["_id"];
+        let products;
+        if (typeof idList !== "object") idList = [idList];
+        else if (idList) {
+            products = await Promise.all(
+                idList.map(async(_id) => {
+                    const product = await Product.findOne({
+                        _id: mongoose.Types.ObjectId(_id),
+                    });
+                    return product;
+                })
+            );
+        } else {
+            products = await Product.find({});
+        }
+
         res.json(products);
     } catch (e) {
         next(e);
@@ -32,47 +49,5 @@ router.get("/:_id", async(req, res, next) => {
         next(e);
     }
 });
-
-// ------ ADMIN: 상품 등록 ------
-router.post("/", async(req, res, next) => {
-    try {
-        const products = req.body;
-
-        const product = await Product.create(products);
-
-        console.log("상품 등록", product);
-        res.status(201).send({ message: "상품 등록 성공" });
-    } catch (e) {
-        next(e);
-    }
-});
-
-// ------ ADMIN: 상품 수정 ------
-router.post("/:_id", async(req, res, next) => {
-    try {
-        const { _id } = req.params;
-        const update = req.body;
-
-        await Product.findOneAndUpdate({ _id }, update);
-
-        res.status(201).send({ message: "상품 수정 성공" });
-    } catch (e) {
-        next(e);
-    }
-});
-
-// ------ ADMIN: 상품 삭제 (비활성화) ------
-router.patch("/:id", async(req, res, next) => {
-    try {
-        const { _id } = req.params;
-
-        await Product.findOneAndUpdate({ _id }, { activate: false });
-        res.status(201).send({ message: "상품 비활성화 성공" });
-    } catch (e) {
-        next(e);
-    }
-});
-
-// 상품 id가 들어오면
 
 module.exports = router;

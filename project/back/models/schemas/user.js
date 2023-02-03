@@ -35,8 +35,13 @@ const UserSchema = new Schema({
     },
     admin: {
         type: Boolean, // String?
-        required: false,
-        default: false
+        required: true,
+        default: false,
+    },
+    activate: {
+        type: Boolean,
+        required: true,
+        default: true,
     },
 }, {
     timestamps: true,
