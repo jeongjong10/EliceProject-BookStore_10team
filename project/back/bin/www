@@ -5,8 +5,8 @@ var app = require("../app");
 var debug = require("debug")("server:server");
 var http = require("http");
 
-// --- Express 서버 오픈 포트 지정 -> 5000번으로! ---
-var port = normalizePort(process.env.PORT || "3000");
+// --- Express 서버 오픈 포트 지정 -> 3001번으로! ---
+var port = normalizePort(process.env.PORT || "3001");
 app.set("port", port);
 
 // --- Create HTTP server 서버 생성 ---
