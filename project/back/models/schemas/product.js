@@ -27,6 +27,11 @@ const ProductSchema = new Schema({
         type: Number,
         required: true,
     },
+    activate: {
+        type: Boolean,
+        required: true,
+        default: true
+    }
 }, {
     timestamps: true,
 });
