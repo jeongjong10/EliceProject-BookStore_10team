@@ -7,7 +7,7 @@ const registerRouter = require("./routes/register");
 const loginRouter = require("./routes/login");
 const accountRouter = require("./routes/account");
 const productRouter = require("./routes/products");
-const adminRouter = require("./routes/admin");
+// const adminRouter = require("./routes/admin");
 // -------------------------
 
 // ------ 몽고DB 연결 ------
@@ -32,7 +32,7 @@ app.use("/register", registerRouter);
 app.use("/login", loginRouter);
 // app.use("/account", accountRouter);
 app.use("/products", productRouter);
-app.use("/admin", adminRouter);
+// app.use("/admin", adminRouter);
 //------------------------
 
 // ------ 오류처리 미들웨어 ------
