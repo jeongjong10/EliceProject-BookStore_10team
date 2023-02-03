@@ -8,10 +8,10 @@ import Cart from "./views/routes/Cart";
 import Detail from "./views/routes/Detail";
 import List from "./views/routes/List";
 import Registerdone from "./views/routes/Registerdone";
-import MyPage from "./views/routes/MyPage";
-import Privacy from "./views/routes/Privacy";
+import AcountOrder from "./views/routes/AcountOrder";
+import AcountPrivacy from "./views/routes/AcountPrivacy";
 import Secession from "./views/routes/Secession";
-import Productreg from "./views/routes/Productreg";
+import AdminProductRegister from "./views/routes/AdminProductRegister";
 import Order from "./views/routes/Order";
 import Complete from "./views/routes/Complete";
 import AdminDeliver from "./views/routes/AdminDeliver";
@@ -76,13 +76,13 @@ function App() {
         <Route path="/product/list" element={<List />} />
         <Route path="/products/:id" element={<Detail />} />
         <Route path="/registerdone" element={<Registerdone />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/secession" element={<Secession />} />
-        <Route path="/productreg" element={<Productreg />} />
+        <Route path="/account/orders" element={<AcountOrder />} />
+        <Route path="/account/privacy" element={<AcountPrivacy />} />
+        <Route path="/account/secession" element={<Secession />} />
+        <Route path="/admin/products" element={<AdminProductRegister />} />
+        <Route path="/admin" element={<AdminDeliver />} />
         <Route path="/order" element={<Order />} />
         <Route path="/order/complete" element={<Complete />} />
-        <Route path="/admin" element={<AdminDeliver />} />
         <Route path="*" element={<p>404</p>} />
       </Routes>
     </div>
