@@ -8,11 +8,11 @@ const jwt = require("jsonwebtoken");
 
 // 아직 미완성
 module.exports = (reqHeaders) => {
-        const { authorization } = reqHeaders;
-        if (!authorization) {
-            throw new Error("인증되지 않은 토큰")
-        }
-        const token = authorization.split(" ")[1];
+    const { authorization } = reqHeaders;
+    if (!authorization) {
+        throw new Error("인증되지 않은 토큰")
+    }
+    const token = authorization.split(" ")[1];
 
         jwt.verify(token,"10team");
 
