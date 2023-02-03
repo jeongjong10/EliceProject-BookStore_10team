@@ -5,8 +5,23 @@ import { item } from "../../temp";
 import cssCart from "../css/Cart.module.css";
 
 const Cart = () => {
-  localStorage.setItem("cart", JSON.stringify(item));
-  let carts = JSON.parse(localStorage.getItem("cart"));
+  // 로컬스토리지 cart 데이터 가공
+  const carts = JSON.parse(localStorage.getItem("cart"));
+  const cartItemsId = carts.map((v, i) => v.itemId);
+  const [count, setCount] = useState(carts.count);
+  // 로컬스토리지 id <-> 상품데이터 id 비교
+  // 비교 후 데이터 출력을 위한 extractPrd 배열에 push
+  // ! 로직 수정 예정
+  let extractPrd = [];
+  cartItemsId.map((localStorageId, i) => {
+    item.map((item, i) => {
+      if (localStorageId == item.itemId) {
+        extractPrd.push(item);
+      }
+    });
+  });
+
+  console.log(extractPrd);
   const navigate = useNavigate();
 
   const [total, setTotal] = useState([]);
@@ -30,42 +45,65 @@ const Cart = () => {
               </tr>
             </thead>
             <tbody>
-              {carts.map((v, i) => {
-                return (
-                  <tr>
-                    <td className={cssCart.tdAlignLeft}>
-                      <img
-                        src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                        className={`${cssCart.productThumbnail}`}
-                      />
-                      {v.itemName}
-                    </td>
-                    <td>{v.price}</td>
-                    <td>
+              {!localStorage.key("cart") && (
+                <tr>
+                  <td colSpan={5} className={cssCart.emptyCart}>
+                    <h4>
+                      🤔 장바구니에 담긴 상품이 없습니다.
+                      <br />
                       <Button
-                        variant="outline-secondary"
-                        className={cssCart.qtyButton}
+                        variant="secondary"
+                        className="mt-3"
+                        onClick={() => {
+                          navigate("/product/list");
+                        }}
                       >
-                        +
+                        상품 보러 가기
                       </Button>
-                      <p className={cssCart.qty}>3{/* 주문데이터 -> 수량 */}</p>
-                      <Button
-                        variant="outline-secondary"
-                        className={cssCart.qtyButton}
-                      >
-                        -
-                      </Button>
-                    </td>
-                    <td>
-                      {v.price}
-                      {/* 주문 수량 곱해줘야 함 */}
-                    </td>
-                    <td>
-                      <Button variant="secondary">삭제</Button>
-                    </td>
-                  </tr>
-                );
-              })}
+                    </h4>
+                  </td>
+                </tr>
+              )}
+              {localStorage.key("cart") &&
+                extractPrd.map((v, i) => {
+                  return (
+                    <tr key={i}>
+                      <td className={cssCart.tdAlignLeft}>
+                        <img
+                          src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
+                          className={`${cssCart.productThumbnail}`}
+                        />
+                        {v.itemName}
+                      </td>
+                      <td>{v.price}</td>
+                      <td>
+                        <Button
+                          variant="outline-secondary"
+                          className={cssCart.qtyButton}
+                        >
+                          +
+                        </Button>
+                        <p className={cssCart.qty}>
+                          {v.count}
+                          {/* 주문데이터 -> 수량 */}
+                        </p>
+                        <Button
+                          variant="outline-secondary"
+                          className={cssCart.qtyButton}
+                        >
+                          -
+                        </Button>
+                      </td>
+                      <td>
+                        {v.price}
+                        {/* 주문 수량 곱해줘야 함 */}
+                      </td>
+                      <td>
+                        <Button variant="secondary">삭제</Button>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </Table>
         </Col>
