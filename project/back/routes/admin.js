@@ -1,4 +1,7 @@
+const express = require("express");
+const router = express.Router();
 const { Product, User } = require("../models/index");
+
 
 // ------ ADMIN: 상품 등록 ------
 router.post("/products", async(req, res, next) => {
