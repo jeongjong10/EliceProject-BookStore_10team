@@ -35,13 +35,7 @@ const UserSchema = new Schema({
     },
     admin: {
         type: Boolean, // String?
-        required: true,
-        default: false,
-    },
-    activate: {
-        type: Boolean,
-        required: true,
-        default: true,
+        required: false,
     },
     // 사용자 계정 활성화 비활성화
     //
