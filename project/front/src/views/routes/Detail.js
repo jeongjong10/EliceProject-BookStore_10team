@@ -24,16 +24,12 @@ const Detail = () => {
     price: "",
   });
 
+  // ! api 구동 확인 필요 (git merge 후 확인예정)
   async function getData() {
     return await axios
-      // .get("http://localhost:3001/products/:productId", { productId: id })
-      .get("http://localhost:3001/products")
+      .get("http://localhost:3001/products/:_id", { productId: id })
       .then((res) => {
-        const temp = res.data.filter((data) => data._id == id);
-        setProduct(temp[0]);
-        // setProduct(res.data[0]);
-        console.log(res.data);
-        console.log(id);
+        setProduct(res.data[0]);
       })
       .catch((err) => console.log(err));
   }
