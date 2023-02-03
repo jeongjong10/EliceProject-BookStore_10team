@@ -16,13 +16,11 @@ router.get("/", async (req, res, next) => {
     //             const product = await Product.findOne({
     //                 _id: mongoose.Types.ObjectId(_id),
     //             });
-    //             return product;
     //         })
     //     );
     // } else {
     const products = await Product.find({});
     // }
-
     res.json(products);
   } catch (e) {
     next(e);
@@ -36,7 +34,9 @@ router.get("/:_id", async (req, res, next) => {
 
     console.log(_id);
 
-    const product = await Product.findOne({ _id });
+    const id = mongoose.Types.ObjectId(_id);
+
+    const product = await Product.findOne({ id });
 
     if (!product) {
       console.error("존재하지 않는 상품입니다.");
