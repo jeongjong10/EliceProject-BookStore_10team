@@ -39,6 +39,7 @@ const OrderSchema = new Schema({
         status: {
             type: String,
             required: true,
+            // default: "상품 준비중" 넣는 거 어떠신가요 ??
         },
         orderList: {
             productName: {
@@ -61,6 +62,11 @@ const OrderSchema = new Schema({
         totalPrice: {
             type: Number,
             required: true,
+        },
+        activate: {
+            type: Boolean,
+            required: true,
+            default: true,
         },
     },
 

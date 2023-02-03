@@ -15,14 +15,6 @@ const UserSchema = new Schema({
             type: String,
             required: false,
         },
-        recieverName: {
-            type: String,
-            required: false,
-        },
-        recieverPhoneNumber: {
-            type: String,
-            required: false,
-        },
     },
     userId: nanoId,
     userName: {
@@ -44,6 +36,7 @@ const UserSchema = new Schema({
     admin: {
         type: Boolean, // String?
         required: false,
+        default: false
     },
 }, {
     timestamps: true,
