@@ -9,7 +9,7 @@ const generateToken = require("../utils/generateToken");
 const { User } = require("../models/index");
 
 // 로그인 패스 접근시 (로그인 버튼 클릭시)
-router.post("/", async (req, res, next) => {
+router.post("/", async(req, res, next) => {
     try {
         // req에 담겨있는 정보 (아이디와 패스워드)를 받아서
         console.log("------------------- 사용자 로그인 시도 ------------------------");
