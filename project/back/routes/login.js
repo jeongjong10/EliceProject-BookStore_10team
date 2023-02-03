@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
-// const {User} = require("몽고디비")
 const getHash = require("../utils/hash-password");
+const { User } = require("../models/index");
 // jwt 생성 모듈
 const generateToken = require("../utils/generateToken");
-
-const { User } = require("../models/index");
 
 // 로그인 패스 접근시 (로그인 버튼 클릭시)
 router.post("/", async(req, res, next) => {
@@ -49,11 +47,11 @@ router.post("/", async(req, res, next) => {
         );
         const token = generateToken(user._id.toJSON());
         // JWT 응답으로 전송
-        res.send({
-            JWT: "서버에서 생성한 토큰",
-            result: "true",
-            message: "로그인 성공, 토큰 발급",
-        });
+        res.state(200).send({
+            "JWT" : "서버에서 생성한 토큰",
+            "result" : "true",
+            "message" : "로그인 성공, 토큰 발급"
+          });
         console.log("------------------- 토큰 발급  완료 ------------------------");
     } catch (err) {
         next(err);
