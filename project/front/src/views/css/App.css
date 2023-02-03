@@ -1,0 +1,29 @@
+/* 전체 공통 적용 CSS */
+
+/* scroll bar hidden */
+body {
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+.page-title {
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.subContainer {
+  margin-top: 40px;
+}
+
+.product-description {
+  padding: 20px 0 0 40px;
+}
+
+td,
+th,
+tr {
+  text-align: center;
+  vertical-align: middle;
+}
