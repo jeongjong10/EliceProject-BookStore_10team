@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Card, Container, Row, Col, ListGroup, Nav } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { Container, Row, Col } from "react-bootstrap";
 import PopupDom from "../components/PopupDom";
 import PopupPostCode from "../components/PopupPostCode";
 
