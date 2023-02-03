@@ -38,7 +38,7 @@ const Register = () => {
 
     //입력 확인
     if (name.length < 2) {
-      return alert("이름은 2글자 이상 입력해주세요.");
+      return alert("이름은 2글자  이상 입력해주세요.");
     } else if (!ispassword(password)) {
       return alert("영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.");
     } else if (!isEmail(email)) {
