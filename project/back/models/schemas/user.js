@@ -45,6 +45,12 @@ const UserSchema = new Schema({
         type: Boolean, // String?
         required: false,
     },
+    // 사용자 계정 활성화 비활성화
+    // 
+    // activate : {
+    //     type : Boolean,
+    //     required : true,
+    // }
 }, {
     timestamps: true,
 });

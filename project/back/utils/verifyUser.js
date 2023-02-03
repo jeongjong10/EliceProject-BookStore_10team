@@ -15,9 +15,17 @@ module.exports = (reqHeaders) => {
         const token = authorization.split(" ")[1];
 
         jwt.verify(token,"10team");
+
+        // 토큰 확인 로직
+
+        // 활성화 여부
+
+        // 어드민 여부
+
+        // 반환값은 _id, 어드민 여부
 }
 
 // verifyUser를 사용하는 라우터 단에서
 // const verifiedUser_id = verifyUser(reqHeader);
 // 로 변수에 받아서 사용
-// ex) User.findOne({verifiedUser_id})
+// ex) User.findOne({_Id : verifiedUser_id})
