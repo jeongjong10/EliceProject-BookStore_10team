@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const verifyUser = require("./middleware/verifyUser")
 
 // --- 필요한 라우터 require ---
 const registerRouter = require("./routes/register");
@@ -39,7 +40,7 @@ app.use("/products", productRouter);
 app.use((err, req, res, next) => {
     res.json({
         result: "fail",
-        error: err.message,
+        message: err.message,
     });
 });
 //------------------------

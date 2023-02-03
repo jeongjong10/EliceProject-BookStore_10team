@@ -1,12 +1,11 @@
 const express = require("express");
-const asyncHandler = require("../utils/async-handler");
 const router = express.Router();
 const getHash = require("../utils/hash-password");
 const { User } = require("../models/index");
 
 router.post(
     "/",
-    asyncHandler(async(req, res, next) => {
+    async (req, res, next) => {
         try {
             const { userName, email, password } = req.body;
             // ------ 에러) 유니크 중복 ------
@@ -30,7 +29,7 @@ router.post(
         } catch (e) {
             next(e);
         }
-    })
+    }
 );
 
 module.exports = router;

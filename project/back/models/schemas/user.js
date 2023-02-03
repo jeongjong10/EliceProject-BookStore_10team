@@ -1,29 +1,24 @@
 const { Schema } = require("mongoose");
 const nanoId = require("./types/nano-id");
 
-const UserSchema = new Schema({
-    address: {
-        postalCode: {
-            type: String,
-            required: false,
-        },
-        address1: {
-            type: String,
-            required: false,
-        },
-        address2: {
-            type: String,
-            required: false,
-        },
-        recieverName: {
-            type: String,
-            required: false,
-        },
-        recieverPhoneNumber: {
-            type: String,
-            required: false,
-        },
+// address 객체 분리
+const address = {
+    postalCode: {
+        type: String,
+        required: false,
     },
+    address1: {
+        type: String,
+        required: false,
+    },
+    address2: {
+        type: String,
+        required: false,
+    }
+}
+
+const UserSchema = new Schema({
+    address,
     userId: nanoId,
     userName: {
         type: String,

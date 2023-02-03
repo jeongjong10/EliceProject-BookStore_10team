@@ -1,29 +1,31 @@
 const { Schema } = require("mongoose");
 
-const OrderSchema = new Schema({
-        address: {
-            postalCode: {
-                type: String,
-                required: true,
-            },
-            address1: {
-                type: String,
-                required: true,
-            },
-            address2: {
-                type: String,
-                required: true,
-            },
-            recieverName: {
-                type: String,
-                required: true,
-            },
-            recieverPhoneNumber: {
-                type: String,
-                required: true,
-            },
-        },
+// address 객체 분리
+const address = {
+    postalCode: {
+        type: String,
+        required: true,
+    },
+    address1: {
+        type: String,
+        required: true,
+    },
+    address2: {
+        type: String,
+        required: true,
+    },
+    recieverName: {
+        type: String,
+        required: true,
+    },
+    recieverPhoneNumber: {
+        type: String,
+        required: true,
+    },
+}
 
+const OrderSchema = new Schema({
+        address,
         orderNumber: {
             type: String,
             required: true,
@@ -40,7 +42,8 @@ const OrderSchema = new Schema({
             type: String,
             required: true,
         },
-        orderList: {
+        // 주문 내역은 배열 
+        orderList: [{
             productName: {
                 type: String,
                 required: true,
@@ -49,7 +52,7 @@ const OrderSchema = new Schema({
                 type: Number,
                 required: true,
             },
-        },
+        }],
         totalProductPrice: {
             type: Number,
             required: true,
