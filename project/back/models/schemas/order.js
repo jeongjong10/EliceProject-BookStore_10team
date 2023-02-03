@@ -1,5 +1,6 @@
 const { Schema } = require("mongoose");
 
+
 const OrderSchema = new Schema({
         address: {
             postalCode: {
@@ -50,7 +51,7 @@ const OrderSchema = new Schema({
                 type: Number,
                 required: true,
             },
-        },
+        }, // 배열로 
         totalProductPrice: {
             type: Number,
             required: true,

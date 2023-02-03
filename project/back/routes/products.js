@@ -7,20 +7,24 @@ const mongoose = require("mongoose");
 router.get("/", async(req, res, next) => {
     try {
         // ------ 쿼리 스트링 ------
-        // const idList = req.query["_id"];
-        // let products;
-        // if (typeof idList !== "object") idList = [idList];
-        // else if (idList) {
-        //     products = await Promise.all(
-        //         idList.map(async(_id) => {
-        //             const product = await Product.findOne({
-        //                 _id: mongoose.Types.ObjectId(_id),
-        //             });
-        //         })
-        //     );
-        // } else {
-        const products = await Product.find({});
-        // }
+        let idList = req.query["_id"];
+        let products;
+
+        if (idList) {
+            // 쿼리 파라미터가 있을 때
+            if (typeof idList !== "object") idList = [idList]; // _id 값이 하나일 때 처리
+            products = await Promise.all(
+                idList.map(async(_id) => {
+                    const product = await Product.findOne({
+                        _id: mongoose.Types.ObjectId(_id),
+                    });
+                    return product;
+                })
+            );
+        } else {
+            // 쿼리 파라미터가 없을 때
+            products = await Product.find({});
+        }
         res.json(products);
     } catch (e) {
         next(e);
@@ -37,6 +41,8 @@ router.get("/:_id", async(req, res, next) => {
         const id = mongoose.Types.ObjectId(_id);
 
         const product = await Product.findOne({ id });
+
+        console.log(product);
 
         if (!product) {
             console.error("존재하지 않는 상품입니다.");
