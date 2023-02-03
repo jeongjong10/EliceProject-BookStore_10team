@@ -8,9 +8,10 @@ const Cart = () => {
   // 로컬스토리지 cart 데이터 가공
   const carts = JSON.parse(localStorage.getItem("cart"));
   const cartItemsId = carts.map((v, i) => v.itemId);
-
+  const [count, setCount] = useState(carts.count);
   // 로컬스토리지 id <-> 상품데이터 id 비교
   // 비교 후 데이터 출력을 위한 extractPrd 배열에 push
+  // ! 로직 수정 예정
   let extractPrd = [];
   cartItemsId.map((localStorageId, i) => {
     item.map((item, i) => {

@@ -31,9 +31,9 @@ const Detail = () => {
     } else {
       const currentItems = JSON.parse(localStorage.getItem("cart"));
       let currentItemsSet = new Set(currentItems);
-      currentItemsSet = [...currentItemsSet]; // ! 배열 해줄 필요 없다고 하셨는데 객체 상태에서 id값 어떻게 접근하는 지 모르겠음
+      currentItemsSet = [...currentItemsSet]; // ? 배열 해줄 필요 없다고 하셨는데 객체 상태에서 id값 어떻게 접근하는 지 모르겠음
 
-      // findIndex 돌 때 비교 조건값인 '-1' : 실제 id값은 랜덤값인데 -1로 해도 괜찮나?
+      // findIndex 돌면서 몇 번 째에 있는지 담김, 0부터 시작하므로 false인 -1로 처리..
       if (currentItemsSet.findIndex((f) => f.itemId == id) != -1) {
         alert("이미 장바구니에 있는 상품이네요!");
       } else {
