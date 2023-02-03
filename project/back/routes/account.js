@@ -37,6 +37,8 @@ router.get('/', async (req, res, next) => {
         
         // 유저 검색 후 데이터 전송
 
+    } catch(err) {
+        next(err);
     }
 })
 
@@ -54,3 +56,4 @@ router.patch('/', async (req, res, next) => {
     // 회원 탈퇴 시도시
 
 })
+

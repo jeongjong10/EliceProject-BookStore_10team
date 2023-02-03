@@ -5,7 +5,7 @@ const cors = require("cors");
 // --- 필요한 라우터 require ---
 const registerRouter = require("./routes/register");
 const loginRouter = require("./routes/login");
-const accountRouter = require("./routes/account");
+// const accountRouter = require("./routes/account");
 const productRouter = require("./routes/products");
 // -------------------------
 
@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 // ------ 라우터 등록 ------
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
-app.use("/account", accountRouter);
+// app.use("/account", accountRouter);
 app.use("/products", productRouter);
 
 //------------------------
