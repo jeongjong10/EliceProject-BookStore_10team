@@ -13,7 +13,7 @@ import {
   Button,
   Table,
 } from "react-bootstrap";
-import cssOrder from "../css/Order.module.css";
+import cssCart from "../css/Cart.module.css";
 import { item } from "../../orders";
 
 export const OrderCancel = () => {
@@ -40,16 +40,16 @@ export const OrderCancel = () => {
                       <tr>
                         {/* table start */}
                         <td>{item.itemId}</td>
-                        <td className={cssOrder.tdAlignLeft}>
+                        <td className={cssCart.tdAlignLeft}>
                           <img
                             src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssOrder.productThumbnail}`}
+                            className={`${cssCart.productThumbnail}`}
                           />
                           {item.itemName}
                         </td>
                         <td>{item.orderday}</td>
                         <td>
-                          <p className={cssOrder.qty}>{item.amount}</p>
+                          <p className={cssCart.qty}>{item.amount}</p>
                         </td>
                         <td>주문취소</td>
                         <td>{item.amount * item.price}</td>

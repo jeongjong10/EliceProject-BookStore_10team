@@ -14,6 +14,7 @@ import Secession from "./views/routes/Secession";
 import Productreg from "./views/routes/Productreg";
 import Order from "./views/routes/Order";
 import Complete from "./views/routes/Complete";
+import AdminDeliver from "./views/routes/AdminDeliver";
 
 function App() {
   const navigate = useNavigate();
@@ -81,6 +82,7 @@ function App() {
         <Route path="/productreg" element={<Productreg />} />
         <Route path="/order" element={<Order />} />
         <Route path="/order/complete" element={<Complete />} />
+        <Route path="/admin" element={<AdminDeliver />} />
         <Route path="*" element={<p>404</p>} />
       </Routes>
     </div>
