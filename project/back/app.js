@@ -14,8 +14,8 @@ const productRouter = require("./routes/products");
 mongoose.set("strictQuery", false);
 mongoose.connect("mongodb+srv://10team:1111@10team.yfnfhkm.mongodb.net/test");
 mongoose.connection.on("connected", () => {
-    console.log("정상적으로 DB와 연결되었습니다.   MongoDB Connected");
-    console.log("--------------------------------------------");
+  console.log("정상적으로 DB와 연결되었습니다.   MongoDB Connected");
+  console.log("--------------------------------------------");
 });
 //------------------------
 
@@ -37,10 +37,10 @@ app.use("/products", productRouter);
 
 // ------ 오류처리 미들웨어 ------
 app.use((err, req, res, next) => {
-    res.json({
-        result: "fail",
-        error: err.message,
-    });
+  res.json({
+    result: "fail",
+    error: err.message,
+  });
 });
 //------------------------
 

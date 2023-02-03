@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../css/Login.module.css";
-
-const User = {
-  email: "test@example.com",
-  pw: "test2323@@@",
-};
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,7 +21,7 @@ const Login = () => {
   }, [emailValid, passwordValid]);
 
   const handleSubmit = (e) => {
-    e.preventDefalt();
+    e.preventDefault();
     console.log(email);
   };
 
@@ -49,13 +45,23 @@ const Login = () => {
       setPasswordValid(false);
     }
   };
-  const onClickConfirmButton = () => {
-    if (email === User.email && password === User.password) {
-      alert("로그인에 성공했습니다.");
-      navigate("/");
-    } else {
-      alert("등록되지 않은 회원입니다.");
-    }
+  const onClickConfirmButton = async (e) => {
+    await axios
+      .post("http://localhost:3001/login", { email, password })
+      .then((response) => {
+        if (response.data.error === "비밀번호가 일치하지 않음") {
+          alert("비밀번호가 일치하지 않습니다.");
+          window.location.reload();
+        } else if (response.data.error === "일치하는 사용자 이메일이 없음") {
+          alert("일치하는 사용자가 없습니다.");
+          window.location.reload();
+        } else {
+          alert("로그인 완료");
+          console.log(response.data.JWT);
+          navigate("/");
+        }
+      })
+      .catch((e) => e.message);
   };
 
   return (
