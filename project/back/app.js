@@ -5,7 +5,7 @@ const cors = require("cors");
 // --- 필요한 라우터 require ---
 const registerRouter = require("./routes/register");
 const loginRouter = require("./routes/login");
-const accountRouter = require("./routes/account");
+// const accountRouter = require("./routes/account");
 const productRouter = require("./routes/products");
 // const adminRouter = require("./routes/admin");
 // -------------------------
