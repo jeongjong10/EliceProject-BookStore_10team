@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 // ------ 라우터 등록 ------
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
-app.use("/account", accountRouter);
+// app.use("/account", accountRouter);
 app.use("/products", productRouter);
 
 //------------------------
