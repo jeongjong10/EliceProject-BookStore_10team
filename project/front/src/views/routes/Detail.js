@@ -26,10 +26,12 @@ const Detail = () => {
 
   // ! api 구동 확인 필요 (git merge 후 확인예정)
   async function getData() {
+    // const params = { _id: id };
     return await axios
-      .get("http://localhost:3001/products/:_id", { productId: id })
+      .get("http://localhost:3001/products/:_id", { _id: id })
       .then((res) => {
         setProduct(res.data[0]);
+        console.log(res.data);
       })
       .catch((err) => console.log(err));
   }
