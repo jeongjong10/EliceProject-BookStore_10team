@@ -1,4 +1,5 @@
 const { Schema } = require("mongoose");
+const nanoId = require("./types/nano-id");
 
 const UserSchema = new Schema({
     address: {
@@ -23,10 +24,7 @@ const UserSchema = new Schema({
             required: false,
         },
     },
-    userId: {
-        type: String,
-        required: true,
-    },
+    userId: nanoId,
     userName: {
         type: String,
         required: true,

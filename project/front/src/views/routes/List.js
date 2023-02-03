@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, Container, Row, Col, ListGroup, Nav } from "react-bootstrap";
+import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
 
-// 카테고리 이름을 params로 받아와 각 카테고리에 해당하는 상품 리스트 출력
+import { item } from "../../temp"; // 상품 임시 데이터
 
-const Detail = () => {
-  // const {id} = useParams()
+const List = () => {
   const navigate = useNavigate();
+
+  // 데이터에서 categoryName 뽑아서 메뉴에 담기
+  let categoryList = [];
+  item.map((v, i) => {
+    categoryList.push(v.categoryName);
+  });
+  categoryList = [...new Set(categoryList)];
+
+  // 해당 카테고리 상품 뿌리기
+  const [category, setCategory] = useState(categoryList[0]);
+  const [categoryItems, setCategoryItems] = useState(
+    item.filter((f) => f.categoryName == category)
+  );
+  useEffect(() => {
+    setCategoryItems(item.filter((f) => f.categoryName == category));
+  }, [category]);
 
   return (
     <>
@@ -14,89 +30,26 @@ const Detail = () => {
         <Row>
           <Col xs lg="2">
             <Nav defaultActiveKey="/home" className="flex-column">
-              <Nav.Item>
-                <Nav.Link>category 1</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link>category 2</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link>category 3</Nav.Link>
-              </Nav.Item>
+              {categoryList.map((v, i) => {
+                return (
+                  <Nav.Item>
+                    <Nav.Link
+                      onClick={() => {
+                        setCategory(v);
+                      }}
+                    >
+                      {v}
+                    </Nav.Link>
+                  </Nav.Item>
+                );
+              })}
             </Nav>
           </Col>
           <Col>
-            <h2 className="category-title">카테고리 명</h2>
-            <Row>
-              <Col>
-                <Card onClick={() => navigate(`/product/detail`)}>
-                  <div className="product-thumbnail">
-                    <img src={`${process.env.PUBLIC_URL}/img/thumb1.png`} />
-                  </div>
-                  <Card.Body>
-                    <Card.Title>상품명</Card.Title>
-                    <Card.Text>30,000</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-              <Col>
-                <Card onClick={() => navigate(`/product/detail`)}>
-                  <div className="product-thumbnail">
-                    <img src={`${process.env.PUBLIC_URL}/img/thumb1.png`} />
-                  </div>
-                  <Card.Body>
-                    <Card.Title>상품명</Card.Title>
-                    <Card.Text>30,000</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-              <Col>
-                <Card onClick={() => navigate(`/product/detail`)}>
-                  <div className="product-thumbnail">
-                    <img src={`${process.env.PUBLIC_URL}/img/thumb1.png`} />
-                  </div>
-                  <Card.Body>
-                    <Card.Title>상품명</Card.Title>
-                    <Card.Text>30,000</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Card onClick={() => navigate(`/product/detail`)}>
-                  <div className="product-thumbnail">
-                    <img src={`${process.env.PUBLIC_URL}/img/thumb1.png`} />
-                  </div>
-                  <Card.Body>
-                    <Card.Title>상품명</Card.Title>
-                    <Card.Text>30,000</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-              <Col>
-                <Card onClick={() => navigate(`/product/detail`)}>
-                  <div className="product-thumbnail">
-                    <img src={`${process.env.PUBLIC_URL}/img/thumb1.png`} />
-                  </div>
-                  <Card.Body>
-                    <Card.Title>상품명</Card.Title>
-                    <Card.Text>30,000</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-              <Col>
-                <Card onClick={() => navigate(`/product/detail`)}>
-                  <div className="product-thumbnail">
-                    <img src={`${process.env.PUBLIC_URL}/img/thumb1.png`} />
-                  </div>
-                  <Card.Body>
-                    <Card.Title>상품명</Card.Title>
-                    <Card.Text>30,000</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
+            {/* <h2 className="page-title">카테고리 명</h2> */}
+            {/* 아이템 리스트 component */}
+            {/* <ShowItemList /> */}
+            {JSON.stringify(categoryItems)}
           </Col>
         </Row>
       </Container>
@@ -105,4 +58,4 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default List;

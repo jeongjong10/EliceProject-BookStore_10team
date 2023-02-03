@@ -11,7 +11,7 @@ export const item = [
   {
     itemId: 2,
     categoryName: "pants",
-    itemName: "노란바지",
+    itemName: "놀라운 노란바지",
     price: 45000,
     note: "노란바지의 상세설명입니다",
   },

@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = (payload) => {
-    jwt.sign(payload,"10team")
+    const token = jwt.sign(payload, "10team");
+    console.log("token : ", token)
+    return token
 }

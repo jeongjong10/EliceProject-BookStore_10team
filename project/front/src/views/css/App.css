@@ -1,3 +1,5 @@
+/* 전체 공통 적용 CSS */
+
 /* scroll bar hidden */
 body {
   -ms-overflow-style: none;
@@ -6,43 +8,22 @@ body {
   display: none;
 }
 
-/* Main */
-.carousel {
-  margin-bottom: 40px;
-}
-.main-bg {
-  max-width: 100%;
-  height: auto;
-}
-
-.row {
-  margin-bottom: 40px;
-}
-.card {
-  border: none;
-  cursor: pointer;
-}
-
-.product-thumbnail {
-  background-color: rgb(232, 232, 232);
-  border-radius: 8px;
-  overflow: hidden;
-}
-.product-thumbnail img {
-  max-width: 100%;
-  height: auto;
-}
-
-/* List */
-.category-title {
+.page-title {
   font-weight: bold;
   margin-bottom: 24px;
 }
 
-/* Detail */
 .subContainer {
   margin-top: 40px;
 }
+
 .product-description {
   padding: 20px 0 0 40px;
+}
+
+td,
+th,
+tr {
+  text-align: center;
+  vertical-align: middle;
 }

@@ -13,6 +13,7 @@ app.set("port", port);
 var server = http.createServer(app);
 
 // --- 지정한 포트로 listen 및 에러처리 ---
+console.log("--------------------------------------------");
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
