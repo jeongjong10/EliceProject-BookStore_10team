@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -7,7 +8,6 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigate = useNavigate();
-  const userdata = { name, email, password };
   const isEmail = (email) => {
     return String(email)
       .toLowerCase()
@@ -41,8 +41,22 @@ const Register = () => {
     } else {
       return (
         alert("정상적으로 회원가입되었습니다."),
-        console.log(userdata),
-        navigate("/registerdone")
+        navigate("/registerdone"),
+        axios
+          .post("http://localhost:3001/register", {
+            username: name,
+            email: email,
+            password: password,
+          })
+          .then((response) => {
+            console.log("User profile", response.data.user);
+            console.log("User token", response.data.jwt);
+            localStorage.setItem("token", response.data.jwt);
+          })
+          .catch((error) => {
+            // Handle error.
+            console.log("An error occurred:", error.response);
+          })
       );
     }
   };

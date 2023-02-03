@@ -9,6 +9,7 @@
     "axios": "^1.2.6",
     "bootstrap": "^5.2.3",
     "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
     "react-daum-postcode": "^3.1.1",
@@ -19,8 +20,11 @@
     "web-vitals": "^2.1.4"
   },
   "options": {
-    "allowedHosts": ["localhost", ".localhost"],
-    "proxy": "https://localhost:3001/"
+    "allowedHosts": [
+      "localhost",
+      ".localhost"
+    ],
+    "proxy": "http://localhost:3001/"
   },
   "scripts": {
     "start": "react-scripts start",
