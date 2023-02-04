@@ -37,7 +37,7 @@ export const item = [
     itemName: "무지개양말",
     amount: 6,
     price: 9000,
-    deliver: "done",
+    deliver: "cancel",
   },
 
   {

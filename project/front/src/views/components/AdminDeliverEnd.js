@@ -63,7 +63,7 @@ export const AdminDeliverEnd = () => {
               </thead>
               <tbody>
                 {item.map((item, index) => {
-                  if (item.deliver === "done") {
+                  if (item.deliver === "cancel") {
                     return (
                       <tr>
                         {/* table start */}
