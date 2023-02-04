@@ -13,8 +13,9 @@ import {
   Button,
   Table,
 } from "react-bootstrap";
-import cssCart from "../css/Cart.module.css";
+import cssAccount from "../css/Account.module.css";
 import { item } from "../../orders";
+import { ModalCancel } from "./ModalCancel";
 
 export const OrderEnd = () => {
   return (
@@ -40,19 +41,22 @@ export const OrderEnd = () => {
                       <tr>
                         {/* table start */}
                         <td>{item.itemId}</td>
-                        <td className={cssCart.tdAlignLeft}>
+                        <td className={cssAccount.tdAlignLeft}>
                           <img
                             src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssCart.productThumbnail}`}
+                            className={`${cssAccount.productThumbnail}`}
                           />
                           {item.itemName}
                         </td>
                         <td>{item.orderday}</td>
                         <td>
-                          <p className={cssCart.qty}>{item.amount}</p>
+                          <p className={cssAccount.qty}>{item.amount}</p>
                         </td>
                         <td>배송완료</td>
                         <td>{item.amount * item.price}</td>
+                        <td>
+                          <ModalCancel />
+                        </td>
                       </tr>
                     );
                   }

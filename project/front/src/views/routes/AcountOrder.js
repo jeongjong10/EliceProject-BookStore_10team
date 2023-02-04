@@ -11,9 +11,9 @@ import {
   Tab,
   Tabs,
 } from "react-bootstrap";
-import { Orderby } from "../components/Orderby";
+import { OrderReady } from "../components/OrderReady";
+import { OrderStatus } from "../components/OrderStatus";
 import { OrderEnd } from "../components/OrderEnd";
-import { OrderCancel } from "../components/OrderCancel";
 
 const AcountOrder = () => {
   // const {id} = useParams()
@@ -38,21 +38,21 @@ const AcountOrder = () => {
               className="mb-3"
               fill
             >
-              <Tab eventKey="orderby" title="배송중">
+              <Tab eventKey="orderStatus" title="배송준비">
                 <div>
-                  <Orderby />
+                  <OrderStatus />
+                </div>
+              </Tab>
+
+              <Tab eventKey="orderReady" title="배송중">
+                <div>
+                  <OrderReady />
                 </div>
               </Tab>
 
               <Tab eventKey="orderEnd" title="배송완료">
                 <div>
                   <OrderEnd />
-                </div>
-              </Tab>
-
-              <Tab eventKey="orderCancel" title="주문취소">
-                <div>
-                  <OrderCancel />
                 </div>
               </Tab>
             </Tabs>
