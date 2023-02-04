@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 import styles from "../css/Login.module.css";
 import axios from "axios";
 
+// JWT 만들때 user._id만 사용하는게 아니라 user.admin까지 사용해서 JWT 생성
+// 화면단에서 JWT 분해 (atob => id, admin)
+// TWT : {id: seklfasieofsa;oeijf, admin : true} 요론식으로 받아져야 할 거 같넹..
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

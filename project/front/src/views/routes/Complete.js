@@ -8,6 +8,7 @@ import { item } from "../../temp";
 const Complete = () => {
   const navigate = useNavigate();
 
+  // * 주문 완료 후 로컬스토리지 cart clear
   return (
     <Container className="subContainer">
       <div className={cssComplete.alignCenter}>

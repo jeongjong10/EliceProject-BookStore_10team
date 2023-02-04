@@ -6,8 +6,6 @@ import axios from "axios";
 import cssDetail from "../css/Detail.module.css";
 import cssItemList from "../css/ShowItemList.module.css";
 
-// import { item } from "../../temp"; // 상품 임시 데이터
-
 const Detail = () => {
   const { id } = useParams();
 
