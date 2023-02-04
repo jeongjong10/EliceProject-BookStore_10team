@@ -6,8 +6,9 @@ import axios from "axios";
 
 const List = () => {
   const navigate = useNavigate();
-  const [category, setCategory] = useState("");
-  const [categoryLists, setCategoryLists] = useState([]);
+  const [categoryLists, setCategoryLists] = useState([]); // 전체 탭
+  const [category, setCategory] = useState(""); // 선택 탭
+  const [products, setProducts] = useState([]);
 
   async function getData() {
     return await axios
@@ -21,6 +22,8 @@ const List = () => {
         list = [...new Set(list)]; // 중복 제거
         setCategoryLists(list);
         setCategory(list[0]);
+
+        setProducts(res.data);
       })
       .catch((err) => console.log(err));
   }
@@ -51,7 +54,9 @@ const List = () => {
           </Col>
           <Col>
             <h2 className="page-title">{category}</h2>
-            <ShowItemList type={category} />
+            <ShowItemList
+              data={products.filter((f) => f.categoryName == category)}
+            />
           </Col>
         </Row>
       </Container>
