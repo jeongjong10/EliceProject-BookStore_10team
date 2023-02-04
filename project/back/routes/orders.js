@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { Order } = require("../models/index");
+const { Order, User } = require("../models/index");
+const verifyUser = require("../middleware/verifyUser");
 
 // ------ USER: 현재 유저의 주문내역 조회 ------
 router.get("/", async(req, res, next) => {
@@ -8,11 +9,13 @@ router.get("/", async(req, res, next) => {
         // 현재 유저 불러오기
         const verifiedUser_id = await verifyUser(req.headers);
 
-        const orders = await Product.find({ userId: verifiedUser_id }); // 현재 유저의 주문내역 찾기
+        const orders = await Order.find({ userId: verifiedUser_id }); // 현재 유저의 주문내역 찾기
 
         if (!orders) {
             throw new Error("현재 유저의 주문내역이 없습니다.");
         }
+        const user = await User.findOne({ _id: verifiedUser_id });
+        console.log(user.userName, "님의 주문 조회");
 
         res.status(201).json({
             ...orders,
@@ -70,6 +73,7 @@ router.post("/:_id", async(req, res, next) => {
 router.patch("/:_id", async(req, res, next) => {
     try {
         // 현재 유저 불러오기
+        console.log("?");
         const verifiedUser_id = await verifyUser(req.headers);
 
         const { _id } = req.params;
