@@ -28,8 +28,27 @@ export const AdminDeliverEnd = () => {
       return "배송중";
     } else if (item.deliver === "state") {
       return "배송대기";
-    } else {
+    } else if (item.deliver === "done") {
+      return "배송완료";
+    } else if (item.deliver === "cancle") {
       return "주문취소";
+    } else if (item === "ready") {
+      return "배송중";
+    } else if (item === "state") {
+      return "배송대기";
+    } else if (item === "cancel") {
+      return "주문취소";
+    } else if (item === "done") {
+      return "배송완료";
+    }
+  };
+  const statusHandler = (e) => {
+    console.log(e.target.value);
+    console.log(e.item);
+    console.log(item);
+    const deliver = e.target.value;
+    if (window.confirm("정말 수정하시겠습니까?") === false) {
+      return;
     }
   };
   return (
@@ -80,26 +99,24 @@ export const AdminDeliverEnd = () => {
                           <p className={cssAdmin.qty}>{item.amount}</p>
                         </td>
                         <td>
-                          <Dropdown>
-                            <Dropdown.Toggle
-                              variant="success"
-                              id="dropdown-basic"
-                            >
-                              {CoderEncode(item)}
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu>
-                              <Dropdown.Item href="#/action-1">
-                                Action
-                              </Dropdown.Item>
-                              <Dropdown.Item href="#/action-2">
-                                Another action
-                              </Dropdown.Item>
-                              <Dropdown.Item href="#/action-3">
-                                Something else
-                              </Dropdown.Item>
-                            </Dropdown.Menu>
-                          </Dropdown>
+                          <select
+                            value={CoderEncode(item)}
+                            name="status"
+                            onChange={statusHandler}
+                          >
+                            <option value={CoderEncode("ready")}>
+                              {CoderEncode("ready")}
+                            </option>
+                            <option value={CoderEncode("state")}>
+                              {CoderEncode("state")}
+                            </option>
+                            <option value={CoderEncode("done")}>
+                              {CoderEncode("done")}
+                            </option>
+                            <option value={CoderEncode("cancel")}>
+                              {CoderEncode("cancel")}
+                            </option>
+                          </select>
                         </td>
                         <td>{item.amount * item.price}</td>
                         <td>

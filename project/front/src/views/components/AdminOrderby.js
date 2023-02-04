@@ -20,12 +20,14 @@ import { item } from "../../orders";
 
 export const AdminOrderby = () => {
   const [show, setShow] = useState(false);
-  const [status, setStatus] = useState();
+
   const CoderEncode = (item) => {
     if (item.deliver === "ready") {
       return "배송중";
     } else if (item.deliver === "state") {
       return "배송대기";
+    } else if (item.deliver === "done") {
+      return "배송완료";
     } else if (item.deliver === "cancle") {
       return "주문취소";
     } else if (item === "ready") {
@@ -34,17 +36,18 @@ export const AdminOrderby = () => {
       return "배송대기";
     } else if (item === "cancel") {
       return "주문취소";
+    } else if (item === "done") {
+      return "배송완료";
     }
   };
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const statusHandler = (e) => {
-    console.log(e);
-    console.log(e.target);
+  const statusHandler = (e, index) => {
+    console.log(e.target.value);
+    console.log(item[index]);
     const deliver = e.target.value;
-    console.log(deliver);
     if (window.confirm("정말 수정하시겠습니까?") === false) {
       return;
     }
@@ -57,7 +60,7 @@ export const AdminOrderby = () => {
           <Row>
             <Col>
               <h>총 주문수</h>
-              <h2>count</h2>
+              <h2>{item.length}</h2>
             </Col>
             <Col>
               <h>배송대기중</h>
@@ -65,6 +68,10 @@ export const AdminOrderby = () => {
             </Col>
             <Col>
               <h>배송중</h>
+              <h2>count</h2>
+            </Col>
+            <Col>
+              <h>배송완료</h>
               <h2>count</h2>
             </Col>
           </Row>
@@ -85,7 +92,11 @@ export const AdminOrderby = () => {
               </thead>
               <tbody>
                 {item.map((item, index) => {
-                  if (item.deliver === "state" || item.deliver === "ready") {
+                  if (
+                    item.deliver === "state" ||
+                    item.deliver === "ready" ||
+                    item.deliver === "done"
+                  ) {
                     return (
                       <tr>
                         {/* table start */}
@@ -119,13 +130,16 @@ export const AdminOrderby = () => {
                           <select
                             value={CoderEncode(item)}
                             name="status"
-                            onChange={statusHandler}
+                            onChange={(e) => statusHandler(e, index)}
                           >
                             <option value={CoderEncode("ready")}>
                               {CoderEncode("ready")}
                             </option>
                             <option value={CoderEncode("state")}>
                               {CoderEncode("state")}
+                            </option>
+                            <option value={CoderEncode("done")}>
+                              {CoderEncode("done")}
                             </option>
                             <option value={CoderEncode("cancel")}>
                               {CoderEncode("cancel")}
