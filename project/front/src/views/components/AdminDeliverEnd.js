@@ -13,8 +13,9 @@ import {
   Button,
   Table,
   Modal,
+  Dropdown,
 } from "react-bootstrap";
-import cssCart from "../css/Cart.module.css";
+import cssAdmin from "../css/Admin.module.css";
 import { item } from "../../orders";
 
 export const AdminDeliverEnd = () => {
@@ -22,9 +23,30 @@ export const AdminDeliverEnd = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const CoderEncode = (item) => {
+    if (item.deliver === "ready") {
+      return "배송중";
+    } else if (item.deliver === "state") {
+      return "배송대기";
+    } else {
+      return "주문취소";
+    }
+  };
   return (
     <>
       <Container className="subContainer">
+        <Container>
+          <Row>
+            <Col>
+              <h>총 주문수</h>
+              <h2>count</h2>
+            </Col>
+            <Col>
+              <h>배송완료</h>
+              <h2>count</h2>
+            </Col>
+          </Row>
+        </Container>
         <Row>
           <Col>
             <Table>
@@ -46,18 +68,39 @@ export const AdminDeliverEnd = () => {
                       <tr>
                         {/* table start */}
                         <td>{item.itemId}</td>
-                        <td className={cssCart.tdAlignLeft}>
+                        <td className={cssAdmin.tdAlignLeft}>
                           <img
                             src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssCart.productThumbnail}`}
+                            className={`${cssAdmin.productThumbnail}`}
                           />
                           {item.itemName}
                         </td>
                         <td>{item.orderday}</td>
                         <td>
-                          <p className={cssCart.qty}>{item.amount}</p>
+                          <p className={cssAdmin.qty}>{item.amount}</p>
                         </td>
-                        <td>배송완료</td>
+                        <td>
+                          <Dropdown>
+                            <Dropdown.Toggle
+                              variant="success"
+                              id="dropdown-basic"
+                            >
+                              {CoderEncode(item)}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                              <Dropdown.Item href="#/action-1">
+                                Action
+                              </Dropdown.Item>
+                              <Dropdown.Item href="#/action-2">
+                                Another action
+                              </Dropdown.Item>
+                              <Dropdown.Item href="#/action-3">
+                                Something else
+                              </Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        </td>
                         <td>{item.amount * item.price}</td>
                         <td>
                           <Button variant="primary" onClick={handleShow}>
