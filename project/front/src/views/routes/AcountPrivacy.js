@@ -25,6 +25,18 @@ const AcountPrivacy = () => {
 
   const [popup, setPopup] = React.useState(false);
 
+  const onSubmitHandler = async (event) => {
+    event.preventDefault();
+
+    if (receiverPassword !== receiverConfirmPassword) {
+      return alert("비밀번호가 비밀번호 확인과 일치하지 않습니다.");
+    } else if (receiverPhone.length < 11) {
+      return alert("연락처를 확인해주세요.");
+    } else {
+      return alert("회원 정보가 저장되었습니다."), navigate("/");
+    }
+  };
+
   return (
     <Container className="subContainer">
       <div className={cssCart.titleArea}>
@@ -45,6 +57,7 @@ const AcountPrivacy = () => {
               <Form.Control
                 type="username"
                 placeholder="이름"
+                value={receiverName}
                 onChange={(e) => setReceiverName(e.target.value)}
               />
             </Form.Group>
@@ -53,6 +66,7 @@ const AcountPrivacy = () => {
               <Form.Control
                 type="password"
                 placeholder="********"
+                value={receiverPassword}
                 onChange={(e) => setReceiverPassword(e.target.value)}
               />
             </Form.Group>
@@ -61,6 +75,7 @@ const AcountPrivacy = () => {
               <Form.Control
                 type="password"
                 placeholder="********"
+                value={receiverConfirmPassword}
                 onChange={(e) => setReceiverConfirmPassword(e.target.value)}
               />
             </Form.Group>
@@ -69,6 +84,7 @@ const AcountPrivacy = () => {
               <Form.Control
                 type="phone"
                 placeholder="연락처 입력"
+                value={receiverPhone}
                 onChange={(e) => setReceiverPhone(e.target.value)}
               />
               <Form.Text className="text-muted">예시) 01012345678</Form.Text>
@@ -96,10 +112,17 @@ const AcountPrivacy = () => {
                 className="mb-1"
                 type="text"
                 placeholder="상세주소 입력"
+                value={address2}
                 onChange={(e) => setAddress2(e.target.value)}
               />
             </Form.Group>
-            <Button>저장</Button>
+            <Button
+              onClick={(event) => {
+                onSubmitHandler(event);
+              }}
+            >
+              저장
+            </Button>
           </Form>
         </Col>
       </Row>
