@@ -15,7 +15,7 @@ import {
   Modal,
   Dropdown,
 } from "react-bootstrap";
-import cssCart from "../css/Cart.module.css";
+import cssAdmin from "../css/Admin.module.css";
 import { item } from "../../orders";
 
 export const AdminOrderby = () => {
@@ -39,6 +39,22 @@ export const AdminOrderby = () => {
   return (
     <>
       <Container className="subContainer">
+        <Container>
+          <Row>
+            <Col>
+              <h>총 주문수</h>
+              <h2>count</h2>
+            </Col>
+            <Col>
+              <h>배송대기중</h>
+              <h2>count</h2>
+            </Col>
+            <Col>
+              <h>배송중</h>
+              <h2>count</h2>
+            </Col>
+          </Row>
+        </Container>
         <Row>
           <Col>
             <Table>
@@ -61,30 +77,30 @@ export const AdminOrderby = () => {
                       <tr>
                         {/* table start */}
                         <td>{item.itemId}</td>
-                        <td className={cssCart.tdAlignLeft}>
+                        <td className={cssAdmin.tdAlignLeft}>
                           <img
                             src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssCart.productThumbnail}`}
+                            className={`${cssAdmin.productThumbnail}`}
                           />
                           {item.itemName}
                         </td>
                         <td>{item.orderday}</td>
                         <td>
-                          <Button
+                          {/* <Button
                             variant="outline-secondary"
-                            className={cssCart.qtyButton}
+                            className={cssAdmin.qtyButton}
                             value="item"
                           >
                             -
-                          </Button>
-                          <p className={cssCart.qty}>{item.amount}</p>
-                          <Button
+                          </Button> */}
+                          <p className={cssAdmin.qty}>{item.amount}</p>
+                          {/* <Button
                             variant="outline-secondary"
-                            className={cssCart.qtyButton}
+                            className={cssAdmin.qtyButton}
                             value="item"
                           >
                             +
-                          </Button>
+                          </Button> */}
                         </td>
                         <Dropdown>
                           <Dropdown.Toggle

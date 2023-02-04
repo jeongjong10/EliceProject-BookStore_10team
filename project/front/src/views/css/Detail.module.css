@@ -2,3 +2,27 @@
 .productDescription {
   padding: 20px 0 0 40px;
 }
+
+.infoGroup {
+  margin: 32px 0;
+}
+.info {
+  display: fiex;
+  flex-direction: row;
+}
+
+.infoTitle {
+  font-weight: bold;
+  margin-right: 16px;
+}
+
+.counting {
+  margin-bottom: 16px;
+}
+.counting label {
+  font-weight: bold;
+}
+
+.counting input {
+  width: 70px;
+}
