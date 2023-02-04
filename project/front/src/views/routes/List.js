@@ -1,28 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Card, Container, Row, Col, ListGroup, Nav } from "react-bootstrap";
+import { Container, Row, Col, Nav } from "react-bootstrap";
 import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
-
-import { item } from "../../temp"; // 상품 임시 데이터
+import axios from "axios";
 
 const List = () => {
   const navigate = useNavigate();
+  const [category, setCategory] = useState("");
+  const [categoryLists, setCategoryLists] = useState([]);
 
-  // 데이터에서 categoryName 뽑아서 메뉴에 담기
-  let categoryList = [];
-  item.map((v, i) => {
-    categoryList.push(v.categoryName);
-  });
-  categoryList = [...new Set(categoryList)];
-
-  // 해당 카테고리 상품 뿌리기
-  const [category, setCategory] = useState(categoryList[0]);
-  const [categoryItems, setCategoryItems] = useState(
-    item.filter((f) => f.categoryName == category)
-  );
+  async function getData() {
+    return await axios
+      .get("http://localhost:3001/products")
+      .then((res) => {
+        // 데이터에서 카테고리만 빼서 list에 push
+        let list = [];
+        res.data.map((v, i) => {
+          list.push(v.categoryName);
+        });
+        list = [...new Set(list)]; // 중복 제거
+        setCategoryLists(list);
+        setCategory(list[0]);
+      })
+      .catch((err) => console.log(err));
+  }
   useEffect(() => {
-    setCategoryItems(item.filter((f) => f.categoryName == category));
-  }, [category]);
+    getData();
+  }, []);
 
   return (
     <>
@@ -30,9 +34,9 @@ const List = () => {
         <Row>
           <Col xs lg="2">
             <Nav defaultActiveKey="/home" className="flex-column">
-              {categoryList.map((v, i) => {
+              {categoryLists.map((v, i) => {
                 return (
-                  <Nav.Item>
+                  <Nav.Item key={i}>
                     <Nav.Link
                       onClick={() => {
                         setCategory(v);
@@ -46,10 +50,8 @@ const List = () => {
             </Nav>
           </Col>
           <Col>
-            {/* <h2 className="page-title">카테고리 명</h2> */}
-            {/* 아이템 리스트 component */}
-            {/* <ShowItemList /> */}
-            {JSON.stringify(categoryItems)}
+            <h2 className="page-title">{category}</h2>
+            <ShowItemList type={category} />
           </Col>
         </Row>
       </Container>

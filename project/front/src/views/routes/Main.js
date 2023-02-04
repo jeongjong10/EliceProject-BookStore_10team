@@ -13,6 +13,8 @@ const Main = () => {
     setIndex(selectedIndex);
   };
 
+  const type = "ALL";
+
   return (
     <>
       <Carousel
@@ -41,7 +43,7 @@ const Main = () => {
       </Carousel>
 
       {/* 아이템 리스트 component */}
-      <ShowItemList />
+      <ShowItemList type={type} />
     </>
   );
 };

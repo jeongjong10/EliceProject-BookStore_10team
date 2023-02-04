@@ -4,19 +4,25 @@ import { useNavigate } from "react-router-dom";
 import cssItemList from "../css/ShowItemList.module.css";
 import axios from "axios";
 
-// temp 직접 받아오지 말고 props로 받아와야 하나..
-// 메인에서는 전체 데이터 / 카테고리에서는 category ..................
-// import { item } from "../../temp"; // 상품 임시 데이터
-
-export const ShowItemList = () => {
+export const ShowItemList = ({ type /*, page */ }) => {
+  // const pageLocation = page || '';
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState(type); // 부모에서 props 바뀔 때 얘도 재랜더링 한 번 더 해주기
 
   async function getData() {
     return await axios
       .get("http://localhost:3001/products")
       .then((res) => {
-        setProducts(res.data);
+        if (type == "ALL") {
+          setProducts(res.data);
+        } else {
+          const categoryData = res.data.filter(
+            (f) => f.categoryName == category
+          );
+          setProducts(categoryData);
+          console.log(category);
+        }
       })
       .catch((err) => console.log(err));
   }
@@ -37,12 +43,14 @@ export const ShowItemList = () => {
               className={cssItemList.card}
             >
               <div className={cssItemList.productThumbnail}>
-                {/* <img src={`https://picsum.photos/id/1/200/300`} /> */}
                 <img src={product.img} />
               </div>
               <Card.Body>
                 <Card.Title>{product.productName}</Card.Title>
                 <Card.Text>{product.price.toLocaleString("en-US")}</Card.Text>
+                {/* {pageLocation == 'admin' && (
+                  <button>+</button>
+                )} */}
               </Card.Body>
             </Card>
           );
