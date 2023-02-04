@@ -9,8 +9,16 @@ router.get("/", async(req, res, next) => {
         const verifiedUser_id = await verifyUser(req.headers);
 
         const orders = await Product.find({ userId: verifiedUser_id }); // 현재 유저의 주문내역 찾기
-        res.json(orders);
-        res.status(201).send({ message: "주문내역 조회" });
+
+        if (!orders) {
+            throw new Error("현재 유저의 주문내역이 없습니다.");
+        }
+
+        res.status(201).json({
+            ...orders,
+            result: "success",
+            message: "주문내역 조회",
+        });
     } catch (e) {
         next(e);
     }
@@ -29,7 +37,10 @@ router.post("/", async(req, res, next) => {
         // User의 userId와 혼동이 올 수 있음 (쥬문의 userId에는 User의 _id 값이 들어가기 때문 )
 
         await Order.create({...orders, userId: verifiedUser_id });
-        res.status(201).send({ message: "주문내역 저장 성공" });
+        res.status(201).send({
+            result: "success",
+            message: "주문내역 저장 성공",
+        });
     } catch (e) {
         next(e);
     }
@@ -46,7 +57,10 @@ router.post("/:_id", async(req, res, next) => {
         const updateOrder = req.body;
 
         await Order.findOneAndUpdate({ _id, userId: verifiedUser_id }, { updateOrder });
-        res.status(201).send({ message: "주문내역 수정 성공" });
+        res.status(201).send({
+            result: "success",
+            message: "주문내역 수정 성공",
+        });
     } catch (e) {
         next(e);
     }
@@ -61,7 +75,10 @@ router.patch("/:_id", async(req, res, next) => {
         const { _id } = req.params;
 
         await Order.findOneAndUpdate({ _id, userId: verifiedUser_id }, { activate: false });
-        res.status(201).send({ message: "주문내역 비활성화 성공" });
+        res.status(201).send({
+            result: "success",
+            message: "주문내역 비활성화 성공",
+        });
     } catch (e) {
         next(e);
     }
