@@ -53,7 +53,7 @@ router.post("/:_id", async(req, res, next) => {
 });
 
 // ------ USER: 현재 유저의 주문내역 삭제 (비활성화) ------
-router.patch("/", async(req, res, next) => {
+router.patch("/:_id", async(req, res, next) => {
     try {
         // 현재 유저 불러오기
         const verifiedUser_id = await verifyUser(req.headers);
