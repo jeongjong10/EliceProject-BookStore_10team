@@ -22,7 +22,6 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(email);
   };
 
   const handleEmail = (e) => {
@@ -57,7 +56,7 @@ const Login = () => {
           window.location.reload();
         } else {
           alert("로그인 완료");
-          console.log(response.data.JWT);
+          localStorage.setItem("JWT", response.data.JWT);
           navigate("/");
         }
       })
@@ -67,7 +66,7 @@ const Login = () => {
   return (
     <div className={styles.authFormContainer}>
       <form className={styles.loginForm} onSubmit={handleSubmit}>
-        <label for="email" className={styles.label}>
+        <label htmlFor="email" className={styles.label}>
           Email
         </label>
         <input
@@ -84,7 +83,7 @@ const Login = () => {
             <div>올바른 이메일을 입력해주세요</div>
           )}
         </div>
-        <label for="password">Password</label>
+        <label htmlFor="password">Password</label>
         <input
           value={password}
           onChange={handlePassword}

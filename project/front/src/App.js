@@ -19,6 +19,14 @@ import AdminDeliver from "./views/routes/AdminDeliver";
 function App() {
   const navigate = useNavigate();
 
+  const JWT = localStorage.getItem("JWT");
+
+  function clearJwt() {
+    localStorage.removeItem("JWT");
+    alert("로그아웃 완료");
+    navigate("/");
+  }
+
   return (
     <div className="App">
       {/* 내비게이션 */}
@@ -42,20 +50,42 @@ function App() {
             </Nav.Link>
           </Nav>
           <Nav className="ms-auto">
-            <Nav.Link
-              onClick={() => {
-                navigate("/register");
-              }}
-            >
-              회원가입
-            </Nav.Link>
-            <Nav.Link
-              onClick={() => {
-                navigate("/login");
-              }}
-            >
-              로그인
-            </Nav.Link>
+            {JWT == null ? (
+              <>
+                <Nav.Link
+                  onClick={() => {
+                    navigate("/register");
+                  }}
+                >
+                  회원가입
+                </Nav.Link>
+                <Nav.Link
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  로그인
+                </Nav.Link>
+              </>
+            ) : (
+              <>
+                <Nav.Link
+                  onClick={() => {
+                    clearJwt();
+                  }}
+                >
+                  로그아웃
+                </Nav.Link>
+                <Nav.Link
+                  onClick={() => {
+                    navigate("/account/orders");
+                  }}
+                >
+                  마이페이지
+                </Nav.Link>
+              </>
+            )}
+
             <Nav.Link
               onClick={() => {
                 navigate("/cart");
