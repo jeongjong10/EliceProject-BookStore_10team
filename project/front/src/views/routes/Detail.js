@@ -29,7 +29,6 @@ const Detail = () => {
       .get(`http://localhost:3001/products/${id}`)
       .then((res) => {
         setProduct(res.data);
-        console.log(res.data);
       })
       .catch((err) => console.log(err));
   }
@@ -55,11 +54,11 @@ const Detail = () => {
       currentItemsSet = [...currentItemsSet]; // ? 배열 해줄 필요 없다고 하셨는데 객체 상태에서 id값 어떻게 접근하는 지 모르겠음
 
       // findIndex 돌면서 몇 번 째에 있는지 담김, 0부터 시작하므로 false인 -1로 처리..
-      if (currentItemsSet.findIndex((f) => f.itemId == id) != -1) {
+      if (currentItemsSet.findIndex((f) => f._id == id) != -1) {
         alert("이미 장바구니에 있는 상품이네요!");
       } else {
         currentItemsSet.push({
-          itemId: id,
+          _id: id,
           count,
         });
         localStorage.setItem("cart", JSON.stringify(currentItemsSet));
@@ -71,18 +70,32 @@ const Detail = () => {
     <>
       <Container className="subContainer">
         <Row>
-          <Col>
+          <Col sm={4}>
             <div className={cssItemList.productThumbnail}>
-              <img src={`${process.env.PUBLIC_URL}/img/thumb1.png`} />
+              <img src={product.img} />
             </div>
           </Col>
-          <Col className={cssDetail.productDescription}>
+          <Col sm={8} className={cssDetail.productDescription}>
             <h2>{product.productName}</h2>
-            <h4>{product.price.toLocaleString("en-US")}</h4>
-            <p>{product.detail}</p>
+            <h4>{product.price.toLocaleString("en-US")} 원</h4>
+
+            <div className={cssDetail.infoGroup}>
+              <div className={cssDetail.info}>
+                <span className={cssDetail.infoTitle}>분류</span>
+                <span>{product.categoryName}</span>
+              </div>
+              <div className={cssDetail.info}>
+                <span className={cssDetail.infoTitle}>출판</span>
+                <span>{product.brand}</span>
+              </div>
+              <div className={cssDetail.info}>
+                <span className={cssDetail.infoTitle}>발행</span>
+                <span>{product.detail}</span>
+              </div>
+            </div>
             <div>
               <Form>
-                <Form.Group className="mb-1">
+                <Form.Group className={cssDetail.counting}>
                   <Form.Label>수량</Form.Label>
                   <Form.Control
                     type="number"
