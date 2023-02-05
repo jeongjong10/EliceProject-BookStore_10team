@@ -44,7 +44,7 @@ router.get('/', async (req, res, next) => {
             throw new Error("사용자의 정보가 없습니다")
         }
         res.status(200).json({
-            "user" : user,
+            ...user,
 			"result" : "true",
 			"message" : "사용자 정보 확인 완료, 정보 전송",
         })
@@ -108,7 +108,7 @@ router.delete('/', async (req, res, next) => {
         //     console.log("사용자 계정 비활성화 실패 : ", user.activate)
         // }
 
-        res.status(200).jend({
+        res.status(200).json({
             // 우선 하드코딩으로 비활성 표기
             userActivate : false,
             // "userActivate" : user.activate,
