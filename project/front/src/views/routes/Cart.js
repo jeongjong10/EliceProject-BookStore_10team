@@ -3,6 +3,7 @@ import { Button, Container, Row, Col, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { item } from "../../temp";
 import cssCart from "../css/Cart.module.css";
+import axios from "axios";
 
 const Cart = () => {
   // 로컬스토리지 cart 데이터 가공

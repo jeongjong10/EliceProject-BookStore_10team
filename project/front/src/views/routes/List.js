@@ -36,8 +36,22 @@ const List = () => {
       <Container className="subContainer">
         <Row>
           <Col xs lg="2">
-            <Nav defaultActiveKey="/home" className="flex-column">
+            <Nav className="flex-column">
               {categoryLists.map((v, i) => {
+                if (v == category) {
+                  return (
+                    <Nav.Item key={i}>
+                      <Nav.Link
+                        style={{ color: "red" }}
+                        onClick={() => {
+                          setCategory(v);
+                        }}
+                      >
+                        {v}
+                      </Nav.Link>
+                    </Nav.Item>
+                  );
+                }
                 return (
                   <Nav.Item key={i}>
                     <Nav.Link
