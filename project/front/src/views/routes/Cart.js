@@ -3,28 +3,52 @@ import { Button, Container, Row, Col, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { item } from "../../temp";
 import cssCart from "../css/Cart.module.css";
+import axios from "axios";
 
 const Cart = () => {
   // 로컬스토리지 cart 데이터 가공
-  const carts = JSON.parse(localStorage.getItem("cart"));
-  const cartItemsId = carts.map((v, i) => v.itemId);
+  let carts = JSON.parse(localStorage.getItem("cart"));
+  let cartItemsId = carts.map((v, i) => v._id);
+
+  const [products, setProducts] = useState([]);
+  async function postData() {
+    return await axios
+      .get(/* "URL", { params: cartItemsId }*/)
+      .then((res) => {
+        let data = res.data;
+        data.map((v, i) => {
+          v["count"] = carts.findOne({ _id: v._id }).count; // count 값 데이터에 넣기
+        });
+        setProducts(data);
+      })
+      .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    postData();
+  }, []);
+
   const [count, setCount] = useState(carts.count);
-  // 로컬스토리지 id <-> 상품데이터 id 비교
-  // 비교 후 데이터 출력을 위한 extractPrd 배열에 push
-  // ! 로직 수정 예정
-  let extractPrd = [];
-  cartItemsId.map((localStorageId, i) => {
-    item.map((item, i) => {
-      if (localStorageId == item.itemId) {
-        extractPrd.push(item);
-      }
-    });
-  });
 
-  console.log(extractPrd);
+  // ! 개별 삭제. 테스트 필요
+  function removeProduct(id) {
+    cartItemsId = cartItemsId.filter((f) => f !== id);
+    setProducts(products.filter((f) => f._id !== id));
+    carts = carts.filter((f) => f._id !== id);
+    localStorage.setItem("cart", JSON.stringify(carts));
+  }
+
+  // ! 전체삭제 : 얘는 모달에 들어갈 onClick
+  function removeAllProducts() {
+    cartItemsId = [];
+    setProducts([]);
+    carts = [];
+    localStorage.removeItem("cart");
+  }
+
+  // 전체 삭제 버튼누르면 -> show가 true로 바끼구 모달이 뜬다
+  // 모달에다가 원래 show={false} 넣어주고..
+
   const navigate = useNavigate();
-
-  const [total, setTotal] = useState([]);
 
   return (
     <Container className="subContainer">
@@ -65,7 +89,7 @@ const Cart = () => {
                 </tr>
               )}
               {localStorage.key("cart") &&
-                extractPrd.map((v, i) => {
+                products.map((v, i) => {
                   return (
                     <tr key={i}>
                       <td className={cssCart.tdAlignLeft}>
@@ -99,7 +123,14 @@ const Cart = () => {
                         {/* 주문 수량 곱해줘야 함 */}
                       </td>
                       <td>
-                        <Button variant="secondary">삭제</Button>
+                        <Button
+                          variant="secondary"
+                          onClick={() => {
+                            removeProduct(v._id);
+                          }}
+                        >
+                          삭제
+                        </Button>
                       </td>
                     </tr>
                   );

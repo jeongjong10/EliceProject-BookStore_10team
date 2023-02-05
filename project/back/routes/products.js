@@ -36,7 +36,7 @@ router.get("/:_id", async (req, res, next) => {
 
     const id = mongoose.Types.ObjectId(_id);
 
-    const product = await Product.findOne({ id });
+    const product = await Product.findOne({ _id: id });
 
     if (!product) {
       console.error("존재하지 않는 상품입니다.");
