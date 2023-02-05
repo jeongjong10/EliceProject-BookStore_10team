@@ -17,6 +17,7 @@ import cssAccount from "../css/Account.module.css";
 
 import { ModalCancel } from "./ModalCancel";
 import axios from "axios";
+import { customAxios } from "../../config/customAxios";
 
 export const OrderEnd = () => {
   const [orders, setOrders] = useState([]);
@@ -24,10 +25,10 @@ export const OrderEnd = () => {
   useEffect(() => {
     async function fetchAndSetUser() {
       try {
-        const response = await axios.get("http://localhost:3001/account/order");
-        setOrders(response.data);
+        const response = await customAxios.get("/account/order");
         console.log(response);
-        console.log(orders);
+        console.log(localStorage.getItem("JWT"));
+        setOrders(response.data);
       } catch (error) {
         console.log(error);
       }
