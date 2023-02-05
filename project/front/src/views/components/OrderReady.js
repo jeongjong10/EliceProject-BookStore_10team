@@ -17,6 +17,7 @@ import {
 import cssAccount from "../css/Account.module.css";
 import { item } from "../../orders";
 import { ModalCancel } from "./ModalCancel";
+import axios from "axios";
 
 export const OrderReady = () => {
   return (
