@@ -20,6 +20,7 @@ import axios from "axios";
 
 export const OrderEnd = async () => {
   const response = await axios.get("http://localhost:3001/account");
+
   return (
     <>
       <Container className="subContainer">
@@ -37,11 +38,10 @@ export const OrderEnd = async () => {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((orders, index) => {
+                {/* {orders.map((orders, index) => {
                   if (orders.status === "배송완료") {
                     return (
                       <tr>
-                        {/* table start */}
                         <td>{orders.orderNumber}</td>
                         <td className={cssAccount.tdAlignLeft}>
                           <img
@@ -62,7 +62,7 @@ export const OrderEnd = async () => {
                       </tr>
                     );
                   }
-                })}
+                 })} */}
               </tbody>
             </Table>
           </Col>
