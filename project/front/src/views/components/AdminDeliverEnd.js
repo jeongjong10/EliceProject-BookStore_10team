@@ -84,7 +84,7 @@ export const AdminDeliverEnd = () => {
                 {item.map((item, index) => {
                   if (item.deliver === "cancel") {
                     return (
-                      <tr>
+                      <tr key={item}>
                         {/* table start */}
                         <td>{item.itemId}</td>
                         <td className={cssAdmin.tdAlignLeft}>
