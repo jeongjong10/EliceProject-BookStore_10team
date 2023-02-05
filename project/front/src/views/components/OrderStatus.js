@@ -42,7 +42,7 @@ export const OrderStatus = () => {
                 {item.map((item, index) => {
                   if (item.deliver === "state") {
                     return (
-                      <tr>
+                      <tr key={index}>
                         {/* table start */}
                         <td>{item.itemId}</td>
                         <td className={cssAccount.tdAlignLeft}>

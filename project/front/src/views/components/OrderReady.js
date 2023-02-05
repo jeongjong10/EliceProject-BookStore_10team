@@ -42,7 +42,7 @@ export const OrderReady = () => {
                 {item.map((item, index) => {
                   if (item.deliver === "ready") {
                     return (
-                      <tr>
+                      <tr key={index}>
                         {/* table start */}
                         <td>{item.itemId}</td>
                         <td className={cssAccount.tdAlignLeft}>

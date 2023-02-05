@@ -26,7 +26,7 @@ function App() {
   // 이 admin이 true 이면, Navbar=> admin 화면으로 변경
   if (JWT) {
     isAdmin =
-      atob(JWT.split(".")[1]) == "63ddef45f5075428f51969df" ? true : false;
+      atob(JWT.split(".")[1]) === "63ddef45f5075428f51969df" ? true : false;
     isAdmin = false;
     console.log(isAdmin);
     // 이거 실제로 해보면..??

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Card,
@@ -18,8 +18,22 @@ import cssAccount from "../css/Account.module.css";
 import { ModalCancel } from "./ModalCancel";
 import axios from "axios";
 
-export const OrderEnd = async () => {
-  const response = await axios.get("http://localhost:3001/account");
+export const OrderEnd = () => {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    async function fetchAndSetUser() {
+      try {
+        const response = await axios.get("http://localhost:3001/account/order");
+        setOrders(response.data);
+        console.log(response);
+        console.log(orders);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchAndSetUser();
+  }, [orders]);
 
   return (
     <>
@@ -38,7 +52,7 @@ export const OrderEnd = async () => {
                 </tr>
               </thead>
               <tbody>
-                {/* {orders.map((orders, index) => {
+                {orders.map((orders, index) => {
                   if (orders.status === "배송완료") {
                     return (
                       <tr>
@@ -52,7 +66,9 @@ export const OrderEnd = async () => {
                         </td>
                         <td>{orders.createdAt}</td>
                         <td>
-                          <p className={cssAccount.qty}>{orders.amount}</p>
+                          <p className={cssAccount.qty}>
+                            {orders.orderList.count}
+                          </p>
                         </td>
                         <td>배송완료</td>
                         <td>{orders.totalPrice}</td>
@@ -62,7 +78,7 @@ export const OrderEnd = async () => {
                       </tr>
                     );
                   }
-                 })} */}
+                })}
               </tbody>
             </Table>
           </Col>
