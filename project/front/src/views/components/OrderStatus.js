@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Card,
@@ -12,18 +12,13 @@ import {
   Tabs,
   Button,
   Table,
+  Modal,
 } from "react-bootstrap";
-import cssCart from "../css/Cart.module.css";
+import cssAccount from "../css/Account.module.css";
 import { item } from "../../orders";
+import { ModalCancel } from "./ModalCancel";
 
-export const Orderby = () => {
-  const HandlerPlus = (e) => {
-    e.amount += 1;
-  };
-
-  const HandlerM = (e) => {
-    e.amount -= 1;
-  };
+export const OrderStatus = () => {
   return (
     <>
       <Container className="subContainer">
@@ -38,7 +33,7 @@ export const Orderby = () => {
                   <th>수량</th>
                   <th>배송상태</th>
                   <th>가격</th>
-                  <th>수정</th>
+                  {/* <th>수정</th> */}
                   <th>주문취소</th>
                 </tr>
               </thead>
@@ -49,63 +44,41 @@ export const Orderby = () => {
                       <tr>
                         {/* table start */}
                         <td>{item.itemId}</td>
-                        <td className={cssCart.tdAlignLeft}>
+                        <td className={cssAccount.tdAlignLeft}>
                           <img
                             src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssCart.productThumbnail}`}
+                            className={`${cssAccount.productThumbnail}`}
                           />
                           {item.itemName}
                         </td>
                         <td>{item.orderday}</td>
                         <td>
-                          <Button
+                          {/* <Button
                             variant="outline-secondary"
-                            className={cssCart.qtyButton}
+                            className={cssAccount.qtyButton}
                             value="item"
                             onClick={HandlerPlus}
                           >
                             -
-                          </Button>
-                          <p className={cssCart.qty}>{item.amount}</p>
-                          <Button
+                          </Button> */}
+                          <p className={cssAccount.qty}>{item.amount}</p>
+                          {/* <Button
                             variant="outline-secondary"
-                            className={cssCart.qtyButton}
+                            className={cssAccount.qtyButton}
                             value="item"
                             onClick={HandlerM}
                           >
                             +
-                          </Button>
+                          </Button> */}
                         </td>
                         <td>배송대기</td>
                         <td>{item.amount * item.price}</td>
-                        <td>
+                        {/* <td>
                           <Button>적용</Button>
-                        </td>
+                        </td> */}
                         <td>
-                          <Button>주문취소</Button>
+                          <ModalCancel />
                         </td>
-                      </tr>
-                    );
-                  } else if (item.deliver === "ready") {
-                    return (
-                      <tr>
-                        {/* table start */}
-                        <td>{item.itemId}</td>
-                        <td className={cssCart.tdAlignLeft}>
-                          <img
-                            src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssCart.productThumbnail}`}
-                          />
-                          {item.itemName}
-                        </td>
-                        <td>{item.orderday}</td>
-                        <td>
-                          <p className={cssCart.qty}>{item.amount}</p>
-                        </td>
-                        <td>배송중</td>
-                        <td>{item.amount * item.price}</td>
-                        <td></td>
-                        <td></td>
                       </tr>
                     );
                   }

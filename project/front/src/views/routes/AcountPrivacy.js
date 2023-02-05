@@ -1,124 +1,129 @@
 import React, { useState } from "react";
+import {
+  Button,
+  Container,
+  Row,
+  Col,
+  Form,
+  InputGroup,
+  Stack,
+} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
-import PopupDom from "../components/PopupDom";
-import PopupPostCode from "../components/PopupPostCode";
+import cssCart from "../css/Cart.module.css";
+import cssOrder from "../css/Order.module.css";
+import Post from "../components/Post";
 
 const AcountPrivacy = () => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [adress, setAdress] = useState("");
-  const [number, setNumber] = useState("");
-
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-
-  const openPostCode = () => {
-    setIsPopupOpen(true);
-  };
-  const closePostCode = () => {
-    setIsPopupOpen(false);
-  };
-
   const navigate = useNavigate();
-  const onPasswordHandler = (event) => {
-    setPassword(event.currentTarget.value);
-  };
-  const onConfirmPasswordHandler = (event) => {
-    setConfirmPassword(event.currentTarget.value);
-  };
-  const onAdressHandler = (event) => {
-    setAdress(event.currentTarget.value);
-  };
-  const onNumberHandler = (event) => {
-    setNumber(event.currentTarget.value);
-  };
 
-  const onSubmitHandler = (event) => {
+  const [receiverName, setReceiverName] = useState();
+  const [receiverPassword, setReceiverPassword] = useState();
+  const [receiverConfirmPassword, setReceiverConfirmPassword] = useState();
+  const [receiverPhone, setReceiverPhone] = useState();
+  const [address2, setAddress2] = useState();
+  const [address, setAddress] = useState("");
+
+  const [popup, setPopup] = React.useState(false);
+
+  const onSubmitHandler = async (event) => {
     event.preventDefault();
 
-    //입력확인
-    if (password !== confirmPassword) {
+    if (receiverPassword !== receiverConfirmPassword) {
       return alert("비밀번호가 비밀번호 확인과 일치하지 않습니다.");
-    } else if (adress.length <= 0) {
-      return alert("주소를 입력해주세요.");
-    } else if (number.length !== 11) {
-      return alert("전화번호를 다시 확인해주세요.");
+    } else if (receiverPhone.length < 11) {
+      return alert("연락처를 확인해주세요.");
     } else {
-      return alert("저장이 완료되었습니다."), navigate("/");
+      return alert("회원 정보가 저장되었습니다."), navigate("/");
     }
   };
+
   return (
-    <Container>
+    <Container className="subContainer">
+      <div className={cssCart.titleArea}>
+        <h2 className="page-title">회원 정보 관리</h2>
+      </div>
       <Row>
         <Col xs lg="2">
-          <form>
-            <button
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              주문조회
-            </button>
-            <br />
-            <button
-              onClick={() => {
-                navigate("/account/secession");
-              }}
-            >
-              회원 탈퇴
-            </button>
-          </form>
+          <Stack gap={3}>
+            <button className="order">주문조회</button>
+            <button className="manager">개인정보관리</button>
+            <button className="deleted">회원탈퇴</button>
+          </Stack>
         </Col>
-        <Col>
-          <form style={{ display: "flex", flexDirection: "column" }}>
-            <h2>회원정보 관리</h2>
-            <br />
-            <div>이름</div>
-            <input type="text" placeholder="엘리스" disabled />
-            <div>비밀번호</div>
-            <input
-              type="password"
-              value={password}
-              placeholder="******"
-              onChange={onPasswordHandler}
-            />
-            <div>비밀번호 확인</div>
-            <input
-              type="password"
-              value={confirmPassword}
-              placeholder="******"
-              onChange={onConfirmPasswordHandler}
-            />
-            <div>우편번호</div>
+        <Col className={cssOrder.deliveryInfo}>
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicUsername">
+              <Form.Label>이름</Form.Label>
+              <Form.Control
+                type="username"
+                placeholder="이름"
+                value={receiverName}
+                onChange={(e) => setReceiverName(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicUsername">
+              <Form.Label>비밀번호</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="********"
+                value={receiverPassword}
+                onChange={(e) => setReceiverPassword(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicUsername">
+              <Form.Label>비밀번호 확인</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="********"
+                value={receiverConfirmPassword}
+                onChange={(e) => setReceiverConfirmPassword(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPhone">
+              <Form.Label>연락처</Form.Label>
+              <Form.Control
+                type="phone"
+                placeholder="연락처 입력"
+                value={receiverPhone}
+                onChange={(e) => setReceiverPhone(e.target.value)}
+              />
+              <Form.Text className="text-muted">예시) 01012345678</Form.Text>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicAddress">
+              <Form.Label>주소</Form.Label>
+              <InputGroup>
+                {address}
+                <Button
+                  className="mb-1"
+                  variant="outline-secondary"
+                  id="button-addon2"
+                  onClick={() => {
+                    setPopup(!popup);
+                  }}
+                >
+                  주소 검색
+                </Button>
+                {popup && (
+                  <Post address={address} setAddress={setAddress}></Post>
+                )}
+              </InputGroup>
 
-            <input id="adress" type="text" />
-            <button type="button" onClick={openPostCode}>
-              검색
-            </button>
-            <div id="popupDom">
-              {isPopupOpen && (
-                <PopupDom>
-                  <PopupPostCode onClose={closePostCode} />
-                </PopupDom>
-              )}
-            </div>
-            <div>상세 주소</div>
-            <input
-              type="text"
-              value={adress}
-              onChange={onAdressHandler}
-              placeholder="엘리스아파트 엘리스동 엘리스호"
-            />
-            <div>전화번호</div>
-            <input
-              type="number"
-              value={number}
-              placeholder="- 없이 입력해 주세요."
-              onChange={onNumberHandler}
-            />
-            <br />
-            <button onClick={onSubmitHandler}>저장하기</button>
-          </form>
+              <Form.Control
+                className="mb-1"
+                type="text"
+                placeholder="상세주소 입력"
+                value={address2}
+                onChange={(e) => setAddress2(e.target.value)}
+              />
+            </Form.Group>
+            <Button
+              onClick={(event) => {
+                onSubmitHandler(event);
+              }}
+            >
+              저장
+            </Button>
+          </Form>
         </Col>
       </Row>
     </Container>

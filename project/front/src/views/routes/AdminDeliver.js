@@ -37,13 +37,13 @@ const AdminDeliver = () => {
               className="mb-3"
               fill
             >
-              <Tab eventKey="orderby" title="배송중">
+              <Tab eventKey="orderby" title="배송">
                 <div>
                   <AdminOrderby />
                 </div>
               </Tab>
 
-              <Tab eventKey="orderEnd" title="배송완료">
+              <Tab eventKey="orderEnd" title="주문취소">
                 <div>
                   <AdminDeliverEnd />
                 </div>
