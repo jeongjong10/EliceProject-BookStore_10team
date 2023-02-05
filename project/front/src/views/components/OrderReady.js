@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Card,
@@ -12,11 +12,13 @@ import {
   Tabs,
   Button,
   Table,
+  Modal,
 } from "react-bootstrap";
-import cssCart from "../css/Cart.module.css";
+import cssAccount from "../css/Account.module.css";
 import { item } from "../../orders";
+import { ModalCancel } from "./ModalCancel";
 
-export const OrderCancel = () => {
+export const OrderReady = () => {
   return (
     <>
       <Container className="subContainer">
@@ -31,28 +33,33 @@ export const OrderCancel = () => {
                   <th>수량</th>
                   <th>배송상태</th>
                   <th>가격</th>
+                  {/* <th>수정</th> */}
+                  <th>주문취소</th>
                 </tr>
               </thead>
               <tbody>
                 {item.map((item, index) => {
-                  if (item.deliver === "cancel") {
+                  if (item.deliver === "ready") {
                     return (
                       <tr>
                         {/* table start */}
                         <td>{item.itemId}</td>
-                        <td className={cssCart.tdAlignLeft}>
+                        <td className={cssAccount.tdAlignLeft}>
                           <img
                             src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssCart.productThumbnail}`}
+                            className={`${cssAccount.productThumbnail}`}
                           />
                           {item.itemName}
                         </td>
                         <td>{item.orderday}</td>
                         <td>
-                          <p className={cssCart.qty}>{item.amount}</p>
+                          <p className={cssAccount.qty}>{item.amount}</p>
                         </td>
-                        <td>주문취소</td>
+                        <td>배송중</td>
                         <td>{item.amount * item.price}</td>
+                        <td>
+                          <ModalCancel />
+                        </td>
                       </tr>
                     );
                   }

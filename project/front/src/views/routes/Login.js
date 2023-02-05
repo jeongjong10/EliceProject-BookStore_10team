@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../css/Login.module.css";
 import axios from "axios";
+import { Regex } from "../components/Regex";
 
 // JWT 만들때 user._id만 사용하는게 아니라 user.admin까지 사용해서 JWT 생성
 // 화면단에서 JWT 분해 (atob => id, admin)
@@ -30,9 +31,7 @@ const Login = () => {
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
-    const regex =
-      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    if (regex.test(e.target.value)) {
+    if (Regex(e.target.value)) {
       setEmailValid(true);
     } else {
       setEmailValid(false);
@@ -40,9 +39,7 @@ const Login = () => {
   };
   const handlePassword = (e) => {
     setPassword(e.target.value);
-    const regex =
-      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
-    if (regex.test(e.target.value)) {
+    if (Regex(e.target.value)) {
       setPasswordValid(true);
     } else {
       setPasswordValid(false);
