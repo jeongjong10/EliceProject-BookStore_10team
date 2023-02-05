@@ -43,7 +43,11 @@ router.get('/', async (req, res, next) => {
             console.log("------------------- 마이페이지 정보 검색 실패 ------------------------");
             throw new Error("사용자의 정보가 없습니다")
         }
-        res.status(200).json(user)
+        res.status(200).json({
+            "user" : user,
+			"result" : "true",
+			"message" : "사용자 정보 확인 완료, 정보 전송",
+        })
         console.log("사용자 정보 전송 완료")
         console.log("------------------- 사용자 정보 관리 페이지 접근 성공 ------------------------");
 
@@ -71,10 +75,10 @@ router.post('/', async (req, res, next) => {
         const user = await User.findOneAndUpdate({_id:ObjectId(verifiedUser_id)},updateUser)
         // 얘는 에러처리를 어떻게하지...?
 
-        res.status(200).send({
+        res.status(200).json({
             user : user,
-            "result" : "true",
-            "message" : "사용자 정보 수정 완료"
+            result : "true",
+            message : "사용자 정보 수정 완료"
           });
           console.log("------------------- 사용자 정보 수정 완료 ------------------------");
 
@@ -91,18 +95,25 @@ router.delete('/', async (req, res, next) => {
         const verifiedUser_id = await verifyUser(req.headers);
         
         // 유저 검색 후 비활성화
-        const user = await User.findByIdAndUpdate({_id:ObjectId(verifiedUser_id)}, { activate : false });
+        const user = await User.findByIdAndUpdate({_id:ObjectId(verifiedUser_id)}, { activate : false});
 
         /////// 위의 activate : false 가 적용되는 것을 데이터 베이스에서
         // 확인 가능한데, 아래 코드의 user.activate는 true라고 출력이 되네요...
         // await로 동기적으로 진행시켰는데도, 뒷코드가 먼저 실행 되는 건가요?..
 
-        console.log("사용자 계정 비활성화 완료 : ", user.activate)
+        // // 비활성화 확인
+        // if (user.activate == false) {
+        //     console.log("사용자 계정 비활성화 완료 : ", user.activate)
+        // } else {
+        //     console.log("사용자 계정 비활성화 실패 : ", user.activate)
+        // }
 
-        res.status(200).send({
-            userActivate : user.activate,
-            "result" : "true",
-            "message" : "사용자 비활성화 완료"
+        res.status(200).jend({
+            // 우선 하드코딩으로 비활성 표기
+            userActivate : false,
+            // "userActivate" : user.activate,
+            result : "true",
+            message : "사용자 비활성화 완료"
           });
           console.log("------------------- 사용자 정보 비활성화 완료 ------------------------");
     } catch(err) {
