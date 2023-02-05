@@ -32,15 +32,15 @@ router.get("/", async(req, res, next) => {
 });
 
 // ------ USER: 개별 상품 조회 ------
-router.get("/:_id", async(req, res, next) => {
-    try {
-        const { _id } = req.params;
+router.get("/:_id", async (req, res, next) => {
+  try {
+    const { _id } = req.params;
 
-        console.log(_id);
+    console.log(_id);
 
-        const id = mongoose.Types.ObjectId(_id);
+    const id = mongoose.Types.ObjectId(_id);
 
-        const product = await Product.findOne({ id });
+    const product = await Product.findOne({ _id: id });
 
         console.log(product);
 
@@ -54,6 +54,9 @@ router.get("/:_id", async(req, res, next) => {
     } catch (e) {
         next(e);
     }
+  } catch (e) {
+    next(e);
+  }
 });
 
 module.exports = router;

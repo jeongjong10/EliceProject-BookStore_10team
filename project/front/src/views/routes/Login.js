@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../css/Login.module.css";
+import axios from "axios";
+import { Regex } from "../components/Regex";
 
-const User = {
-  email: "test@example.com",
-  pw: "test2323@@@",
-};
+// JWT 만들때 user._id만 사용하는게 아니라 user.admin까지 사용해서 JWT 생성
+// 화면단에서 JWT 분해 (atob => id, admin)
+// TWT : {id: seklfasieofsa;oeijf, admin : true} 요론식으로 받아져야 할 거 같넹..
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,15 +26,12 @@ const Login = () => {
   }, [emailValid, passwordValid]);
 
   const handleSubmit = (e) => {
-    e.preventDefalt();
-    console.log(email);
+    e.preventDefault();
   };
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
-    const regex =
-      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    if (regex.test(e.target.value)) {
+    if (Regex(e.target.value)) {
       setEmailValid(true);
     } else {
       setEmailValid(false);
@@ -41,27 +39,35 @@ const Login = () => {
   };
   const handlePassword = (e) => {
     setPassword(e.target.value);
-    const regex =
-      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
-    if (regex.test(e.target.value)) {
+    if (Regex(e.target.value)) {
       setPasswordValid(true);
     } else {
       setPasswordValid(false);
     }
   };
-  const onClickConfirmButton = () => {
-    if (email === User.email && password === User.password) {
-      alert("로그인에 성공했습니다.");
-      navigate("/");
-    } else {
-      alert("등록되지 않은 회원입니다.");
-    }
+  const onClickConfirmButton = async (e) => {
+    await axios
+      .post("http://localhost:3001/login", { email, password })
+      .then((response) => {
+        if (response.data.error === "비밀번호가 일치하지 않음") {
+          alert("비밀번호가 일치하지 않습니다.");
+          window.location.reload();
+        } else if (response.data.error === "일치하는 사용자 이메일이 없음") {
+          alert("일치하는 사용자가 없습니다.");
+          window.location.reload();
+        } else {
+          alert("로그인 완료");
+          localStorage.setItem("JWT", response.data.JWT);
+          navigate("/");
+        }
+      })
+      .catch((e) => e.message);
   };
 
   return (
     <div className={styles.authFormContainer}>
       <form className={styles.loginForm} onSubmit={handleSubmit}>
-        <label for="email" className={styles.label}>
+        <label htmlFor="email" className={styles.label}>
           Email
         </label>
         <input
@@ -78,7 +84,7 @@ const Login = () => {
             <div>올바른 이메일을 입력해주세요</div>
           )}
         </div>
-        <label for="password">Password</label>
+        <label htmlFor="password">Password</label>
         <input
           value={password}
           onChange={handlePassword}
