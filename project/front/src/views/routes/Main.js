@@ -1,11 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
+import axios from "axios";
 import cssMain from "../css/Main.module.css";
 
 const Main = () => {
   const navigate = useNavigate();
+
+  const [products, setProducts] = useState([]);
+  async function getData() {
+    return await axios
+      .get("http://localhost:3001/products")
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    getData();
+  }, []);
 
   // Carousel
   const [index, setIndex] = useState(0);
@@ -41,7 +55,7 @@ const Main = () => {
       </Carousel>
 
       {/* 아이템 리스트 component */}
-      <ShowItemList />
+      <ShowItemList data={products} />
     </>
   );
 };
