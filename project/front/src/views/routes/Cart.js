@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Container, Row, Col, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { item } from "../../temp";
 import cssCart from "../css/Cart.module.css";
-import axios from "axios";
+import { customAxios } from "../../config/customAxios";
 
 const Cart = () => {
   // 로컬스토리지 cart 데이터 가공
@@ -11,9 +10,9 @@ const Cart = () => {
   let cartItemsId = carts.map((v, i) => v._id);
 
   const [products, setProducts] = useState([]);
-  async function postData() {
-    return await axios
-      .get(/* "URL", { params: cartItemsId }*/)
+  async function getData() {
+    return await customAxios
+      .get(/* "URL", { params: cartItemsId,  }*/)
       .then((res) => {
         let data = res.data;
         data.map((v, i) => {
@@ -24,10 +23,8 @@ const Cart = () => {
       .catch((err) => console.log(err));
   }
   useEffect(() => {
-    postData();
+    getData();
   }, []);
-
-  const [count, setCount] = useState(carts.count);
 
   // ! 개별 삭제. 테스트 필요
   function removeProduct(id) {

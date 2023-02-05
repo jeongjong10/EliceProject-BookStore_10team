@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../css/Login.module.css";
-import axios from "axios";
+import { customAxios } from "../../config/customAxios";
 import { Regex } from "../components/Regex";
 
 // JWT 만들때 user._id만 사용하는게 아니라 user.admin까지 사용해서 JWT 생성
@@ -46,8 +46,8 @@ const Login = () => {
     }
   };
   const onClickConfirmButton = async (e) => {
-    await axios
-      .post("http://localhost:3001/login", { email, password })
+    await customAxios
+      .post("/login", { email, password })
       .then((response) => {
         if (response.data.message === "비밀번호가 일치하지 않음") {
           alert("비밀번호가 일치하지 않습니다.");

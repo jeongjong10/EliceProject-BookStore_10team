@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Container, Row, Col, Form, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { item } from "../../temp";
 import cssCart from "../css/Cart.module.css";
 import cssOrder from "../css/Order.module.css";
 

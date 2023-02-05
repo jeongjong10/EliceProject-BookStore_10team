@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { customAxios } from "../../config/customAxios";
 import { Regex } from "../components/Regex";
 const Register = () => {
   const [name, setName] = useState("");
@@ -35,8 +35,8 @@ const Register = () => {
     } else if (password !== confirmPassword) {
       return alert("비밀번호가 비밀번호 확인과 일치하지 않습니다.");
     } else {
-      return await axios
-        .post("http://localhost:3001/register", {
+      return await customAxios
+        .post("/register", {
           userName: name,
           email: email,
           password: password,
