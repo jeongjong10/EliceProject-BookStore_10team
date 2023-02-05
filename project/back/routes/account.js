@@ -43,11 +43,7 @@ router.get('/', async (req, res, next) => {
             console.log("------------------- 마이페이지 정보 검색 실패 ------------------------");
             throw new Error("사용자의 정보가 없습니다")
         }
-        res.status(200).json({
-            ...user,
-			"result" : "true",
-			"message" : "사용자 정보 확인 완료, 정보 전송",
-        })
+        res.status(200).json(user);
         console.log("사용자 정보 전송 완료")
         console.log("------------------- 사용자 정보 관리 페이지 접근 성공 ------------------------");
 
@@ -75,11 +71,7 @@ router.post('/', async (req, res, next) => {
         const user = await User.findOneAndUpdate({_id:ObjectId(verifiedUser_id)},updateUser)
         // 얘는 에러처리를 어떻게하지...?
 
-        res.status(200).json({
-            user : user,
-            result : "true",
-            message : "사용자 정보 수정 완료"
-          });
+        res.status(200).json(user);
           console.log("------------------- 사용자 정보 수정 완료 ------------------------");
 
     } catch(err) {
@@ -112,8 +104,6 @@ router.delete('/', async (req, res, next) => {
             // 우선 하드코딩으로 비활성 표기
             userActivate : false,
             // "userActivate" : user.activate,
-            result : "true",
-            message : "사용자 비활성화 완료"
           });
           console.log("------------------- 사용자 정보 비활성화 완료 ------------------------");
     } catch(err) {

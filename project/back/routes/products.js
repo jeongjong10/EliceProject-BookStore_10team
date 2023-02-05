@@ -30,11 +30,7 @@ router.get("/", async(req, res, next) => {
         if(!products) {
             throw new Error("상품을 찾을 수 없습니다.")
         }
-        res.status(200).json({
-            ...products,
-            result : "true", 
-            message : "전체 상품 확인, 전송 완료"
-        });
+        res.status(200).json(products);
     } catch (e) {
         next(e);
     }
@@ -60,11 +56,7 @@ router.get("/:_id", async (req, res, next) => {
         } else {
         // 찾았을 경우 성공, 반환
             console.log(product);
-            res.status(200).json({
-                ...product,
-                result : "true", 
-                message : "개별 상품 확인, 전송 완료"
-            });
+            res.status(200).json(product);
         }
     } catch (e) {
         next(e);

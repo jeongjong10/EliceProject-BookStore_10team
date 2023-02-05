@@ -13,7 +13,7 @@ router.post("/products", async(req, res, next) => {
         const product = await Product.create(products);
 
         console.log("상품 등록", product);
-        res.status(200).json({ message: "상품 등록 성공" });
+        res.status(200);
     } catch (e) {
         next(e);
     }
@@ -29,7 +29,7 @@ router.post("/products/:_id", async(req, res, next) => {
 
         await Product.findOneAndUpdate({ _id }, update);
 
-        res.status(200).json({ message: "상품 수정 성공" });
+        res.status(200);
     } catch (e) {
         next(e);
     }
@@ -42,7 +42,7 @@ router.delete("/products/:id", async(req, res, next) => {
         const { _id } = req.params;
 
         await Product.findOneAndUpdate({ _id }, { activate: false });
-        res.status(200).json({ message: "상품 비활성화 성공" });
+        res.status(200);
     } catch (e) {
         next(e);
     }

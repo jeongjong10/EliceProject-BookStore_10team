@@ -17,11 +17,7 @@ router.get("/", async(req, res, next) => {
         const user = await User.findOne({ _id: verifiedUser_id });
         console.log(user.userName, "님의 주문 조회");
 
-        res.status(200).json({
-            ...orders,
-            result: "success",
-            message: "주문내역 조회",
-        });
+        res.status(200).json(orders);
     } catch (e) {
         next(e);
     }
@@ -40,10 +36,7 @@ router.post("/", async(req, res, next) => {
         // User의 userId와 혼동이 올 수 있음 (쥬문의 userId에는 User의 _id 값이 들어가기 때문 )
 
         await Order.create({...orders, userId: verifiedUser_id });
-        res.status(200).json({
-            result: "success",
-            message: "주문내역 저장 성공",
-        });
+        res.status(200);
     } catch (e) {
         next(e);
     }
