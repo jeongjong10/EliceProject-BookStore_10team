@@ -22,19 +22,33 @@ import { customAxios } from "../../config/customAxios";
 export const OrderEnd = () => {
   const [orders, setOrders] = useState([]);
 
+  const token = localStorage.getItem("JWT") || "";
+  async function getData() {
+    return await customAxios
+      .get("/account/order", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
+  }
   useEffect(() => {
-    async function fetchAndSetUser() {
-      try {
-        const response = await customAxios.get("/account/order");
-        console.log(response);
-        console.log(localStorage.getItem("JWT"));
-        setOrders(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchAndSetUser();
-  }, [orders]);
+    getData();
+  }, []);
+  // useEffect(() => {
+  //   async function fetchAndSetUser() {
+  //     try {
+  //       const response = await customAxios.get("/account/order");
+  //       console.log(response);
+  //       console.log(localStorage.getItem("JWT"));
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchAndSetUser();
+  // }, [orders]);
 
   return (
     <>
