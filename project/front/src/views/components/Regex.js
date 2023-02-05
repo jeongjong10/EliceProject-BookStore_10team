@@ -3,11 +3,12 @@ export const Regex = (props) => {
     /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
   const passwordRegex =
     /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
-  if (emailRegex.test(props) === true) {
+
+  if (emailRegex.test(props)) {
     return true;
-  }
-  if (passwordRegex.test(props) === true) {
+  } else if (passwordRegex.test(props)) {
     return true;
+  } else {
+    return false;
   }
-  return false;
 };

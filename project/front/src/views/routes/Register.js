@@ -28,9 +28,9 @@ const Register = () => {
     //입력 확인
     if (name.length < 2) {
       return alert("이름은 2글자  이상 입력해주세요.");
-    } else if (Regex(password)) {
+    } else if (!Regex(password)) {
       return alert("영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.");
-    } else if (Regex(email)) {
+    } else if (!Regex(email)) {
       return alert("이메일 형식이 맞지 않습니다.");
     } else if (password !== confirmPassword) {
       return alert("비밀번호가 비밀번호 확인과 일치하지 않습니다.");
@@ -42,7 +42,7 @@ const Register = () => {
           password: password,
         })
         .then((response) => {
-          if (response.data.error === "이미 존재하는 이메일입니다.") {
+          if (response.data.message === "이미 존재하는 이메일입니다.") {
             alert("이미 존재하는 이메일 입니다.");
             window.location.reload();
           } else {

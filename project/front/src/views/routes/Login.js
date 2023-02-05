@@ -49,10 +49,10 @@ const Login = () => {
     await axios
       .post("http://localhost:3001/login", { email, password })
       .then((response) => {
-        if (response.data.error === "비밀번호가 일치하지 않음") {
+        if (response.data.message === "비밀번호가 일치하지 않음") {
           alert("비밀번호가 일치하지 않습니다.");
           window.location.reload();
-        } else if (response.data.error === "일치하는 사용자 이메일이 없음") {
+        } else if (response.data.message === "일치하는 사용자 이메일이 없음") {
           alert("일치하는 사용자가 없습니다.");
           window.location.reload();
         } else {

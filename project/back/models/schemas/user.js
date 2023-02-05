@@ -1,21 +1,24 @@
 const { Schema } = require("mongoose");
 const nanoId = require("./types/nano-id");
 
-const UserSchema = new Schema({
-    address: {
-        postalCode: {
-            type: String,
-            required: false,
-        },
-        address1: {
-            type: String,
-            required: false,
-        },
-        address2: {
-            type: String,
-            required: false,
-        },
+// address 객체 분리
+const address = {
+    postalCode: {
+        type: String,
+        required: false,
     },
+    address1: {
+        type: String,
+        required: false,
+    },
+    address2: {
+        type: String,
+        required: false,
+    }
+}
+
+const UserSchema = new Schema({
+    address,
     userId: nanoId,
     userName: {
         type: String,
@@ -34,8 +37,8 @@ const UserSchema = new Schema({
         required: false,
     },
     admin: {
-        type: Boolean, // String?
-        required: true,
+        type: Boolean,
+        required: false,
         default: false,
     },
     activate: {
@@ -43,12 +46,6 @@ const UserSchema = new Schema({
         required: true,
         default: true,
     },
-    // 사용자 계정 활성화 비활성화
-    // 
-    // activate : {
-    //     type : Boolean,
-    //     required : true,
-    // }
 }, {
     timestamps: true,
 });
