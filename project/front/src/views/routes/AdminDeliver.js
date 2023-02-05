@@ -11,11 +11,10 @@ import {
   Tab,
   Tabs,
 } from "react-bootstrap";
-import { Orderby } from "../components/Orderby";
-import { OrderEnd } from "../components/OrderEnd";
-import { OrderCancel } from "../components/OrderCancel";
+import { AdminDeliverEnd } from "../components/AdminDeliverEnd";
+import { AdminOrderby } from "../components/AdminOrderby";
 
-const MyPage = () => {
+const AdminDeliver = () => {
   // const {id} = useParams()
   const navigate = useNavigate();
 
@@ -25,34 +24,28 @@ const MyPage = () => {
         <Row>
           <Col xs lg="2">
             <Stack gap={3}>
-              <button className="order">주문조회</button>
-              <button className="manager">개인정보관리</button>
-              <button className="deleted">회원탈퇴</button>
+              <button className="order">전체 주문 관리</button>
+              <button className="manager">카테고리/상품 관리</button>
+              <button className="deleted">상품 등록</button>
             </Stack>
           </Col>
           <Col>
-            <h1>주문조회</h1>
+            <h1>전체 주문 관리</h1>
             <Tabs
               defaultActiveKey="profile"
               id="fill-tab-example"
               className="mb-3"
               fill
             >
-              <Tab eventKey="orderby" title="배송중">
+              <Tab eventKey="orderby" title="배송">
                 <div>
-                  <Orderby />
+                  <AdminOrderby />
                 </div>
               </Tab>
 
-              <Tab eventKey="orderEnd" title="배송완료">
+              <Tab eventKey="orderEnd" title="주문취소">
                 <div>
-                  <OrderEnd />
-                </div>
-              </Tab>
-
-              <Tab eventKey="orderCancel" title="주문취소">
-                <div>
-                  <OrderCancel />
+                  <AdminDeliverEnd />
                 </div>
               </Tab>
             </Tabs>
@@ -63,4 +56,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default AdminDeliver;

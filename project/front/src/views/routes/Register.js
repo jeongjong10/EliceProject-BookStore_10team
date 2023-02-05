@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Regex } from "../components/Regex";
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -8,13 +9,6 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigate = useNavigate();
-  const isEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
 
   const onNameHandler = (event) => {
     setName(event.currentTarget.value);
@@ -28,36 +22,38 @@ const Register = () => {
   const onConfirmPasswordHandler = (event) => {
     setConfirmPassword(event.currentTarget.value);
   };
-  const onSubmitHandler = (event) => {
+  const onSubmitHandler = async (event) => {
     event.preventDefault();
 
     //입력 확인
-    if (name.length < 2 || password.length < 4) {
-      return alert("이름은 2글자 이상, 비밀번호는 4글자 이상이어야 합니다.");
-    } else if (!isEmail(email)) {
+    if (name.length < 2) {
+      return alert("이름은 2글자  이상 입력해주세요.");
+    } else if (Regex(password)) {
+      return alert("영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.");
+    } else if (Regex(email)) {
       return alert("이메일 형식이 맞지 않습니다.");
     } else if (password !== confirmPassword) {
       return alert("비밀번호가 비밀번호 확인과 일치하지 않습니다.");
     } else {
-      return (
-        alert("정상적으로 회원가입되었습니다."),
-        navigate("/registerdone"),
-        axios
-          .post("http://localhost:3001/register", {
-            username: name,
-            email: email,
-            password: password,
-          })
-          .then((response) => {
-            console.log("User profile", response.data.user);
-            console.log("User token", response.data.jwt);
-            localStorage.setItem("token", response.data.jwt);
-          })
-          .catch((error) => {
-            // Handle error.
-            console.log("An error occurred:", error.response);
-          })
-      );
+      return await axios
+        .post("http://localhost:3001/register", {
+          userName: name,
+          email: email,
+          password: password,
+        })
+        .then((response) => {
+          if (response.data.error === "이미 존재하는 이메일입니다.") {
+            alert("이미 존재하는 이메일 입니다.");
+            window.location.reload();
+          } else {
+            alert("정상적으로 회원가입되었습니다.");
+            console.log(response.data);
+            navigate("/registerdone");
+          }
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
     }
   };
 

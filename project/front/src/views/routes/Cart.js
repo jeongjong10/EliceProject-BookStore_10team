@@ -3,13 +3,52 @@ import { Button, Container, Row, Col, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { item } from "../../temp";
 import cssCart from "../css/Cart.module.css";
+import axios from "axios";
 
 const Cart = () => {
-  localStorage.setItem("cart", JSON.stringify(item));
+  // 로컬스토리지 cart 데이터 가공
   let carts = JSON.parse(localStorage.getItem("cart"));
-  const navigate = useNavigate();
+  let cartItemsId = carts.map((v, i) => v._id);
 
-  const [total, setTotal] = useState([]);
+  const [products, setProducts] = useState([]);
+  async function postData() {
+    return await axios
+      .get(/* "URL", { params: cartItemsId }*/)
+      .then((res) => {
+        let data = res.data;
+        data.map((v, i) => {
+          v["count"] = carts.findOne({ _id: v._id }).count; // count 값 데이터에 넣기
+        });
+        setProducts(data);
+      })
+      .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    postData();
+  }, []);
+
+  const [count, setCount] = useState(carts.count);
+
+  // ! 개별 삭제. 테스트 필요
+  function removeProduct(id) {
+    cartItemsId = cartItemsId.filter((f) => f !== id);
+    setProducts(products.filter((f) => f._id !== id));
+    carts = carts.filter((f) => f._id !== id);
+    localStorage.setItem("cart", JSON.stringify(carts));
+  }
+
+  // ! 전체삭제 : 얘는 모달에 들어갈 onClick
+  function removeAllProducts() {
+    cartItemsId = [];
+    setProducts([]);
+    carts = [];
+    localStorage.removeItem("cart");
+  }
+
+  // 전체 삭제 버튼누르면 -> show가 true로 바끼구 모달이 뜬다
+  // 모달에다가 원래 show={false} 넣어주고..
+
+  const navigate = useNavigate();
 
   return (
     <Container className="subContainer">
@@ -30,42 +69,72 @@ const Cart = () => {
               </tr>
             </thead>
             <tbody>
-              {carts.map((v, i) => {
-                return (
-                  <tr>
-                    <td className={cssCart.tdAlignLeft}>
-                      <img
-                        src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                        className={`${cssCart.productThumbnail}`}
-                      />
-                      {v.itemName}
-                    </td>
-                    <td>{v.price}</td>
-                    <td>
+              {!localStorage.key("cart") && (
+                <tr>
+                  <td colSpan={5} className={cssCart.emptyCart}>
+                    <h4>
+                      🤔 장바구니에 담긴 상품이 없습니다.
+                      <br />
                       <Button
-                        variant="outline-secondary"
-                        className={cssCart.qtyButton}
+                        variant="secondary"
+                        className="mt-3"
+                        onClick={() => {
+                          navigate("/product/list");
+                        }}
                       >
-                        +
+                        상품 보러 가기
                       </Button>
-                      <p className={cssCart.qty}>3{/* 주문데이터 -> 수량 */}</p>
-                      <Button
-                        variant="outline-secondary"
-                        className={cssCart.qtyButton}
-                      >
-                        -
-                      </Button>
-                    </td>
-                    <td>
-                      {v.price}
-                      {/* 주문 수량 곱해줘야 함 */}
-                    </td>
-                    <td>
-                      <Button variant="secondary">삭제</Button>
-                    </td>
-                  </tr>
-                );
-              })}
+                    </h4>
+                  </td>
+                </tr>
+              )}
+              {localStorage.key("cart") &&
+                products.map((v, i) => {
+                  return (
+                    <tr key={i}>
+                      <td className={cssCart.tdAlignLeft}>
+                        <img
+                          src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
+                          className={`${cssCart.productThumbnail}`}
+                        />
+                        {v.itemName}
+                      </td>
+                      <td>{v.price}</td>
+                      <td>
+                        <Button
+                          variant="outline-secondary"
+                          className={cssCart.qtyButton}
+                        >
+                          +
+                        </Button>
+                        <p className={cssCart.qty}>
+                          {v.count}
+                          {/* 주문데이터 -> 수량 */}
+                        </p>
+                        <Button
+                          variant="outline-secondary"
+                          className={cssCart.qtyButton}
+                        >
+                          -
+                        </Button>
+                      </td>
+                      <td>
+                        {v.price}
+                        {/* 주문 수량 곱해줘야 함 */}
+                      </td>
+                      <td>
+                        <Button
+                          variant="secondary"
+                          onClick={() => {
+                            removeProduct(v._id);
+                          }}
+                        >
+                          삭제
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </Table>
         </Col>

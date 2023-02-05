@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Container, Row, Col, ListGroup, Nav } from "react-bootstrap";
 
-const Productreg = () => {
+const AdminProductRegister = () => {
   return (
     <Container>
       <Row>
@@ -29,4 +29,4 @@ const Productreg = () => {
   );
 };
 
-export default Productreg;
+export default AdminProductRegister;
