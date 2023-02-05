@@ -13,12 +13,14 @@ router.post("/", async(req, res, next) => {
             "------------------- 사용자 로그인 시도 ------------------------"
         );
         const { email, password } = req.body;
+
         console.log("사용자 입력 : ", email);
         console.log("사용자 입력 : ", password);
 
         // 데이터 베이스에 매칭되는 사용자 정보가 있는지 확인
         const user = await User.findOne({ email });
         console.log("user : ", user);
+
         // user 가 없으면 매칭되는 이메일이 없다
         if (!user) {
             // 일치하는 이메일이 없음 -> 에러
@@ -29,11 +31,12 @@ router.post("/", async(req, res, next) => {
             throw new Error("일치하는 사용자 이메일이 없음");
         }
 
-        // 찾은 user의 비밀번호와 입력된 비밀번호가 일치하지 않는다.
+        // 찾은 user의 비밀번호와 입력된 비밀번호 일치 여부 확인
         console.log("user.password : ", user.password);
         console.log("getHash(password) : ", getHash(password));
+
+        // 비밀번호가 일치 하지 않음 -> 에러
         if (user.password !== getHash(password)) {
-            // 비밀번호가 일치 하지 않음 -> 에러
             console.error("비밀번호 불일치");
             console.log(
                 "------------------- 사용자 로그인 실패 ------------------------"
@@ -43,16 +46,17 @@ router.post("/", async(req, res, next) => {
 
         // 로그인 성공 jwt token 생성
         console.log(
-            "------------------- 사용자 토큰 발급 ------------------------"
+            "------------------- 사용자 토큰 발급 시도 ------------------------"
         );
         const token = generateToken(user._id.toJSON());
-        // JWT 응답으로 전송
+        
+        // 응답으로 JWT 전송
         res.state(200).send({
             "JWT" : "서버에서 생성한 토큰",
             "result" : "true",
             "message" : "로그인 성공, 토큰 발급"
           });
-        console.log("------------------- 토큰 발급  완료 ------------------------");
+        console.log("------------------- 사용자 토큰 발급 완료 ------------------------");
     } catch (err) {
         next(err);
     }
