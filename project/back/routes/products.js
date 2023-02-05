@@ -25,6 +25,11 @@ router.get("/", async(req, res, next) => {
             // 쿼리 파라미터가 없을 때
             products = await Product.find({});
         }
+
+        // 상품을 찾지 못했을 경우 에러처리
+        if(!products) {
+            throw new Error("상품을 찾을 수 없습니다.")
+        }
         res.status(200).json(products);
     } catch (e) {
         next(e);
@@ -44,10 +49,12 @@ router.get("/:_id", async (req, res, next) => {
 
         console.log(product);
 
+        // 상품을 찾지 못했을 경우 에러처리
         if (!product) {
             console.error("존재하지 않는 상품입니다.");
             throw new Error("존재하지 않는 상품입니다.");
         } else {
+        // 찾았을 경우 성공, 반환
             console.log(product);
             res.status(200).json(product);
         }
