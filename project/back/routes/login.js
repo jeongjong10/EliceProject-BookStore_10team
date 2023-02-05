@@ -51,7 +51,7 @@ router.post("/", async(req, res, next) => {
         const token = generateToken(user._id.toJSON());
         
         // 응답으로 JWT 전송
-        res.state(200).send({
+        res.status(200).send({
             "JWT" : "서버에서 생성한 토큰",
             "result" : "true",
             "message" : "로그인 성공, 토큰 발급"

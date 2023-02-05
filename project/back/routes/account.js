@@ -20,7 +20,7 @@ router.get('/order', async (req, res, next) => {
             throw new Error("사용자의 주문 내역이 없습니다")
         }
         // 주문 목록 전송
-        res.state(200).json(orders)
+        res.status(200).json(orders)
         console.log("주문 목록 전송 완료")
         console.log("------------------- 마이페이지 접근 성공 ------------------------");
     } catch(err) {
@@ -43,7 +43,7 @@ router.get('/', async (req, res, next) => {
             console.log("------------------- 마이페이지 정보 검색 실패 ------------------------");
             throw new Error("사용자의 정보가 없습니다")
         }
-        res.state(200).json(user)
+        res.status(200).json(user)
         console.log("사용자 정보 전송 완료")
         console.log("------------------- 사용자 정보 관리 페이지 접근 성공 ------------------------");
 
