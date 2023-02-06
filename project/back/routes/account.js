@@ -15,12 +15,10 @@ router.get("/order", async(req, res, next) => {
         const verifiedUser_id = await verifyUser(req.headers);
         console.log(verifiedUser_id);
 
-        // 유저  _id를 사용하여 주문 목록 불러오기
-        // 주문 데이터가 만들어지면 테스트 가능할 예정
         const orders = await Order.find({ userId: verifiedUser_id });
 
         console.log(orders);
-        if (!orders) {
+        if (!orders[0]) {
             console.error("사용자의 주문이 없습니다");
             console.log(
                 "------------------- 마이페이지 주문조회 실패 ------------------------"
