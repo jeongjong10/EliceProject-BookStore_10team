@@ -7,7 +7,11 @@ import { customAxios } from "../../config/customAxios";
 const Cart = () => {
   // 로컬스토리지 cart 데이터 가공
   let carts = JSON.parse(localStorage.getItem("cart"));
-  let cartItemsId = carts.map((v, i) => v._id);
+
+  let cartItemsId = [];
+  if (carts) {
+    cartItemsId = carts.map((v, i) => v._id);
+  }
 
   // query parameter로 보내야 하는 URL 가공
   let routeURL = "/cartlist?";
@@ -21,23 +25,29 @@ const Cart = () => {
   // ex ) /cartlist?_id=63dcd6803f53abb02db79241&_id=63e0900cffeb097384da75b3
 
   const [products, setProducts] = useState([]);
+  const [count, setCount] = useState([]);
+  // const [count]
   async function getData() {
     return await customAxios
       .get(`${routeURL}`)
       .then((res) => {
         const data = res.data;
+        console.log("res.data", data);
         data.map((v, i) => {
-          v["count"] = carts.findOne({ _id: v._id }).count; // count 값 데이터에 넣기
+          v["count"] = carts.filter((f) => f._id == v._id)[0].count;
         });
         setProducts(data);
+        setCount(data.count);
+        console.log(data.count);
       })
       .catch((err) => console.log(err));
   }
-  console.log(products);
   useEffect(() => {
     getData();
   }, []);
 
+  // console.log(products);
+  // console.log(count);
   // ! 개별 삭제. 테스트 필요
   function removeProduct(id) {
     cartItemsId = cartItemsId.filter((f) => f !== id);
@@ -78,7 +88,7 @@ const Cart = () => {
               </tr>
             </thead>
             <tbody>
-              {!localStorage.key("cart") && (
+              {carts == null && (
                 <tr>
                   <td colSpan={5} className={cssCart.emptyCart}>
                     <h4>
@@ -97,7 +107,7 @@ const Cart = () => {
                   </td>
                 </tr>
               )}
-              {localStorage.key("cart") &&
+              {carts &&
                 products.map((v, i) => {
                   return (
                     <tr key={i}>
@@ -106,13 +116,16 @@ const Cart = () => {
                           src={v.img}
                           className={`${cssCart.productThumbnail}`}
                         />
-                        {v.itemName}
+                        {v.productName}
                       </td>
                       <td>{v.price}</td>
                       <td>
                         <Button
                           variant="outline-secondary"
                           className={cssCart.qtyButton}
+                          // onClick={() => {
+                          //   setCount(count + 1);
+                          // }}
                         >
                           +
                         </Button>
