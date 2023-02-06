@@ -32,7 +32,6 @@ const AcountPrivacy = () => {
     return await customAxios
       .get("/account")
       .then((res) => {
-        console.log(res.data);
         setUser(res.data);
         setReceiverName(res.data.userName);
         if (res.data.phone) {
@@ -43,11 +42,6 @@ const AcountPrivacy = () => {
           setAddress1(res.data.address.address1);
           setAddress2(res.data.address.address2);
         }
-
-        // setReceiverPhone(res.data.phone);
-        // setZonecode(res.data.address.postalCode);
-        // setAddress1(res.data.address.address1);
-        // setAddress2(res.data.address.address2);
       })
       .catch((err) => console.log(err));
   }
@@ -142,7 +136,6 @@ const AcountPrivacy = () => {
                 <Form.Control
                   className="mb-1"
                   placeholder="우편번호"
-                  // readOnly
                   defaultValue={zonecode}
                 />
                 <Button
@@ -169,7 +162,6 @@ const AcountPrivacy = () => {
                 type="text"
                 placeholder="주소"
                 defaultValue={address1}
-                //readOnly
               />
               <Form.Control
                 className="mb-1"

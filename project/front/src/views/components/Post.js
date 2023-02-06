@@ -17,11 +17,14 @@ const Post = (props) => {
   const postCodeStyle = {
     display: "block",
     position: "absolute",
-    top: "20%",
+    top: "-200px",
+    left: "25%",
     width: "400px",
     height: "400px",
     padding: "7px",
     zIndex: 100,
+    border: "1px solid #eee",
+    backgroundColor: "white",
   };
 
   return (
