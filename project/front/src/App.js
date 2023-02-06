@@ -40,14 +40,14 @@ function App() {
   }
 
   // 창 닫을 시 JWT 토큰 삭제
-  window.addEventListener(
-    "beforeunload",
-    function (e) {
-      // clean localStorage here
-      localStorage.removeItem("JWT");
-    },
-    false
-  );
+  // window.addEventListener(
+  //   "beforeunload",
+  //   function (e) {
+  //     // clean localStorage here
+  //     localStorage.removeItem("JWT");
+  //   },
+  //   false
+  // );
 
   return (
     <div className="App">
