@@ -113,9 +113,11 @@ router.delete("/", async(req, res, next) => {
     try {
         // 사용자 유효성 평가
         const verifiedUser_id = await verifyUser(req.headers);
-
+        console.log(verifiedUser_id)
         // 유저 입력 비밀번호 확인
         const checkpassword = await User.findOne({_id : ObjectId(verifiedUser_id)})
+        console.log("checkpassword")
+
         if (checkpassword.password !== getHash(req.body.password)) {
             console.error("비밀번호 불일치");
             console.log(

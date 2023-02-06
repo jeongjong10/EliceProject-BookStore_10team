@@ -8,20 +8,21 @@ router.post("/", async(req, res, next) => {
         "---------------- 사용자 회원 가입 시도 ---------------------"
     );
     try {
-        const { userName, email, password } = req.body;
-
+        const createUser = req.body;
+        // ------ 에러) 유니크 중복 ------
+        
         // ------ 중복된 이메일 확인 ------
-        const foundEmail = await User.findOne({ email });
+        const foundEmail = await User.findOne({ email: createUser.email });
         if (foundEmail) {
             console.error("중복된 이메일 존재")
             console.log("---------------- 사용자 회원 가입 실패 ---------------------")
             throw new Error("이미 존재하는 이메일입니다.");
         } else {
             // ------ 유효성 검사 (예정) ------
-            const hashedPassword = getHash(password);
+
+            const hashedPassword = getHash(createUser.password);
             const user = await User.create({
-                userName,
-                email,
+                ...createUser,
                 password: hashedPassword,
             });
             

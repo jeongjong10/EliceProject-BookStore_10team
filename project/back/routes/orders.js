@@ -1,16 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const { Order, User } = require("../models/index");
-const verifyUser = require("../middleware/verifyUser");
+const verifyUser = require("../middleware/verifyUser_middlewaring");
 
 // ------ USER: 현재 유저의 주문내역 조회 ------
-router.get("/", async(req, res, next) => {
+router.get("/", verifyUser(), async(req, res, next) => {
     console.log(
         "---------------- 사용자 주문 내역 조회 시도 ---------------------"
     );
     try {
         // 현재 유저 불러오기
-        const verifiedUser_id = await verifyUser(req.headers);
+
+        const verifiedUser_id = req.verifiedUser_id;
 
         const orders = await Order.find({ userId: verifiedUser_id }); // 현재 유저의 주문내역 찾기
 
@@ -35,13 +36,13 @@ router.get("/", async(req, res, next) => {
 });
 
 // ------ USER: 현재 유저의 주문내역 저장 ------
-router.post("/", async(req, res, next) => {
+router.post("/", verifyUser(), async(req, res, next) => {
     console.log(
         "---------------- 사용자 주문 데이터 생성 시도 ---------------------"
     );
     try {
         // 현재 유저 불러오기
-        const verifiedUser_id = await verifyUser(req.headers);
+        const verifiedUser_id = req.verifiedUser_id;
 
         // req.body: address(postalCode, address1, address2, recieverName, recieverPhone), 
         // orderNumber, comment, status, orderList(productName, count),
@@ -80,13 +81,13 @@ router.post("/", async(req, res, next) => {
 });
 
 // ------ USER: 현재 유저의 주문내역 수정 ------
-router.patch("/:_id", async(req, res, next) => {
+router.patch("/:_id", verifyUser(), async(req, res, next) => {
     console.log(
         "---------------- 사용자 주문 내역 수정 시도 ---------------------"
     );
     try {
         // 현재 유저 불러오기
-        const verifiedUser_id = await verifyUser(req.headers);
+        const verifiedUser_id = req.verifiedUser_id;
 
         const { _id } = req.params;
 
@@ -108,7 +109,7 @@ router.patch("/:_id", async(req, res, next) => {
             throw new Error("req.body가 없습니다.");
         }
 
-        await Order.findOneAndUpdate({ _id, userId: verifiedUser_id }, { updateOrder });
+        await Order.findOneAndUpdate({ _id, userId: verifiedUser_id }, updateOrder);
         const order = await Order.findOne({ _id, userId: verifiedUser_id });
 
         if (order === updateOrder) {
@@ -124,20 +125,20 @@ router.patch("/:_id", async(req, res, next) => {
         console.log(
             "---------------- 사용자 주문 내역 수정 성공 ---------------------"
         );
-        res.status(200).end;
+        res.status(200).end();
     } catch (e) {
         next(e);
     }
 });
 
 // ------ USER: 현재 유저의 주문내역 삭제 (비활성화) ------
-router.delete("/:_id", async(req, res, next) => {
+router.delete("/:_id", verifyUser(), async(req, res, next) => {
     console.log(
         "---------------- 사용자 주문 내역 삭제(비활성화) 시도 ---------------------"
     );
     try {
         // 현재 유저 불러오기
-        const verifiedUser_id = await verifyUser(req.headers);
+        const verifiedUser_id = req.verifiedUser_id;
 
         const { _id } = req.params;
 
