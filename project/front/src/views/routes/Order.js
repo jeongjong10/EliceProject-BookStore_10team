@@ -80,10 +80,34 @@ const Cart = () => {
           }
           // res2 : 유저 데이터
           console.log(res2.data);
+          if (res2.data.hasOwnProperty("_id")) {
+            setReceiverName(res2.data.userName);
+            //...
+            if (res2.data.hasOwnProperty("address")) {
+              setAddress1();
+              setAddress2();
+              setPostCode();
+            }
+            if (res2.data.hasOwnProperty("phone")) {
+              setReceiverPhone();
+            }
+          }
         })
       )
       .catch((err) => console.log(err));
 
+    async function postNewOrder() {
+      const params = {
+        address: {},
+        orderList: [{ productName, count }],
+        comment: comment,
+        totalProductPrice: totalProductPrice,
+        totalPrice: totalPrice,
+      };
+      return await customAxios.post("/orders", { params }).then((res) => {
+        sessionStorage.setItem("orderNumber", res.data.orderNumber);
+      });
+    }
     // return await customAxios
     //   .get(`${getRouteURL()}`)
     //   .then((res) => {

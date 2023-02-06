@@ -33,12 +33,15 @@ const AcountPrivacy = () => {
       .get("/account")
       .then((res) => {
         setUser(res.data);
-        console.log(res.data);
         setReceiverName(res.data.userName);
-        // setZonecode(res.data.address.postalCode);
-        // setReceiverPhone(res.data.phone);
-        // setAddress1(res.data.address.address1);
-        // setAddress2(res.data.address.address2);
+        if (res.data.phone) {
+          setReceiverPhone(res.data.phone);
+        }
+        if (res.data.address.postalCode) {
+          setZonecode(res.data.address.postalCode);
+          setAddress1(res.data.address.address1);
+          setAddress2(res.data.address.address2);
+        }
       })
       .catch((err) => console.log(err));
   }
@@ -54,7 +57,24 @@ const AcountPrivacy = () => {
     } else if (receiverPhone.length < 11) {
       return alert("연락처를 확인해주세요.");
     } else {
-      return alert("회원 정보가 저장되었습니다."), navigate("/");
+      return await customAxios
+        .post("/account", {
+          userName: receiverName,
+          password: receiverPassword,
+          phone: receiverPhone,
+          address: {
+            postalCode: zonecode,
+            address1: address1,
+            address2: address2,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          alert("회원 정보가 저장되었습니다.");
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
     }
   };
 
@@ -78,7 +98,7 @@ const AcountPrivacy = () => {
               <Form.Control
                 type="username"
                 placeholder="이름"
-                value={receiverName}
+                defaultValue={receiverName}
                 onChange={(e) => setReceiverName(e.target.value)}
               />
             </Form.Group>
@@ -87,7 +107,7 @@ const AcountPrivacy = () => {
               <Form.Control
                 type="password"
                 placeholder="********"
-                value={receiverPassword}
+                defaultValue={receiverPassword}
                 onChange={(e) => setReceiverPassword(e.target.value)}
               />
             </Form.Group>
@@ -96,7 +116,7 @@ const AcountPrivacy = () => {
               <Form.Control
                 type="password"
                 placeholder="********"
-                value={receiverConfirmPassword}
+                defaultValue={receiverConfirmPassword}
                 onChange={(e) => setReceiverConfirmPassword(e.target.value)}
               />
             </Form.Group>
@@ -105,7 +125,7 @@ const AcountPrivacy = () => {
               <Form.Control
                 type="phone"
                 placeholder="연락처 입력"
-                value={receiverPhone}
+                defaultValue={receiverPhone}
                 onChange={(e) => setReceiverPhone(e.target.value)}
               />
               <Form.Text className="text-muted">예시) 01012345678</Form.Text>
@@ -116,8 +136,8 @@ const AcountPrivacy = () => {
                 <Form.Control
                   className="mb-1"
                   placeholder="우편번호"
-                  readOnly
-                  value={zonecode}
+                  // readOnly
+                  defaultValue={zonecode}
                 />
                 <Button
                   className="mb-1"
@@ -142,14 +162,14 @@ const AcountPrivacy = () => {
                 className="mb-1"
                 type="text"
                 placeholder="주소"
-                value={address1}
-                readOnly
+                defaultValue={address1}
+                //readOnly
               />
               <Form.Control
                 className="mb-1"
                 type="text"
                 placeholder="상세주소 입력"
-                value={address2}
+                defaultValue={address2}
                 onChange={(e) => setAddress2(e.target.value)}
               />
             </Form.Group>
