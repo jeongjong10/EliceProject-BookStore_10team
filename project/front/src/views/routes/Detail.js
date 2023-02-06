@@ -36,7 +36,7 @@ const Detail = () => {
 
   // 장바구니 추가
   function addCart() {
-    if (!localStorage.key("cart")) {
+    if (!localStorage.getItem("cart")) {
       localStorage.setItem(
         "cart",
         JSON.stringify([

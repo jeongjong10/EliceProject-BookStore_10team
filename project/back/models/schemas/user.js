@@ -14,8 +14,8 @@ const address = {
     address2: {
         type: String,
         required: false,
-    }
-}
+    },
+};
 
 const UserSchema = new Schema({
     address,
@@ -38,7 +38,7 @@ const UserSchema = new Schema({
     },
     admin: {
         type: Boolean,
-        required: false,
+        required: true,
         default: false,
     },
     activate: {

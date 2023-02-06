@@ -41,7 +41,7 @@ router.get("/:_id", async(req, res, next) => {
         } else {
             // 찾았을 경우 성공, 반환
             console.log(product);
-            res.status(200).json(product);
+            res.status(200).json(product).end();
         }
     } catch (e) {
         next(e);

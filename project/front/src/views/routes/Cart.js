@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Row, Col, Table } from "react-bootstrap";
+import { Button, Container, Row, Col, Table, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";
 
 const Cart = () => {
+  const navigate = useNavigate();
+
   // 로컬스토리지 cart 데이터 가공
   let carts = JSON.parse(localStorage.getItem("cart"));
+
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalProductPrice, setTotalProductPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   let cartItemsId = [];
   if (carts) {
@@ -15,30 +21,45 @@ const Cart = () => {
 
   // query parameter로 보내야 하는 URL 가공
   let routeURL = "/cartlist?";
-  function test() {
+  function getRouteURL() {
     cartItemsId.map((v, i) => {
       routeURL += `_id=${v}&`;
     });
     routeURL = routeURL.slice(0, -1);
   }
-  test();
+  getRouteURL();
   // ex ) /cartlist?_id=63dcd6803f53abb02db79241&_id=63e0900cffeb097384da75b3
 
+  // 데이터 통신
   const [products, setProducts] = useState([]);
-  const [count, setCount] = useState([]);
-  // const [count]
+
   async function getData() {
     return await customAxios
       .get(`${routeURL}`)
       .then((res) => {
-        const data = res.data;
-        console.log("res.data", data);
-        data.map((v, i) => {
-          v["count"] = carts.filter((f) => f._id == v._id)[0].count;
-        });
-        setProducts(data);
-        setCount(data.count);
-        console.log(data.count);
+        if (res.data.result !== "fail") {
+          const data = res.data;
+          data.map((v, i) => {
+            v["count"] = carts.filter((f) => f._id == v._id)[0].count;
+          }); // 데이터에 count 데이터 추가
+
+          setProducts(data);
+
+          const tc = data.reduce((a, b) => {
+            return a + b.count;
+          }, 0);
+          setTotalCount(tc);
+
+          const tpp = data.reduce((a, b) => {
+            return a + b.price * b.count;
+          }, 0);
+          setTotalProductPrice(tpp);
+
+          const tp = data.reduce((a, b) => {
+            return a + b.price * b.count;
+          }, 3000);
+          setTotalPrice(tp);
+        }
       })
       .catch((err) => console.log(err));
   }
@@ -46,9 +67,33 @@ const Cart = () => {
     getData();
   }, []);
 
-  // console.log(products);
-  // console.log(count);
-  // ! 개별 삭제. 테스트 필요
+  // 수량
+  function handleCountUp(i, sign) {
+    const newProducts = [...products];
+    if (sign == "+") {
+      newProducts[i].count += 1;
+      setTotalCount(totalCount + 1);
+      setTotalProductPrice(totalProductPrice + newProducts[i].price);
+      setTotalPrice(totalPrice + newProducts[i].price);
+    } else {
+      if (newProducts[i].count > 1) {
+        newProducts[i].count -= 1;
+        setTotalCount(totalCount - 1);
+        setTotalProductPrice(totalProductPrice - newProducts[i].price);
+        setTotalPrice(totalPrice - newProducts[i].price);
+      } else {
+        alert("1개 이상 구매 가능합니다.");
+      }
+    }
+    setProducts(newProducts);
+
+    const localStorageCart = newProducts.map((v, i) => {
+      return { _id: v._id, count: v.count };
+    });
+    localStorage.setItem("cart", JSON.stringify(localStorageCart));
+  }
+
+  // 개별 삭제
   function removeProduct(id) {
     cartItemsId = cartItemsId.filter((f) => f !== id);
     setProducts(products.filter((f) => f._id !== id));
@@ -56,24 +101,26 @@ const Cart = () => {
     localStorage.setItem("cart", JSON.stringify(carts));
   }
 
-  // ! 전체삭제 : 얘는 모달에 들어갈 onClick
+  // 전체삭제 : 모달에 들어갈 onClick
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   function removeAllProducts() {
     cartItemsId = [];
     setProducts([]);
     carts = [];
     localStorage.removeItem("cart");
+    handleClose();
   }
-
-  // 전체 삭제 버튼누르면 -> show가 true로 바끼구 모달이 뜬다
-  // 모달에다가 원래 show={false} 넣어주고..
-
-  const navigate = useNavigate();
 
   return (
     <Container className="subContainer">
       <div className={cssCart.titleArea}>
         <h2 className="page-title">장바구니</h2>
-        <Button variant="secondary">전체 삭제</Button>
+        <Button variant="secondary" onClick={handleShow}>
+          전체 삭제
+        </Button>
       </div>
       <Row>
         <Col>
@@ -118,14 +165,14 @@ const Cart = () => {
                         />
                         {v.productName}
                       </td>
-                      <td>{v.price}</td>
+                      <td>{v.price.toLocaleString("en-US")}</td>
                       <td>
                         <Button
                           variant="outline-secondary"
                           className={cssCart.qtyButton}
-                          // onClick={() => {
-                          //   setCount(count + 1);
-                          // }}
+                          onClick={() => {
+                            handleCountUp(i, "+");
+                          }}
                         >
                           +
                         </Button>
@@ -136,12 +183,15 @@ const Cart = () => {
                         <Button
                           variant="outline-secondary"
                           className={cssCart.qtyButton}
+                          onClick={() => {
+                            handleCountUp(i, "-");
+                          }}
                         >
                           -
                         </Button>
                       </td>
                       <td>
-                        {v.price}
+                        {(v.price * v.count).toLocaleString("en-US")}
                         {/* 주문 수량 곱해줘야 함 */}
                       </td>
                       <td>
@@ -167,21 +217,21 @@ const Cart = () => {
               <div className={cssCart.info}>
                 <p>상품수</p>
                 <div className={cssCart.orderList}>
-                  <p>3</p>
+                  <p>{totalCount}</p>
                 </div>
               </div>
               <div className={cssCart.info}>
                 <p>총 상품금액</p>
-                <p>123456789789</p>
+                <p>{totalProductPrice.toLocaleString("en-US")} 원</p>
               </div>
               <div className={cssCart.info}>
                 <p>배송비</p>
-                <p>3,000</p>
+                <p>3,000 원</p>
               </div>
             </div>
             <div className={cssCart.result}>
               <p>총 결제금액</p>
-              <h4>123,456 원</h4>
+              <h4>{totalPrice.toLocaleString("en-US")} 원</h4>
             </div>
           </Row>
           <Row className="justify-content-md-center">
@@ -191,7 +241,14 @@ const Cart = () => {
                   variant="primary"
                   size="lg"
                   onClick={() => {
-                    navigate("/order");
+                    if (localStorage.getItem("JWT")) {
+                      navigate("/order");
+                    } else {
+                      alert(
+                        "회원만 주문이 가능합니다. 로그인 페이지로 이동시켜 드릴께요. 🚗"
+                      );
+                      navigate("/login");
+                    }
                   }}
                 >
                   구매하기
@@ -201,6 +258,22 @@ const Cart = () => {
           </Row>
         </Col>
       </Row>
+
+      {/* 전체삭제 Modal */}
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>전체 삭제</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>정말 모든 상품을 지우시겠어요? 😱</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            취소
+          </Button>
+          <Button variant="danger" onClick={removeAllProducts}>
+            전체 삭제
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };
