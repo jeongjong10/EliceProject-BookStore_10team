@@ -53,10 +53,8 @@ router.post("/:_id", async(req, res, next) => {
         const updateOrder = req.body;
 
         await Order.findOneAndUpdate({ _id, userId: verifiedUser_id }, { updateOrder });
-        res.status(200).json({
-            result: "success",
-            message: "주문내역 수정 성공",
-        });
+        res.status(200).json({message: "주문내역 수정 성공"});
+
     } catch (e) {
         next(e);
     }
@@ -72,10 +70,7 @@ router.delete("/:_id", async(req, res, next) => {
         const { _id } = req.params;
 
         await Order.findOneAndUpdate({ _id, userId: verifiedUser_id }, { activate: false });
-        res.status(200).json({
-            result: "success",
-            message: "주문내역 비활성화 성공",
-        });
+        res.status(200).json({message: "주문내역 비활성화 성공"});
     } catch (e) {
         next(e);
     }

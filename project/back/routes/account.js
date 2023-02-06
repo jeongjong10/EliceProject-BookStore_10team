@@ -10,10 +10,13 @@ router.get('/order', async (req, res, next) => {
     try {
         console.log("------------------- 마이페이지(주문조회) 접근 ------------------------");
         const verifiedUser_id = await verifyUser(req.headers);
+        console.log(verifiedUser_id)
 
         // 유저  _id를 사용하여 주문 목록 불러오기
         // 주문 데이터가 만들어지면 테스트 가능할 예정
-        const { orders } = await Order.find({_id:ObjectId(verifiedUser_id)});
+        const orders = await Order.find({ userId : verifiedUser_id });
+        
+        console.log(orders)
         if (!orders) {
             console.error("사용자의 주문이 없습니다")
             console.log("------------------- 마이페이지 주문조회 실패 ------------------------");
@@ -37,7 +40,7 @@ router.get('/', async (req, res, next) => {
         const verifiedUser_id = await verifyUser(req.headers);
 
         // 유저 검색 후 데이터 전송
-        const user = await User.findOne({_id:ObjectId(verifiedUser_id)});
+        const user = await User.findOne({ userId : verifiedUser_id });
         if (!user) {
             console.error("사용자의 정보가 없습니다")
             console.log("------------------- 마이페이지 정보 검색 실패 ------------------------");
@@ -68,7 +71,7 @@ router.post('/', async (req, res, next) => {
         }
         // 유저 검색 후 수정 내역 업데이트
         // await User.findByIdAndUpdate({_id:ObjectId(verifiedUser_id)}, updateUser);
-        const user = await User.findOneAndUpdate({_id:ObjectId(verifiedUser_id)},updateUser)
+        const user = await User.findOneAndUpdate({ userId : verifiedUser_id },updateUser)
         // 얘는 에러처리를 어떻게하지...?
 
         res.status(200).json(user);
@@ -87,7 +90,7 @@ router.delete('/', async (req, res, next) => {
         const verifiedUser_id = await verifyUser(req.headers);
         
         // 유저 검색 후 비활성화
-        const user = await User.findByIdAndUpdate({_id:ObjectId(verifiedUser_id)}, { activate : false});
+        const user = await User.findByIdAndUpdate({ userId : verifiedUser_id }, { activate : false});
 
         /////// 위의 activate : false 가 적용되는 것을 데이터 베이스에서
         // 확인 가능한데, 아래 코드의 user.activate는 true라고 출력이 되네요...
