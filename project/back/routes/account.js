@@ -16,13 +16,9 @@ router.get("/order", async(req, res, next) => {
 
         // 유저  _id를 사용하여 주문 목록 불러오기
         // 주문 데이터가 만들어지면 테스트 가능할 예정
-<<<<<<< HEAD
-        const orders = await Order.find({ userId : verifiedUser_id });
         
+        const orders = await Order.find({ userId : verifiedUser_id });
         console.log(orders)
-=======
-        const { orders } = await Order.find({ _id: ObjectId(verifiedUser_id) });
->>>>>>> 352edd3c70e8b450fea34a863e07227e4fba9dfe
         if (!orders) {
             console.error("사용자의 주문이 없습니다");
             console.log(
@@ -52,11 +48,7 @@ router.get("/", async(req, res, next) => {
         const verifiedUser_id = await verifyUser(req.headers);
 
         // 유저 검색 후 데이터 전송
-<<<<<<< HEAD
-        const user = await User.findOne({ userId : verifiedUser_id });
-=======
         const user = await User.findOne({ _id: ObjectId(verifiedUser_id) });
->>>>>>> 352edd3c70e8b450fea34a863e07227e4fba9dfe
         if (!user) {
             console.error("사용자의 정보가 없습니다");
             console.log(
@@ -93,20 +85,15 @@ router.post("/", async(req, res, next) => {
             throw new Error("req.body 확인에 실패하였습니다");
         }
         // 유저 검색 후 수정 내역 업데이트
-        // await User.findByIdAndUpdate({_id:ObjectId(verifiedUser_id)}, updateUser);
-<<<<<<< HEAD
-        const user = await User.findOneAndUpdate({ userId : verifiedUser_id },updateUser)
-=======
-        const user = await User.findOneAndUpdate({ _id: ObjectId(verifiedUser_id) },
-            updateUser
-        );
->>>>>>> 352edd3c70e8b450fea34a863e07227e4fba9dfe
-        // 얘는 에러처리를 어떻게하지...?
+        await User.findByIdAndUpdate({ _id: ObjectId(verifiedUser_id) }, updateUser);
 
-        res.status(200);
+        const user = await User.findById({ _id: ObjectId(verifiedUser_id) })
+        
+        console.log("수정된 유저 : ", user);
         console.log(
             "------------------- 사용자 정보 수정 완료 ------------------------"
         );
+        res.status(200).end();
     } catch (err) {
         next(err);
     }
@@ -122,16 +109,8 @@ router.delete("/", async(req, res, next) => {
         const verifiedUser_id = await verifyUser(req.headers);
 
         // 유저 검색 후 비활성화
-<<<<<<< HEAD
-        const user = await User.findByIdAndUpdate({ userId : verifiedUser_id }, { activate : false});
-=======
         await User.findByIdAndUpdate({ _id: ObjectId(verifiedUser_id) }, { activate: false });
         const user = await User.findById({ _id: ObjectId(verifiedUser_id) })
->>>>>>> 352edd3c70e8b450fea34a863e07227e4fba9dfe
-
-        /////// 위의 activate : false 가 적용되는 것을 데이터 베이스에서
-        // 확인 가능한데, 아래 코드의 user.activate는 true라고 출력이 되네요...
-        // await로 동기적으로 진행시켰는데도, 뒷코드가 먼저 실행 되는 건가요?..
 
         // // 비활성화 확인
         if (user.activate == false) {
@@ -140,7 +119,7 @@ router.delete("/", async(req, res, next) => {
             console.log("사용자 계정 비활성화 실패 : ", user.activate)
         }
 
-        res.status(200);
+        res.status(200).end();
         console.log(
             "------------------- 사용자 정보 비활성화 완료 ------------------------"
         );

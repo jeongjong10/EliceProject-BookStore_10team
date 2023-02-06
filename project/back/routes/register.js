@@ -22,7 +22,7 @@ router.post("/", async(req, res, next) => {
             });
 
             console.log("신규 회원", user);
-            res.status(200);
+            res.status(200).end();
         }
     } catch (e) {
         next(e);

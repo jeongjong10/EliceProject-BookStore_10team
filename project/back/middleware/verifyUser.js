@@ -39,7 +39,7 @@ const verifyUser = async(reqHeaders, isAdmin = false) => {
 
         // 관리자 권한 및 사용자 계정 활성화 확인
         const user = await User.findOne({ _id: ObjectId(verifiedUser_id) });
-        console.log(user);
+        console.log("user : ", user);
         const { activate, admin } = user;
 
         // 비활성화 계정 에러
