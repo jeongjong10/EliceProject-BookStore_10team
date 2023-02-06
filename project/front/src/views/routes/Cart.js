@@ -20,14 +20,14 @@ const Cart = () => {
   }
 
   // query parameter로 보내야 하는 URL 가공
-  let routeURL = "/cartlist?";
   function getRouteURL() {
+    let routeURL = "/cartlist?";
     cartItemsId.map((v, i) => {
       routeURL += `_id=${v}&`;
     });
     routeURL = routeURL.slice(0, -1);
+    return routeURL;
   }
-  getRouteURL();
   // ex ) /cartlist?_id=63dcd6803f53abb02db79241&_id=63e0900cffeb097384da75b3
 
   // 데이터 통신
@@ -35,7 +35,7 @@ const Cart = () => {
 
   async function getData() {
     return await customAxios
-      .get(`${routeURL}`)
+      .get(`${getRouteURL()}`)
       .then((res) => {
         if (res.data.result !== "fail") {
           const data = res.data;
@@ -135,7 +135,7 @@ const Cart = () => {
               </tr>
             </thead>
             <tbody>
-              {carts == null && (
+              {(carts == null || carts.length == 0) && (
                 <tr>
                   <td colSpan={5} className={cssCart.emptyCart}>
                     <h4>
@@ -241,9 +241,15 @@ const Cart = () => {
                   variant="primary"
                   size="lg"
                   onClick={() => {
-                    if (localStorage.getItem("JWT")) {
+                    if (
+                      localStorage.getItem("JWT") &&
+                      carts &&
+                      carts.length !== 0
+                    ) {
                       navigate("/order");
-                    } else {
+                    } else if (!carts || carts.length !== 0) {
+                      alert("장바구니가 비었습니다.");
+                    } else if (!localStorage.getItem("JWT")) {
                       alert(
                         "회원만 주문이 가능합니다. 로그인 페이지로 이동시켜 드릴께요. 🚗"
                       );

@@ -17,12 +17,12 @@ import { customAxios } from "../../config/customAxios";
 const AcountPrivacy = () => {
   const navigate = useNavigate();
 
-  const [receiverName, setReceiverName] = useState();
-  const [receiverPassword, setReceiverPassword] = useState();
-  const [receiverConfirmPassword, setReceiverConfirmPassword] = useState();
-  const [receiverPhone, setReceiverPhone] = useState();
-  const [address2, setAddress2] = useState();
-  const [address1, setAddress1] = useState();
+  const [receiverName, setReceiverName] = useState("");
+  const [receiverPassword, setReceiverPassword] = useState("");
+  const [receiverConfirmPassword, setReceiverConfirmPassword] = useState("");
+  const [receiverPhone, setReceiverPhone] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [address1, setAddress1] = useState("");
   const [address, setAddress] = useState("");
   const [zonecode, setZonecode] = useState("");
 
@@ -33,12 +33,12 @@ const AcountPrivacy = () => {
       .get("/account")
       .then((res) => {
         setUser(res.data);
-        setZonecode(res.data.address.postalCode);
         console.log(res.data);
         setReceiverName(res.data.userName);
-        setReceiverPhone(res.data.phone);
-        setAddress1(res.data.address.address1);
-        setAddress2(res.data.address.address2);
+        // setZonecode(res.data.address.postalCode);
+        // setReceiverPhone(res.data.phone);
+        // setAddress1(res.data.address.address1);
+        // setAddress2(res.data.address.address2);
       })
       .catch((err) => console.log(err));
   }
@@ -82,7 +82,7 @@ const AcountPrivacy = () => {
                 onChange={(e) => setReceiverName(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicUsername">
+            <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>비밀번호</Form.Label>
               <Form.Control
                 type="password"
@@ -91,7 +91,7 @@ const AcountPrivacy = () => {
                 onChange={(e) => setReceiverPassword(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicUsername">
+            <Form.Group className="mb-3" controlId="formBasicPasswordConfirm">
               <Form.Label>비밀번호 확인</Form.Label>
               <Form.Control
                 type="password"
@@ -110,13 +110,13 @@ const AcountPrivacy = () => {
               />
               <Form.Text className="text-muted">예시) 01012345678</Form.Text>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicAddress">
+            <Form.Group className="mb-3">
               <Form.Label>주소</Form.Label>
               <InputGroup>
                 <Form.Control
                   className="mb-1"
                   placeholder="우편번호"
-                  // readOnly
+                  readOnly
                   value={zonecode}
                 />
                 <Button
@@ -131,8 +131,8 @@ const AcountPrivacy = () => {
                 </Button>
                 {popup && (
                   <Post
-                    address={address}
-                    setAddress={setAddress}
+                    address1={address1}
+                    setAddress1={setAddress1}
                     zonecode={zonecode}
                     setZonecode={setZonecode}
                   ></Post>
@@ -143,7 +143,7 @@ const AcountPrivacy = () => {
                 type="text"
                 placeholder="주소"
                 value={address1}
-                // readOnly
+                readOnly
               />
               <Form.Control
                 className="mb-1"

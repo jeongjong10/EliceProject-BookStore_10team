@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Container, Row, Col, Form, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { customAxios } from "../../config/customAxios";
+import axios from "axios";
 import cssCart from "../css/Cart.module.css";
 import cssOrder from "../css/Order.module.css";
+import Post from "../components/Post";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -24,27 +27,92 @@ const Cart = () => {
     6: "6",
   };
 
-  // * 데이터 서버와 통신 연습
-  // function handleSubmit() {
-  //   axios
-  //     .post("server주소...", {
-  //       receiverName,
-  //       receiverPhone,
-  //       postCode,
-  //       address1,
-  //       address2,
-  //       selected,
-  //       comment,
-  //     })
-  //     .then((res) => {
-  //       // status, code
-  //       navigate("/order/complete");
-  //     })
-  //     .catch((err) => {
-  //       alert("주문이 실패했습니다. 다시 시도해 주세요.");
-  //       console.log(err);
-  //     });
-  // }
+  // 로컬스토리지 cart 데이터 가공
+  let carts = JSON.parse(localStorage.getItem("cart"));
+
+  const [totalProductPrice, setTotalProductPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  let cartItemsId = [];
+  if (carts) {
+    cartItemsId = carts.map((v, i) => v._id);
+  }
+
+  // query parameter로 보내야 하는 URL 가공
+  function getRouteURL() {
+    let routeURL = "/cartlist?";
+    cartItemsId.map((v, i) => {
+      routeURL += `_id=${v}&`;
+    });
+    routeURL = routeURL.slice(0, -1);
+    return routeURL;
+  }
+
+  // ex ) /cartlist?_id=63dcd6803f53abb02db79241&_id=63e0900cffeb097384da75b3
+
+  // 데이터 통신
+  const [products, setProducts] = useState([]);
+
+  async function getData() {
+    Promise.all(
+      [`${getRouteURL()}`, "/account"].map((url) => customAxios.get(url))
+    )
+      .then(
+        axios.spread((res1, res2) => {
+          // res1 : 상품 데이터
+          if (res1.data.result !== "fail") {
+            const data = res1.data;
+            data.map((v, i) => {
+              v["count"] = carts.filter((f) => f._id == v._id)[0].count;
+            }); // 데이터에 count 데이터 추가
+
+            setProducts(data);
+            console.log(data);
+            const tpp = data.reduce((a, b) => {
+              return a + b.price * b.count;
+            }, 0);
+            setTotalProductPrice(tpp);
+
+            const tp = data.reduce((a, b) => {
+              return a + b.price * b.count;
+            }, 3000);
+            setTotalPrice(tp);
+          }
+          // res2 : 유저 데이터
+          console.log(res2.data);
+        })
+      )
+      .catch((err) => console.log(err));
+
+    // return await customAxios
+    //   .get(`${getRouteURL()}`)
+    //   .then((res) => {
+    //     if (res.data.result !== "fail") {
+    //       const data = res.data;
+    //       data.map((v, i) => {
+    //         v["count"] = carts.filter((f) => f._id == v._id)[0].count;
+    //       }); // 데이터에 count 데이터 추가
+
+    //       setProducts(data);
+    //       console.log(data);
+    //       const tpp = data.reduce((a, b) => {
+    //         return a + b.price * b.count;
+    //       }, 0);
+    //       setTotalProductPrice(tpp);
+
+    //       const tp = data.reduce((a, b) => {
+    //         return a + b.price * b.count;
+    //       }, 3000);
+    //       setTotalPrice(tp);
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const [popup, setPopup] = React.useState(false);
 
   return (
     <Container className="subContainer">
@@ -141,23 +209,27 @@ const Cart = () => {
               <div className={cssCart.info}>
                 <p>주문 상품</p>
                 <div className={cssCart.orderList}>
-                  <p>주문 상품 / n 개</p>
-                  <p>주문 상품 / n 개</p>
-                  <p>주문 상품 / n 개</p>
+                  {products.map((v, i) => {
+                    return (
+                      <p key={i}>
+                        {v.productName} / {v.count} 개
+                      </p>
+                    );
+                  })}
                 </div>
               </div>
               <div className={cssCart.info}>
                 <p>총 상품금액</p>
-                <p>123456789789</p>
+                <p>{totalProductPrice.toLocaleString("en-US")} 원</p>
               </div>
               <div className={cssCart.info}>
                 <p>배송비</p>
-                <p>3,000</p>
+                <p>3,000 원</p>
               </div>
             </div>
             <div className={cssCart.result}>
               <p>총 결제금액</p>
-              <h4>123,456 원</h4>
+              <h4>{totalPrice.toLocaleString("en-US")} 원</h4>
             </div>
           </Row>
           <Row className="justify-content-md-center">

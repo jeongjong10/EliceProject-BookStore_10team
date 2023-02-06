@@ -2,8 +2,8 @@ import React from "react";
 import DaumPostcode from "react-daum-postcode";
 
 const Post = (props) => {
-  const address = props.address;
-  const setAddress = props.setAddress;
+  const address = props.address1;
+  const setAddress = props.setAddress1;
   const zonecode = props.zonecode;
   const setZonecode = props.setZonecode;
   //내장함수 onCompletePost 주소 검색 후 클릭 시 저절로 닫히면서 data값들 넘어옴.
@@ -17,11 +17,14 @@ const Post = (props) => {
   const postCodeStyle = {
     display: "block",
     position: "absolute",
-    top: "20%",
+    top: "-200px",
+    left: "25%",
     width: "400px",
     height: "400px",
     padding: "7px",
     zIndex: 100,
+    border: "1px solid #eee",
+    backgroundColor: "white",
   };
 
   return (
