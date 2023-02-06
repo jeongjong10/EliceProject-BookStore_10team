@@ -1,13 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const verifyUser = require("./middleware/verifyUser")
+const verifyUser = require("./middleware/verifyUser");
 
 // --- 필요한 라우터 require ---
 const registerRouter = require("./routes/register");
 const loginRouter = require("./routes/login");
 const accountRouter = require("./routes/account");
 const productRouter = require("./routes/products");
+const orderRouter = require("./routes/orders");
 // const adminRouter = require("./routes/admin");
 // -------------------------
 
@@ -15,8 +16,8 @@ const productRouter = require("./routes/products");
 mongoose.set("strictQuery", false);
 mongoose.connect("mongodb+srv://10team:1111@10team.yfnfhkm.mongodb.net/test");
 mongoose.connection.on("connected", () => {
-  console.log("정상적으로 DB와 연결되었습니다.   MongoDB Connected");
-  console.log("--------------------------------------------");
+    console.log("정상적으로 DB와 연결되었습니다.   MongoDB Connected");
+    console.log("--------------------------------------------");
 });
 //------------------------
 
@@ -33,6 +34,7 @@ app.use("/register", registerRouter);
 app.use("/login", loginRouter);
 app.use("/account", accountRouter);
 app.use("/products", productRouter);
+app.use("/orders", orderRouter);
 // app.use("/admin", adminRouter);
 //------------------------
 
