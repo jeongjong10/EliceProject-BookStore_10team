@@ -10,7 +10,7 @@ export const ModalCancel = (props) => {
 
   const handleDataDelete = async (e) => {
     await customAxios
-      .delete(`/orders/${props._id}`)
+      .delete(`/orders/${props.orderId}`)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
@@ -30,7 +30,7 @@ export const ModalCancel = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>주문취소</Modal.Title>
         </Modal.Header>
-        <Modal.Body>주문을 취소하시겠습니까?{props._id}</Modal.Body>
+        <Modal.Body>주문을 취소하시겠습니까?{props.orderId}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             아니요
