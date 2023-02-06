@@ -22,9 +22,7 @@ router.post("/", async(req, res, next) => {
             });
 
             console.log("신규 회원", user);
-            res.status(200).json({
-                message: "유저 생성 성공"
-            });
+            res.status(200);
         }
     } catch (e) {
         next(e);
