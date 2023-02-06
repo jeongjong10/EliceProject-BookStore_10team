@@ -2,7 +2,6 @@ const express = require("express");
 const verifyUser = require("../middleware/verifyUser_middlewaring");
 const router = express.Router();
 const { Product, Order } = require("../models/index");
-const verifyUser = require("../middleware/verifyUser_middlewaring");
 
 // ------ ADMIN: 상품 등록 ------
 router.post("/products", verifyUser(true), async(req, res, next) => {

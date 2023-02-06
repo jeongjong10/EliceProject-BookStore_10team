@@ -22,11 +22,9 @@ const verifyUser = (isAdmin = false) => {
             }
 
             // 최종적으로 jwt 토큰의 유효성 평가
+            // 오류: "invalid token"
             const verifiedUser_id = jwt.verify(token, "10team");
-            if (!verifiedUser_id) {
-                console.error("jwt 토큰이 유효하지 않다");
-                throw new Error("jwt 토큰이 유효하지 않다");
-            }
+
             // console.log("verifiedUser_id : ", verifiedUser_id)
 
             // 관리자 권한 및 사용자 계정 활성화 확인
