@@ -2,15 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { Product } = require("../models/index");
 const mongoose = require("mongoose");
-const verifyUser = require("../middleware/verifyUser");
 
 // ------ USER: 전체 상품 조회 ------
 router.get("/", async(req, res, next) => {
     try {
-
-        const verifiedUser_id = await verifyUser(req.headers);
-
-
         // ------ 쿼리 스트링 ------
         let idList = req.query["_id"];
         let products;
