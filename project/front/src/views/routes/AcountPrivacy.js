@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Container,
@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import cssCart from "../css/Cart.module.css";
 import cssOrder from "../css/Order.module.css";
 import Post from "../components/Post";
+import { customAxios } from "../../config/customAxios";
 
 const AcountPrivacy = () => {
   const navigate = useNavigate();
@@ -21,9 +22,29 @@ const AcountPrivacy = () => {
   const [receiverConfirmPassword, setReceiverConfirmPassword] = useState();
   const [receiverPhone, setReceiverPhone] = useState();
   const [address2, setAddress2] = useState();
+  const [address1, setAddress1] = useState();
   const [address, setAddress] = useState("");
+  const [zonecode, setZonecode] = useState("");
 
   const [popup, setPopup] = React.useState(false);
+  const [user, setUser] = useState([]);
+  async function getData() {
+    return await customAxios
+      .get("/account")
+      .then((res) => {
+        setUser(res.data);
+        setZonecode(res.data.address.postalCode);
+        console.log(res.data);
+        setReceiverName(res.data.userName);
+        setReceiverPhone(res.data.phone);
+        setAddress1(res.data.address.address1);
+        setAddress2(res.data.address.address2);
+      })
+      .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    getData();
+  }, []);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -92,7 +113,12 @@ const AcountPrivacy = () => {
             <Form.Group className="mb-3" controlId="formBasicAddress">
               <Form.Label>주소</Form.Label>
               <InputGroup>
-                {address}
+                <Form.Control
+                  className="mb-1"
+                  placeholder="우편번호"
+                  // readOnly
+                  value={zonecode}
+                />
                 <Button
                   className="mb-1"
                   variant="outline-secondary"
@@ -101,13 +127,24 @@ const AcountPrivacy = () => {
                     setPopup(!popup);
                   }}
                 >
-                  주소 검색
+                  검색
                 </Button>
                 {popup && (
-                  <Post address={address} setAddress={setAddress}></Post>
+                  <Post
+                    address={address}
+                    setAddress={setAddress}
+                    zonecode={zonecode}
+                    setZonecode={setZonecode}
+                  ></Post>
                 )}
               </InputGroup>
-
+              <Form.Control
+                className="mb-1"
+                type="text"
+                placeholder="주소"
+                value={address1}
+                // readOnly
+              />
               <Form.Control
                 className="mb-1"
                 type="text"
