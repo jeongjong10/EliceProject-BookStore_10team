@@ -28,7 +28,7 @@ function App() {
     isAdmin =
       atob(JWT.split(".")[1]) === "63ddef45f5075428f51969df" ? true : false;
     isAdmin = false;
-    console.log(isAdmin);
+    // console.log(isAdmin);
     // 이거 실제로 해보면..??
     // isAdmin = JSON.parse(atob(JWT.split(".")[1])).admin
   }

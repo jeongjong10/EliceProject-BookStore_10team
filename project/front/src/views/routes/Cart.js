@@ -9,12 +9,23 @@ const Cart = () => {
   let carts = JSON.parse(localStorage.getItem("cart"));
   let cartItemsId = carts.map((v, i) => v._id);
 
+  // query parameter로 보내야 하는 URL 가공
+  let routeURL = "/cartlist?";
+  function test() {
+    cartItemsId.map((v, i) => {
+      routeURL += `_id=${v}&`;
+    });
+    routeURL = routeURL.slice(0, -1);
+  }
+  test();
+  // ex ) /cartlist?_id=63dcd6803f53abb02db79241&_id=63e0900cffeb097384da75b3
+
   const [products, setProducts] = useState([]);
   async function getData() {
     return await customAxios
-      .get(/* "URL", { params: cartItemsId,  }*/)
+      .get(`${routeURL}`)
       .then((res) => {
-        let data = res.data;
+        const data = res.data;
         data.map((v, i) => {
           v["count"] = carts.findOne({ _id: v._id }).count; // count 값 데이터에 넣기
         });
@@ -22,6 +33,7 @@ const Cart = () => {
       })
       .catch((err) => console.log(err));
   }
+  console.log(products);
   useEffect(() => {
     getData();
   }, []);
@@ -91,7 +103,7 @@ const Cart = () => {
                     <tr key={i}>
                       <td className={cssCart.tdAlignLeft}>
                         <img
-                          src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
+                          src={v.img}
                           className={`${cssCart.productThumbnail}`}
                         />
                         {v.itemName}
