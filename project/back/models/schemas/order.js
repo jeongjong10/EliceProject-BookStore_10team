@@ -1,4 +1,5 @@
 const { Schema } = require("mongoose");
+const nanoId = require("./types/nano-id");
 
 // address 객체 분리
 const address = {
@@ -22,14 +23,11 @@ const address = {
         type: String,
         required: true,
     },
-}
+};
 
 const OrderSchema = new Schema({
         address,
-        orderNumber: {
-            type: String,
-            required: true,
-        },
+        orderNumber: nanoId,
         userId: {
             type: String,
             required: true,
@@ -43,7 +41,7 @@ const OrderSchema = new Schema({
             required: true,
             // default: "상품 준비중" 넣는 거 어떠신가요 ?? [종열] 좋아요
         },
-        // 주문 내역은 배열 
+        // 주문 내역은 배열
         orderList: [{
             productName: {
                 type: String,
@@ -53,7 +51,7 @@ const OrderSchema = new Schema({
                 type: Number,
                 required: true,
             },
-        }],
+        }, ],
         totalProductPrice: {
             type: Number,
             required: true,
