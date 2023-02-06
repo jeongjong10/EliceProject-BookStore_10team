@@ -75,10 +75,11 @@ router.post("/", async(req, res, next) => {
     );
     try {
         // 사용자 유효성 평가
-        const verifiedUser_id = verifyUser(req.headers);
+        const verifiedUser_id = await verifyUser(req.headers);
 
         // 수정 요청 데이터 확인
         const updateUser = req.body;
+        console.log("req.body : ", updateUser);
         if (!updateUser) {
             console.error("req.body 확인 실패");
             console.log(

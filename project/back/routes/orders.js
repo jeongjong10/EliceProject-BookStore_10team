@@ -40,7 +40,7 @@ router.post("/", async(req, res, next) => {
         // userId는 직접 추가
         // User의 userId와 혼동이 올 수 있음 (쥬문의 userId에는 User의 _id 값이 들어가기 때문 )
         await Order.create({...orders, userId: verifiedUser_id });
-        res.status(200);
+        res.status(200).end();
     } catch (e) {
         next(e);
     }
@@ -74,7 +74,7 @@ router.patch("/:_id", async(req, res, next) => {
             throw new Error("주문 내역 수정에 실패하였습니다.");
         }
 
-        res.status(200);
+        res.status(200).end;
     } catch (e) {
         next(e);
     }
@@ -101,7 +101,7 @@ router.delete("/:_id", async(req, res, next) => {
             console.log("사용자 주문 비활성화 실패 : ", order.activate);
         }
 
-        res.status(200);
+        res.status(200).end();
     } catch (e) {
         next(e);
     }
