@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const verifyUser = require("./middleware/verifyUser");
 
 // --- 필요한 라우터 require ---
 const accountRouter = require("./routes/account");

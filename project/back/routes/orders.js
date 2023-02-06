@@ -65,7 +65,7 @@ router.patch("/:_id", verifyUser(), async(req, res, next) => {
             throw new Error("req.body가 없습니다.");
         }
 
-        await Order.findOneAndUpdate({ _id, userId: verifiedUser_id }, { updateOrder });
+        await Order.findOneAndUpdate({ _id, userId: verifiedUser_id }, updateOrder);
         const order = await Order.findOne({ _id, userId: verifiedUser_id });
 
         if (order === updateOrder) {
@@ -75,7 +75,7 @@ router.patch("/:_id", verifyUser(), async(req, res, next) => {
             throw new Error("주문 내역 수정에 실패하였습니다.");
         }
 
-        res.status(200).end;
+        res.status(200).end();
     } catch (e) {
         next(e);
     }
