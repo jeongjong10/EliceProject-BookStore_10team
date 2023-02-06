@@ -6,6 +6,10 @@ const Secession = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const onPasswordHandler = (event) => {
+    setPassword(event.currentTarget.value);
+  };
+
   const onClickConfirmButton = async (event) => {
     event.preventDefault();
     await customAxios
@@ -33,7 +37,12 @@ const Secession = () => {
     >
       <form style={{ display: "flex", flexDirection: "column" }}>
         <h3>비밀번호</h3>
-        <input type="password" value={password} placeholder="******" />
+        <input
+          type="password"
+          value={password}
+          placeholder="******"
+          onChange={onPasswordHandler}
+        />
         <div>
           <button
             onClick={(event) => {
