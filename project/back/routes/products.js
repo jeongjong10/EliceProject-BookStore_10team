@@ -7,7 +7,8 @@ const mongoose = require("mongoose");
 router.get("/", async(req, res, next) => {
     console.log("---------------- 전체 상품 조회 시도 ---------------------")
     try {
-        const products = await Product.find({});
+        // 활성화 상태의 상품들 전체 불러오기
+        const products = await Product.find({activate : true});
 
         // 상품을 찾지 못했을 경우 에러처리
         if (!products) {
@@ -29,15 +30,11 @@ router.get("/:_id", async(req, res, next) => {
 
     try {
         const { _id } = req.params;
-
-        if (!_id) {
-            console.error("params 없음.");
-            console.log("---------------- 요청 데이터 Params 확인 실패 ---------------------")
-            throw new Error("params 내용이 없습니다.");
-        }
+        
         const id = mongoose.Types.ObjectId(_id);
 
-        const product = await Product.findOne({ _id: id });
+        // 동일한 _id값 이면서, 활성화 상태의 상품 검색
+        const product = await Product.findOne({ _id: id, activate : true });
         if (!product) {
             console.error("상품 조회 실패.");
             console.log("---------------- 상품 조회 실패 ---------------------")
