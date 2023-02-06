@@ -92,8 +92,25 @@ router.delete("/products/:_id", verifyUser(true), async(req, res, next) => {
 
         await Product.findOneAndUpdate({ _id }, { activate: false });
         console.log(
-            "------------------ 관리자 주문 내역 조회 성공 ----------------------"
+            "------------------ 관리자 상품 삭제(비활성화) 성공 ----------------------"
         );
+
+        const product = await Product.findOne({ _id});
+
+        if (product.activate == false) {
+            console.log("관리자 상품 비활성화 완료 activate : ", product.activate);
+        } else {
+            console.error("관리자 상품 비활성화 실패");
+            console.log(
+                "---------------- 관리자 상품 내역 삭제(비활성화) 실패 ---------------------"
+            );
+            throw new Error("관리자 상품 삭제(비활성화) 실패");
+        }
+
+        console.log(
+            "---------------- 사용자 주문 내역 삭제(비활성화) 성공 ---------------------"
+        );
+
         res.status(200).end();
     } catch (e) {
         next(e);
@@ -139,7 +156,7 @@ router.patch("/orders/:_id", verifyUser(true), async(req, res, next) => {
         }
 
         await Order.findOneAndUpdate({ _id }, { status });
-        const order = Order.findById({ _id });
+        const order = await Order.findById({ _id });
 
         if (order.status !== status) {
             console.log("사용자 주문 배송상태 수정 실패 : ", order.status);
@@ -149,7 +166,6 @@ router.patch("/orders/:_id", verifyUser(true), async(req, res, next) => {
             console.log("사용자 주문 배송상태 수정 성공 : ", order.status);
         }
 
-
         res.status(200).end();
     } catch (e) {
         next(e);
@@ -158,7 +174,7 @@ router.patch("/orders/:_id", verifyUser(true), async(req, res, next) => {
 
 // ------ ADMIN: 주문내역 삭제 (비활성화) ------
 router.delete("/orders/_id", verifyUser(true), async(req, res, next) => {
-            console.log("----------------- 관리자 주문 내역 수정 시도 ------------------");
+            console.log("----------------- 관리자 주문 내역 삭제(비활성화) 시도 ------------------");
     try {
         const { _id } = req.params;
         if (!_id) {
@@ -171,10 +187,13 @@ router.delete("/orders/_id", verifyUser(true), async(req, res, next) => {
         const order = await Order.findOne({ _id });
 
         if (order.activate == false) {
-            console.log("사용자 주문 비활성화 완료 : ", order.activate);
+            console.log("관리자 주문 내역 비활성화 완료");
         } else {
-            console.log("사용자 주문 비활성화 실패 : ", order.activate);
+            console.log("관리자 주문 내역 비활성화 실패");
+            console.log("---------------- 주문 내역 삭제(비활성화) 실패 ---------------------");
+            throw new Error("관리자 주문 내역 비활성화 실패.");
         }
+        console.log("----------------- 관리자 주문 내역 삭제(비활성화) 성공 ------------------");
 
         res.status(200).end();
     } catch (e) {
