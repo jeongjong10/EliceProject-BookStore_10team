@@ -35,7 +35,7 @@ router.get("/", verifyUser(), async(req, res, next) => {
     }
 });
 
-// ------ USER: 현재 유저의 주문내역 저장 ------
+// ------ USER: 현재 유저의 주문내역 생성 ------
 router.post("/", verifyUser(), async(req, res, next) => {
     console.log(
         "---------------- 사용자 주문 데이터 생성 시도 ---------------------"
@@ -61,20 +61,20 @@ router.post("/", verifyUser(), async(req, res, next) => {
         // User의 userId와 혼동이 올 수 있음 (쥬문의 userId에는 User의 _id 값이 들어가기 때문 )
 
         const newOrder = await Order.create({...orders, userId: verifiedUser_id });
-        if (!newOrders) {
+        if (!newOrder) {
             console.error("생성된 주문 없음");
             console.log(
                 "---------------- 사용자 주문 데이터 생성 실패 -------------------"
             );
             throw new Error("생성된 주문 없음");
         } else {
-            console.log("새성된 주문 데이터 : ", newOrder);
+            console.log("생성된 주문 데이터 : ", newOrder);
         }
 
         console.log(
             "---------------- 사용자 주문 데이터 생성 성공 ---------------------"
         );
-        res.status(200).end();
+        res.status(200).json({ orderNumber : newOrder.orderNumber });
     } catch (e) {
         next(e);
     }
