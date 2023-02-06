@@ -16,41 +16,21 @@ import {
 import cssAccount from "../css/Account.module.css";
 
 import { ModalCancel } from "./ModalCancel";
-
 import { customAxios } from "../../config/customAxios";
 import { OrderProduct } from "./OrderProduct";
 export const OrderEnd = () => {
   const [orders, setOrders] = useState([]);
 
-  const token = localStorage.getItem("JWT") || "";
+  // 데이터 가져오기 async function 부터 ~ useEffect까지 세트
   async function getData() {
-    return await customAxios
-      .get("/account/order", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setOrders(res.data);
-      });
+    return await customAxios.get("/account/order").then((res) => {
+      console.log(res.data);
+      setOrders(res.data);
+    });
   }
   useEffect(() => {
     getData();
   }, []);
-
-  // useEffect(() => {
-  //   async function fetchAndSetUser() {
-  //     try {
-  //       const response = await customAxios.get("/account/order");
-  //       console.log(response);
-  //       console.log(localStorage.getItem("JWT"));
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   fetchAndSetUser();
-  // }, [orders]);
 
   return (
     <>

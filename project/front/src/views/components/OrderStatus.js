@@ -23,18 +23,11 @@ import { OrderProduct } from "./OrderProduct";
 export const OrderStatus = () => {
   const [orders, setOrders] = useState([]);
 
-  const token = localStorage.getItem("JWT") || "";
   async function getData() {
-    return await customAxios
-      .get("/account/order", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setOrders(res.data);
-      });
+    return await customAxios.get("/account/order").then((res) => {
+      console.log(res.data);
+      setOrders(res.data);
+    });
   }
   useEffect(() => {
     getData();

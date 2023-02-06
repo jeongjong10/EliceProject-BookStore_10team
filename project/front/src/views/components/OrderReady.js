@@ -24,18 +24,11 @@ import { customAxios } from "../../config/customAxios";
 export const OrderReady = () => {
   const [orders, setOrders] = useState([]);
 
-  const token = localStorage.getItem("JWT") || "";
   async function getData() {
-    return await customAxios
-      .get("/account/order", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setOrders(res.data);
-      });
+    return await customAxios.get("/account/order").then((res) => {
+      console.log(res.data);
+      setOrders(res.data);
+    });
   }
   useEffect(() => {
     getData();
@@ -69,7 +62,9 @@ export const OrderReady = () => {
                             src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
                             className={`${cssAccount.productThumbnail}`}
                           /> */}
-                          {OrderProduct(orders)}
+                          {OrderProduct(orders).map((orderproduct, index) => {
+                            return orderproduct;
+                          })}
                         </td>
                         <td>{orders.createdAt.slice(0, 10)}</td>
                         {/* <td>
@@ -79,8 +74,9 @@ export const OrderReady = () => {
                         </td> */}
                         <td>{orders.status}</td>
                         <td>{orders.totalPrice}</td>
+                        {console.log(orders._id)}
                         <td>
-                          <ModalCancel />
+                          <ModalCancel value={orders._id} />
                         </td>
                       </tr>
                     );
