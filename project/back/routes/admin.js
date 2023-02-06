@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Product } = require("../models/index");
-
+const verifyUser = require("../middleware/verifyUser");
 
 // ------ ADMIN: 상품 등록 ------
 router.post("/products", async(req, res, next) => {

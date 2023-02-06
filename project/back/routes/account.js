@@ -12,13 +12,13 @@ router.get("/order", async(req, res, next) => {
             "------------------- 마이페이지(주문조회) 접근 ------------------------"
         );
         const verifiedUser_id = await verifyUser(req.headers);
-        console.log(verifiedUser_id)
+        console.log(verifiedUser_id);
 
         // 유저  _id를 사용하여 주문 목록 불러오기
         // 주문 데이터가 만들어지면 테스트 가능할 예정
-        
-        const orders = await Order.find({ userId : verifiedUser_id });
-        console.log(orders)
+        const orders = await Order.find({ userId: verifiedUser_id });
+
+        console.log(orders);
         if (!orders) {
             console.error("사용자의 주문이 없습니다");
             console.log(
@@ -48,7 +48,9 @@ router.get("/", async(req, res, next) => {
         const verifiedUser_id = await verifyUser(req.headers);
 
         // 유저 검색 후 데이터 전송
-        const user = await User.findOne({ _id: ObjectId(verifiedUser_id) });
+
+        const user = await User.findOne({ _id: verifiedUser_id });
+
         if (!user) {
             console.error("사용자의 정보가 없습니다");
             console.log(
@@ -73,7 +75,7 @@ router.post("/", async(req, res, next) => {
     );
     try {
         // 사용자 유효성 평가
-        const verifiedUser_id = await verifyUser(req.headers);
+        const verifiedUser_id = verifyUser(req.headers);
 
         // 수정 요청 데이터 확인
         const updateUser = req.body;
@@ -85,11 +87,13 @@ router.post("/", async(req, res, next) => {
             throw new Error("req.body 확인에 실패하였습니다");
         }
         // 유저 검색 후 수정 내역 업데이트
-        await User.findByIdAndUpdate({ _id: ObjectId(verifiedUser_id) }, updateUser);
+        await User.findByIdAndUpdate({ _id: ObjectId(verifiedUser_id) },
+            updateUser
+        );
 
-        const user = await User.findById({ _id: ObjectId(verifiedUser_id) })
-        
+        const user = await User.findById({ _id: ObjectId(verifiedUser_id) });
         console.log("수정된 유저 : ", user);
+        
         console.log(
             "------------------- 사용자 정보 수정 완료 ------------------------"
         );
@@ -114,9 +118,9 @@ router.delete("/", async(req, res, next) => {
 
         // // 비활성화 확인
         if (user.activate == false) {
-            console.log("사용자 계정 비활성화 완료 : ", user.activate)
+            console.log("사용자 계정 비활성화 완료 : ", user.activate);
         } else {
-            console.log("사용자 계정 비활성화 실패 : ", user.activate)
+            console.log("사용자 계정 비활성화 실패 : ", user.activate);
         }
 
         res.status(200).end();
