@@ -11,7 +11,10 @@ export const ModalCancel = (props) => {
   const handleDataDelete = async (e) => {
     await customAxios
       .delete(`/orders/${props.orderId}`)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        setShow(false);
+      })
       .catch((err) => console.log(err));
   };
 

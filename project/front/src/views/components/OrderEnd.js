@@ -72,7 +72,7 @@ export const OrderEnd = () => {
                         <td>{orders.status}</td>
                         <td>{orders.totalPrice}</td>
                         <td>
-                          <ModalCancel />
+                          <ModalCancel orderId={orders._id} />
                         </td>
                       </tr>
                     );

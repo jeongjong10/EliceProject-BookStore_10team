@@ -74,7 +74,7 @@ export const OrderReady = () => {
                         <td>{orders.totalPrice}</td>
                         {console.log(orders._id)}
                         <td>
-                          <ModalCancel _id={orders._id} />
+                          <ModalCancel orderId={orders._id} />
                         </td>
                       </tr>
                     );
