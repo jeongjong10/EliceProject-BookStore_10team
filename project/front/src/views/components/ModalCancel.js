@@ -3,16 +3,14 @@ import { Button, Modal } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { customAxios } from "../../config/customAxios";
 
-export const ModalCancel = () => {
-  const { _id } = useParams();
-
+export const ModalCancel = (props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleDataDelete = async (e) => {
     await customAxios
-      .delete(`/orders/${_id}`)
+      .delete(`/orders/${props._id}`)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
@@ -32,7 +30,7 @@ export const ModalCancel = () => {
         <Modal.Header closeButton>
           <Modal.Title>주문취소</Modal.Title>
         </Modal.Header>
-        <Modal.Body>주문을 취소하시겠습니까?</Modal.Body>
+        <Modal.Body>주문을 취소하시겠습니까?{props._id}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             아니요

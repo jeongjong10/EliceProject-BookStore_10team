@@ -62,9 +62,7 @@ export const OrderReady = () => {
                             src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
                             className={`${cssAccount.productThumbnail}`}
                           /> */}
-                          {OrderProduct(orders).map((orderproduct, index) => {
-                            return orderproduct;
-                          })}
+                          {OrderProduct(orders)}
                         </td>
                         <td>{orders.createdAt.slice(0, 10)}</td>
                         {/* <td>
@@ -76,7 +74,7 @@ export const OrderReady = () => {
                         <td>{orders.totalPrice}</td>
                         {console.log(orders._id)}
                         <td>
-                          <ModalCancel value={orders._id} />
+                          <ModalCancel _id={orders._id} />
                         </td>
                       </tr>
                     );
