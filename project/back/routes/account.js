@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const ObjectId = require("mongodb").ObjectId;
+const getHash = require("../utils/hash-password");
 const verifyUser = require("../middleware/verifyUser");
 const { Order } = require("../models/index");
 const { User } = require("../models/index");
@@ -104,7 +105,7 @@ router.post("/", async(req, res, next) => {
     }
 });
 
-// 회원 탈퇴 시도시
+// 회원 탈퇴 시도시 (비밀번호 확인 로직 추가)
 router.delete("/", async(req, res, next) => {
     console.log(
         "---------------- 마이페이지 회원탈퇴 요청 ---------------------"
@@ -113,11 +114,21 @@ router.delete("/", async(req, res, next) => {
         // 사용자 유효성 평가
         const verifiedUser_id = await verifyUser(req.headers);
 
+        // 유저 입력 비밀번호 확인
+        const checkpassword = await User.findOne({_id : ObjectId(verifiedUser_id)})
+        if (checkpassword.password !== getHash(req.body.password)) {
+            console.error("비밀번호 불일치");
+            console.log(
+                "------------------- 사용자 로그인 실패 ------------------------"
+            );
+            throw new Error("비밀번호가 일치하지 않음");
+        }
+
         // 유저 검색 후 비활성화
         await User.findByIdAndUpdate({ _id: ObjectId(verifiedUser_id) }, { activate: false });
         const user = await User.findById({ _id: ObjectId(verifiedUser_id) })
 
-        // // 비활성화 확인
+        // 비활성화 확인
         if (user.activate == false) {
             console.log("사용자 계정 비활성화 완료 : ", user.activate);
         } else {

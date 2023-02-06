@@ -5,6 +5,9 @@ const verifyUser = require("../middleware/verifyUser");
 
 // ------ USER: 현재 유저의 주문내역 조회 ------
 router.get("/", async(req, res, next) => {
+    console.log(
+        "---------------- 주문 내역 조회 요청 ---------------------"
+    );
     try {
         // 현재 유저 불러오기
         const verifiedUser_id = await verifyUser(req.headers);
