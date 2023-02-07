@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Card,
@@ -17,9 +17,11 @@ import {
 } from "react-bootstrap";
 import cssAdmin from "../css/Admin.module.css";
 import { item } from "../../orders";
+import { customAxios } from "../../config/customAxios";
 
 export const AdminOrderby = () => {
   const [show, setShow] = useState(false);
+  const [orders, setOrders] = useState([]);
 
   const CoderEncode = (item) => {
     if (item.deliver === "ready") {
@@ -44,6 +46,15 @@ export const AdminOrderby = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  async function getData() {
+    return await customAxios.get("/account/order").then((res) => {
+      console.log(res.data);
+      setOrders(res.data);
+    });
+  }
+  useEffect(() => {
+    getData();
+  }, []);
   const statusHandler = (e, index) => {
     console.log(e.target.value);
     console.log(item[index]);
