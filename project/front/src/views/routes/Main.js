@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
-import axios from "axios";
+import { customAxios } from "../../config/customAxios";
 import cssMain from "../css/Main.module.css";
 
 const Main = () => {
@@ -10,8 +10,8 @@ const Main = () => {
 
   const [products, setProducts] = useState([]);
   async function getData() {
-    return await axios
-      .get("http://localhost:3001/products")
+    return await customAxios
+      .get("/products")
       .then((res) => {
         setProducts(res.data);
       })

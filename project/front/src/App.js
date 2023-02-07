@@ -26,9 +26,9 @@ function App() {
   // 이 admin이 true 이면, Navbar=> admin 화면으로 변경
   if (JWT) {
     isAdmin =
-      atob(JWT.split(".")[1]) == "63ddef45f5075428f51969df" ? true : false;
+      atob(JWT.split(".")[1]) === "63ddef45f5075428f51969df" ? true : false;
     isAdmin = false;
-    console.log(isAdmin);
+    // console.log(isAdmin);
     // 이거 실제로 해보면..??
     // isAdmin = JSON.parse(atob(JWT.split(".")[1])).admin
   }
@@ -38,16 +38,6 @@ function App() {
     alert("로그아웃 완료");
     navigate("/");
   }
-
-  // 창 닫을 시 JWT 토큰 삭제
-  window.addEventListener(
-    "beforeunload",
-    function (e) {
-      // clean localStorage here
-      localStorage.removeItem("JWT");
-    },
-    false
-  );
 
   return (
     <div className="App">

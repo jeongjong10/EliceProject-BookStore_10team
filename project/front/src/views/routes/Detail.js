@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button, Container, Row, Col, Form } from "react-bootstrap";
-import axios from "axios";
+import { customAxios } from "../../config/customAxios";
 
 import cssDetail from "../css/Detail.module.css";
 import cssItemList from "../css/ShowItemList.module.css";
@@ -23,8 +23,8 @@ const Detail = () => {
   });
 
   async function getData() {
-    return await axios
-      .get(`http://localhost:3001/products/${id}`)
+    return await customAxios
+      .get(`/products/${id}`)
       .then((res) => {
         setProduct(res.data);
       })
@@ -36,7 +36,7 @@ const Detail = () => {
 
   // 장바구니 추가
   function addCart() {
-    if (!localStorage.key("cart")) {
+    if (!localStorage.getItem("cart")) {
       localStorage.setItem(
         "cart",
         JSON.stringify([
