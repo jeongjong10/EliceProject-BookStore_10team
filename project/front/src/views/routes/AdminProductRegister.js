@@ -1,28 +1,72 @@
-import React from "react";
-import { Card, Container, Row, Col, ListGroup, Nav } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import {
+  Button,
+  Container,
+  Row,
+  Col,
+  Form,
+  InputGroup,
+  Stack,
+} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import cssCart from "../css/Cart.module.css";
+import cssOrder from "../css/Order.module.css";
+import { customAxios } from "../../config/customAxios";
 
 const AdminProductRegister = () => {
+  const navigate = useNavigate();
+
   return (
-    <Container>
+    <Container className="subContainer">
+      <div className={cssCart.titleArea}>
+        <h2 className="page-title">상품등록</h2>
+      </div>
       <Row>
         <Col xs lg="2">
-          <button>전체 주문 관리</button>
-          <br />
-          <button>카테고리/상품 관리</button>
-          <br />
-          <button>상품 등록</button>
-          <br />
+          <Stack gap={3}>
+            <button className="order">전체 주문 관리</button>
+
+            <button className="manager">카테고리/ 상품관리</button>
+            <button className="deleted">상품등록</button>
+          </Stack>
         </Col>
-        <Col>
-          <div>이름</div>
-          <div>카테고리</div>
-          <div>브랜드</div>
-          <div>설명</div>
-          <div>상세설명</div>
-          <div>사진</div>
-          <div>재고수</div>
-          <div>가격</div>
-          <div>검색 키워드</div>
+        <Col className={cssOrder.deliveryInfo}>
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicUsername">
+              <Form.Label>상품명</Form.Label>
+              <Form.Control />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>카테고리</Form.Label>
+              <Form.Control />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPasswordConfirm">
+              <Form.Label>제조사</Form.Label>
+              <Form.Control />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPhone">
+              <Form.Label>설명</Form.Label>
+              <Form.Control />
+            </Form.Group>
+            ㅔ
+            <Form.Group className="mb-3" controlId="formBasicPhone">
+              <Form.Label>상세 설명</Form.Label>
+              <Form.Control />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPhone">
+              <Form.Label>사진</Form.Label>
+              <Form.Control />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPhone">
+              <Form.Label>재고수</Form.Label>
+              <Form.Control />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPhone">
+              <Form.Label>가격</Form.Label>
+              <Form.Control />
+            </Form.Group>
+            <Button>저장</Button>
+          </Form>
         </Col>
       </Row>
     </Container>
