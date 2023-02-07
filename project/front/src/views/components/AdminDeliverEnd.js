@@ -1,68 +1,83 @@
-import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import {
-  Card,
-  Container,
-  Row,
-  Col,
-  ListGroup,
-  Nav,
-  Stack,
-  Tab,
-  Tabs,
-  Button,
-  Table,
-  Modal,
-  Dropdown,
-} from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+
+import { Container, Row, Col, Button, Table, Modal } from "react-bootstrap";
 import cssAdmin from "../css/Admin.module.css";
-import { item } from "../../orders";
 
-export const AdminDeliverEnd = () => {
-  const [show, setShow] = useState(false);
+import { customAxios } from "../../config/customAxios";
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const CoderEncode = (item) => {
-    if (item.deliver === "ready") {
-      return "배송중";
-    } else if (item.deliver === "state") {
-      return "배송대기";
-    } else if (item.deliver === "done") {
-      return "배송완료";
-    } else if (item.deliver === "cancle") {
-      return "주문취소";
-    } else if (item === "ready") {
-      return "배송중";
-    } else if (item === "state") {
-      return "배송대기";
-    } else if (item === "cancel") {
-      return "주문취소";
-    } else if (item === "done") {
-      return "배송완료";
+export const AdminOrderby = () => {
+  const [adminOrders, setAdminOrders] = useState([]);
+
+  async function getData() {
+    return await customAxios.get("admin/orders").then((res) => {
+      console.log(res.data);
+      setAdminOrders(res.data);
+    });
+  }
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const AdminOrderProduct = (adminOrders) => {
+    if (adminOrders.orderList.legnth > 1) {
+      return adminOrders.orderList.map(
+        (orderList, index) =>
+          `${adminOrders.orderList[index].productName} / ${adminOrders.orderList[index].count} 개`
+      );
+    } else {
+      return `${adminOrders.orderList[0].productName} / ${adminOrders.orderList[0].count} 개`;
     }
   };
-  const statusHandler = (e) => {
-    console.log(e.target.value);
-    console.log(e.item);
-    console.log(item);
-    const deliver = e.target.value;
-    if (window.confirm("정말 수정하시겠습니까?") === false) {
-      return;
-    }
+
+  const AdminModalDelete = (props) => {
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const handleDataDelete = async (e) => {
+      await customAxios
+        .delete(`/admin/orders/false`)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    };
+
+    return (
+      <>
+        <Button variant="primary" onClick={handleShow}>
+          주문삭제
+        </Button>
+
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>주문삭제</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>주문을 삭제하시겠습니까?{props._id}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              아니요
+            </Button>
+            <Button variant="primary" onClick={handleDataDelete}>
+              예
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
   };
+
   return (
     <>
       <Container className="subContainer">
         <Container>
           <Row>
             <Col>
-              <h>총 주문수</h>
-              <h2>count</h2>
-            </Col>
-            <Col>
-              <h>배송완료</h>
-              <h2>count</h2>
+              <h>총 주문취소 수</h>
+              <h2>{adminOrders.length}</h2>
             </Col>
           </Row>
         </Container>
@@ -72,75 +87,47 @@ export const AdminDeliverEnd = () => {
               <thead>
                 <tr>
                   <th>주문번호</th>
-                  <th>상품명</th>
+                  <th>상품명/수량</th>
                   <th>주문날짜</th>
-                  <th>수량</th>
-                  <th>배송상태</th>
                   <th>가격</th>
                   <th>삭제</th>
                 </tr>
               </thead>
               <tbody>
-                {item.map((item, index) => {
-                  if (item.deliver === "cancel") {
+                {adminOrders.map((adminOrders, index) => {
+                  if (adminOrders.activate === false) {
                     return (
-                      <tr key={item}>
+                      <tr>
                         {/* table start */}
-                        <td>{item.itemId}</td>
+                        <td>{adminOrders.orderNumber}</td>
                         <td className={cssAdmin.tdAlignLeft}>
-                          <img
+                          {/* <img
                             src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
                             className={`${cssAdmin.productThumbnail}`}
-                          />
-                          {item.itemName}
+                          /> */}
+                          {AdminOrderProduct(adminOrders)}
                         </td>
-                        <td>{item.orderday}</td>
-                        <td>
-                          <p className={cssAdmin.qty}>{item.amount}</p>
-                        </td>
-                        <td>
-                          <select
-                            value={CoderEncode(item)}
-                            name="status"
-                            onChange={statusHandler}
+                        <td>{adminOrders.createdAt.slice(0, 10)}</td>
+                        {/* <td>
+                          <Button
+                            variant="outline-secondary"
+                            className={cssAdmin.qtyButton}
+                            value="item"
                           >
-                            <option value={CoderEncode("ready")}>
-                              {CoderEncode("ready")}
-                            </option>
-                            <option value={CoderEncode("state")}>
-                              {CoderEncode("state")}
-                            </option>
-                            <option value={CoderEncode("done")}>
-                              {CoderEncode("done")}
-                            </option>
-                            <option value={CoderEncode("cancel")}>
-                              {CoderEncode("cancel")}
-                            </option>
-                          </select>
-                        </td>
-                        <td>{item.amount * item.price}</td>
-                        <td>
-                          <Button variant="primary" onClick={handleShow}>
-                            삭제
+                            -
                           </Button>
-
-                          <Modal
-                            show={show}
-                            onHide={handleClose}
-                            backdrop="static"
-                            keyboard={false}
+                          <p className={cssAdmin.qty}>{adminOrders.amount}</p>
+                          <Button
+                            variant="outline-secondary"
+                            className={cssAdmin.qtyButton}
+                            value="item"
                           >
-                            <Modal.Header closeButton>
-                              <Modal.Title>삭제</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>삭제하시겠습니까?</Modal.Body>
-                            <Modal.Footer>
-                              <Button variant="secondary" onClick={handleClose}>
-                                취소
-                              </Button>
-                              <Button variant="primary">적용</Button>
-                            </Modal.Footer>
-                          </Modal>
+                            +
+                          </Button>
+                        </td> */}
+                        <td>{adminOrders.totalPrice}</td>
+                        <td>
+                          <AdminModalDelete />
                         </td>
                       </tr>
                     );

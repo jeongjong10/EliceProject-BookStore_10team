@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { useParams } from "react-router-dom";
 import { customAxios } from "../../config/customAxios";
 
 export const ModalCancel = (props) => {
