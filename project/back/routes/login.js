@@ -12,7 +12,7 @@ router.post("/", async(req, res, next) => {
         console.log(
             "------------------- 사용자 로그인 시도 ------------------------"
         );
-        const { email, password } = JSON.parse(req.body);
+        const { email, password } = req.body;
 
         console.log("사용자 입력 : ", email);
         console.log("사용자 입력 : ", password);
@@ -74,7 +74,6 @@ router.post("/", async(req, res, next) => {
                 "------------------- 사용자 토큰 발급 완료 ------------------------"
             );
         }
-
     } catch (err) {
         next(err);
     }
