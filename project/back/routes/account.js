@@ -128,7 +128,7 @@ router.delete("/", verifyUser(), async(req, res, next) => {
             _id: ObjectId(verifiedUser_id),
         });
 
-        if (checkpassword.password !== getHash(req.body.password)) {
+        if (checkpassword.password !== getHash(JSON.parse(req.body).password)) {
             console.error("비밀번호 불일치");
             console.log(
                 "------------------- 사용자 로그인 실패 ------------------------"
