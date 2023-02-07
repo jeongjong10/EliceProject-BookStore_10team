@@ -47,11 +47,12 @@ const upload = multer({
     limits: { fileSize: 1000000 } // 파일 사이즈 (단위는 byte)
 })
 
-app.post("upload", upload.single("img"), (req, res, next) => {
+app.post("/upload", upload.single("img"), (req, res, next) => {
         res.send({
             fileName: req.file.filename
         })
     })
+    //
     // public/img에 업로드 
     // => 프론트에 filename 전송 
     // =>  상품 등록 페이지 이미지칸에 filename 입력 
