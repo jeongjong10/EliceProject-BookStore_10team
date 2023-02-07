@@ -66,9 +66,10 @@ router.post("/", async(req, res, next) => {
                 JWT : token,
                 admin : true
             });
+        } else {
+            res.status(200).json({JWT : token});
+            console.log("------------------- 사용자 토큰 발급 완료 ------------------------");
         }
-        res.status(200).json({JWT : token});
-        console.log("------------------- 사용자 토큰 발급 완료 ------------------------");
     } catch (err) {
         next(err);
     }
