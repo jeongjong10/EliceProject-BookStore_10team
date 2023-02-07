@@ -24,7 +24,9 @@ export const ShowItemList = ({ data /*, page */ }) => {
               </div>
               <Card.Body>
                 <Card.Title>{product.productName}</Card.Title>
-                <Card.Text>{product.price.toLocaleString("en-US")}</Card.Text>
+                <Card.Text>
+                  {product.price.toLocaleString("en-US")} 원
+                </Card.Text>
                 {/* {pageLocation == 'admin' && (
                   <button>+</button>
                 )} */}

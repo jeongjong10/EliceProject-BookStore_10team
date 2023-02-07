@@ -4,7 +4,6 @@ import { Button, Container, Row, Col, Form } from "react-bootstrap";
 import { customAxios } from "../../config/customAxios";
 
 import cssDetail from "../css/Detail.module.css";
-import cssItemList from "../css/ShowItemList.module.css";
 
 const Detail = () => {
   const { id } = useParams();
@@ -68,12 +67,12 @@ const Detail = () => {
     <>
       <Container className="subContainer">
         <Row>
-          <Col sm={4}>
-            <div className={cssItemList.productThumbnail}>
+          <Col>
+            <div className={cssDetail.productThumbnail}>
               <img src={product.img} />
             </div>
           </Col>
-          <Col sm={8} className={cssDetail.productDescription}>
+          <Col className={cssDetail.productDescription}>
             <h2>{product.productName}</h2>
             <h4>{product.price.toLocaleString("en-US")} 원</h4>
 

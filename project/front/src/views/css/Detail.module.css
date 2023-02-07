@@ -26,3 +26,17 @@
 .counting input {
   width: 70px;
 }
+
+.productThumbnail {
+  width: 60%;
+  background-color: rgb(232, 232, 232);
+  border-radius: 8px;
+  overflow: hidden;
+  float: right;
+}
+.productThumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}

@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  FloatingLabel,
+  Button,
+  Container,
+  Row,
+  Col,
+  Form,
+  InputGroup,
+} from "react-bootstrap";
 import styles from "../css/Login.module.css";
 import { customAxios } from "../../config/customAxios";
 import { Regex } from "../components/Regex";
@@ -67,52 +76,61 @@ const Login = () => {
   return (
     <div className={styles.authFormContainer}>
       <form className={styles.loginForm} onSubmit={handleSubmit}>
-        <label htmlFor="email" className={styles.label}>
-          Email
-        </label>
-        <input
+        <h1 className={styles.title}>로그인</h1>
+        <FloatingLabel
+          controlId="floatingInput"
+          label="이메일 주소"
+          className="mb-1"
           value={email}
           onChange={handleEmail}
-          className={styles.input}
           type="email"
-          placeholder="example@elice.com"
           id="email"
           name="email"
-        />
+        >
+          <Form.Control type="email" placeholder="example@elice.com" />
+        </FloatingLabel>
         <div className={styles.errorMessageWrap}>
           {!emailValid && email.length > 0 && (
             <div>올바른 이메일을 입력해주세요</div>
           )}
         </div>
-        <label htmlFor="password">Password</label>
-        <input
+        <FloatingLabel
+          controlId="floatingPassword"
+          label="패스워드"
+          className="mb-1"
           value={password}
           onChange={handlePassword}
           type="password"
           placeholder="*******"
           id="password"
           name="password"
-        />
+        >
+          <Form.Control type="password" placeholder="Password" />
+        </FloatingLabel>
         <div className={styles.errorMessageWrap}>
           {!passwordValid && password.length > 0 && (
             <div>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.</div>
           )}
         </div>
-        <button
-          onClick={onClickConfirmButton}
-          disabled={notAllow}
-          type="submit"
-          className={styles.loginButton}
-        >
-          로그인
-        </button>
-
-        <button
-          className={styles.linkButton}
-          onClick={() => navigate("/Register")}
-        >
-          회원가입
-        </button>
+        <div className="d-grid gap-2">
+          <Button
+            variant="primary"
+            size="lg"
+            className="mb-1"
+            onClick={onClickConfirmButton}
+            disabled={notAllow}
+            type="submit"
+          >
+            로그인
+          </Button>
+          <Button
+            variant="light"
+            size="lg"
+            onClick={() => navigate("/Register")}
+          >
+            회원가입
+          </Button>
+        </div>
       </form>
     </div>
   );

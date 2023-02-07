@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Nav } from "react-bootstrap";
 import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
 import { customAxios } from "../../config/customAxios";
+import cssList from "../css/List.module.css";
 
 const List = () => {
   const navigate = useNavigate();
@@ -40,20 +41,19 @@ const List = () => {
               {categoryLists.map((v, i) => {
                 if (v == category) {
                   return (
-                    <Nav.Item key={i}>
-                      <Nav.Link
-                        style={{ color: "red" }}
+                    <Nav.Item key={i} className={cssList.selected}>
+                      <a
                         onClick={() => {
                           setCategory(v);
                         }}
                       >
                         {v}
-                      </Nav.Link>
+                      </a>
                     </Nav.Item>
                   );
                 }
                 return (
-                  <Nav.Item key={i}>
+                  <Nav.Item key={i} className={cssList.unSelected}>
                     <Nav.Link
                       onClick={() => {
                         setCategory(v);
@@ -67,9 +67,10 @@ const List = () => {
             </Nav>
           </Col>
           <Col>
-            <h2 className="page-title">{category}</h2>
+            <h2 className={cssList.pageTitle}>{category}</h2>
             <ShowItemList
               data={products.filter((f) => f.categoryName == category)}
+              // className={}
             />
           </Col>
         </Row>
