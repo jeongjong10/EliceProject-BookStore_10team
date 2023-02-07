@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Table, Modal } from "react-bootstrap";
 import cssAdmin from "../css/Admin.module.css";
 import { customAxios } from "../../config/customAxios";
+import { OrderProduct } from "./OrderProduct";
 
 export const AdminOrderby = () => {
   const [adminOrders, setAdminOrders] = useState([]);
@@ -13,33 +14,40 @@ export const AdminOrderby = () => {
       setAdminOrders(res.data);
     });
   }
+
   useEffect(() => {
     getData();
   }, []);
 
-  const AdminOrderProduct = (adminOrders) => {
-    if (adminOrders.orderList.legnth > 1) {
-      return adminOrders.orderList.map(
-        (orderList, index) =>
-          `${adminOrders.orderList[index].productName} / ${adminOrders.orderList[index].count} 개`
-      );
-    } else {
-      return `${adminOrders.orderList[0].productName} / ${adminOrders.orderList[0].count} 개`;
-    }
-  };
+  // const AdminOrderProduct = (adminOrders) => {
+  //   if (adminOrders.orderList.legnth > 1) {
+  //     return adminOrders.orderList.map(
+  //       (orderList, index) =>
+  //         `"${adminOrders.orderList[index].productName}" : ${adminOrders.orderList[index].count} 개  `
+  //     );
+  //   } else {
+  //     return `"${adminOrders.orderList[0].productName}" : ${adminOrders.orderList[0].count} 개`;
+  //   }
+  // };
 
   const statusHandler = async (e, index) => {
+    const id = e.target.id;
     const status = e.target.value;
+
     if (window.confirm("정말 수정하시겠습니까?") === false) {
       return;
     }
-    return await customAxios.patch("admin/orders", { status }).then((res) => {
-      console.log(res.data);
-      setAdminOrders(res.data);
-    });
+    return await customAxios
+      .patch(`admin/orders/${id}`, { status })
+      .then((res) => {
+        console.log(res.data);
+        setAdminOrders(res.data);
+        getData();
+        window.location.reload();
+      });
   };
 
-  const stateCount = (props) => {
+  const StateCount = (props) => {
     let count = 0;
     for (let orders of props) {
       if (orders.status === "배송준비") {
@@ -49,7 +57,7 @@ export const AdminOrderby = () => {
     return count;
   };
 
-  const deliverCount = (props) => {
+  const DeliverCount = (props) => {
     let count = 0;
     for (let orders of props) {
       if (orders.status === "배송중") {
@@ -59,7 +67,7 @@ export const AdminOrderby = () => {
     return count;
   };
 
-  const endCount = (props) => {
+  const EndCount = (props) => {
     let count = 0;
     for (let orders of props) {
       if (orders.status === "배송완료") {
@@ -76,9 +84,10 @@ export const AdminOrderby = () => {
 
     const handleDataDelete = async (e) => {
       await customAxios
-        .delete(`/admin/orders/${props._id}`)
+        .delete(`/admin/orders/${props.orderId}`)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
+      handleClose();
     };
 
     return (
@@ -96,7 +105,7 @@ export const AdminOrderby = () => {
           <Modal.Header closeButton>
             <Modal.Title>주문취소</Modal.Title>
           </Modal.Header>
-          <Modal.Body>주문을 취소하시겠습니까?{props._id}</Modal.Body>
+          <Modal.Body>주문을 취소하시겠습니까?{props.orderId}</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               아니요
@@ -121,15 +130,15 @@ export const AdminOrderby = () => {
             </Col>
             <Col>
               <h>배송대기중</h>
-              <h2>{stateCount(adminOrders)}</h2>
+              <h2>{StateCount(adminOrders)}</h2>
             </Col>
             <Col>
               <h>배송중</h>
-              <h2>{deliverCount(adminOrders)}</h2>
+              <h2>{DeliverCount(adminOrders)}</h2>
             </Col>
             <Col>
               <h>배송완료</h>
-              <h2>{endCount(adminOrders)}</h2>
+              <h2>{EndCount(adminOrders)}</h2>
             </Col>
           </Row>
         </Container>
@@ -154,15 +163,15 @@ export const AdminOrderby = () => {
                     adminOrders.status === "배송완료"
                   ) {
                     return (
-                      <tr>
+                      <tr key={index}>
                         {/* table start */}
                         <td>{adminOrders.orderNumber}</td>
                         <td className={cssAdmin.tdAlignLeft}>
                           {/* <img
                             src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssAdmin.productThumbnail}`}
+                            className={`${cssAdmin.productThumbnail}`} useEffec쪽이 문제인줄알았는데 음....
                           /> */}
-                          {AdminOrderProduct(adminOrders)}
+                          {OrderProduct(adminOrders)}
                         </td>
                         <td>{adminOrders.createdAt.slice(0, 10)}</td>
                         {/* <td>
@@ -184,6 +193,7 @@ export const AdminOrderby = () => {
                         </td> */}
                         <td>
                           <select
+                            id={adminOrders._id}
                             value={adminOrders.status}
                             name="status"
                             onChange={(e) => statusHandler(e, index)}

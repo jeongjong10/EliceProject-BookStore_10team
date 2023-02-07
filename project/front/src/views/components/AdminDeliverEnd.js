@@ -5,7 +5,7 @@ import cssAdmin from "../css/Admin.module.css";
 
 import { customAxios } from "../../config/customAxios";
 
-export const AdminOrderby = () => {
+export const AdminDeliverEnd = () => {
   const [adminOrders, setAdminOrders] = useState([]);
 
   async function getData() {
@@ -28,6 +28,15 @@ export const AdminOrderby = () => {
       return `${adminOrders.orderList[0].productName} / ${adminOrders.orderList[0].count} 개`;
     }
   };
+  const CancelCount = (props) => {
+    let count = 0;
+    for (let orders of props) {
+      if (orders.activate === false) {
+        count += 1;
+      }
+    }
+    return count;
+  };
 
   const AdminModalDelete = (props) => {
     const [show, setShow] = useState(false);
@@ -36,9 +45,10 @@ export const AdminOrderby = () => {
 
     const handleDataDelete = async (e) => {
       await customAxios
-        .delete(`/admin/orders/false`)
+        .delete(`/admin/falseOrders`)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
+      handleClose();
     };
 
     return (
@@ -77,7 +87,7 @@ export const AdminOrderby = () => {
           <Row>
             <Col>
               <h>총 주문취소 수</h>
-              <h2>{adminOrders.length}</h2>
+              <h2>{CancelCount(adminOrders)}</h2>
             </Col>
           </Row>
         </Container>
@@ -97,7 +107,7 @@ export const AdminOrderby = () => {
                 {adminOrders.map((adminOrders, index) => {
                   if (adminOrders.activate === false) {
                     return (
-                      <tr>
+                      <tr key={index}>
                         {/* table start */}
                         <td>{adminOrders.orderNumber}</td>
                         <td className={cssAdmin.tdAlignLeft}>
@@ -127,7 +137,7 @@ export const AdminOrderby = () => {
                         </td> */}
                         <td>{adminOrders.totalPrice}</td>
                         <td>
-                          <AdminModalDelete />
+                          <AdminModalDelete orderId={adminOrders._id} />
                         </td>
                       </tr>
                     );
