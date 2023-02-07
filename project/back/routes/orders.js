@@ -16,7 +16,7 @@ router.get("/", verifyUser(), async(req, res, next) => {
         const orders = await Order.find({ userId: verifiedUser_id }); // 현재 유저의 주문내역 찾기
 
         if (!orders[0]) {
-            console.error("사용자의 주문 내역이 없습니다.")
+            console.error("사용자의 주문 내역이 없습니다.");
             console.log(
                 "---------------- 사용자 주문 조회 실패 ---------------------"
             );
@@ -44,7 +44,7 @@ router.post("/", verifyUser(), async(req, res, next) => {
         // 현재 유저 불러오기
         const verifiedUser_id = req.verifiedUser_id;
 
-        // req.body: address(postalCode, address1, address2, recieverName, recieverPhone), 
+        // req.body: address(postalCode, address1, address2, recieverName, recieverPhone),
         // orderNumber, comment, status, orderList(productName, count),
         // totalProductPrice, shipping, totalPrice
 
@@ -67,7 +67,7 @@ router.post("/", verifyUser(), async(req, res, next) => {
         console.log(
             "---------------- 사용자 주문 데이터 생성 성공 ---------------------"
         );
-        res.status(200).json({ orderNumber : newOrder.orderNumber });
+        res.status(200).json({ orderNumber: newOrder.orderNumber });
     } catch (e) {
         next(e);
     }

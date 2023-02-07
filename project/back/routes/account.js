@@ -64,7 +64,7 @@ router.get("/", verifyUser(), async(req, res, next) => {
             );
             throw new Error("사용자 입력 패스워드가 일치하지 않습니다");
         }
-        
+
         res.status(200).json(user);
         console.log("사용자 정보 전송 완료");
         console.log(
@@ -85,19 +85,18 @@ router.post("/", verifyUser(), async(req, res, next) => {
 
         // 수정 요청 데이터 확인
         const updateData = req.body;
-        
+
         if (Object.keys(updateData).length == 0) {
             console.error("req.body 확인 실패");
             console.log(
                 "------------------- 마이페이지 사용자 정보 수정 내역 확인 실패 ------------------------"
-                );
-                throw new Error("req.body 확인에 실패하였습니다");
+            );
+            throw new Error("req.body 확인에 실패하였습니다");
         }
         if (updateData.password) {
             updateData.password = getHash(req.body.password);
         }
         console.log("updateData : ", updateData);
-
 
         // 유저 검색 후 수정 내역 업데이트
         await User.findByIdAndUpdate({ _id: ObjectId(verifiedUser_id) },
