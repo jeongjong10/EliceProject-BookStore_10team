@@ -36,6 +36,7 @@ const OrderSchema = new Schema({
             type: String,
             required: true,
         },
+        // 배송준비,  배송중,  배송완료
         status: {
             type: String,
             required: true,
