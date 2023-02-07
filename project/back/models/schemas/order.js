@@ -39,7 +39,7 @@ const OrderSchema = new Schema({
         status: {
             type: String,
             required: true,
-            // default: "상품 준비중" 넣는 거 어떠신가요 ?? [종열] 좋아요
+            default: "상품 준비 중",
         },
         // 주문 내역은 배열
         orderList: [{
@@ -59,6 +59,7 @@ const OrderSchema = new Schema({
         shipping: {
             type: Number,
             required: true,
+            default: 3000
         },
         totalPrice: {
             type: Number,

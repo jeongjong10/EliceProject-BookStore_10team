@@ -5,13 +5,19 @@ const mongoose = require("mongoose");
 
 // ------ USER: 전체 상품 조회 ------
 router.get("/", async(req, res, next) => {
+    console.log("---------------- 전체 상품 조회 시도 ---------------------")
     try {
-        const products = await Product.find({});
+        // 활성화 상태의 상품들 전체 불러오기
+        const products = await Product.find({activate : true});
 
         // 상품을 찾지 못했을 경우 에러처리
         if (!products) {
+            console.errer("상품 조회 실패")
+            console.log("---------------- 상품 조회 실패 ---------------------")
             throw new Error("상품을 찾을 수 없습니다.");
         }
+
+        console.log("---------------- 전체 상품 조회 성공 ---------------------")
         res.status(200).json(products);
     } catch (e) {
         next(e);
@@ -20,28 +26,23 @@ router.get("/", async(req, res, next) => {
 
 // ------ USER: 개별 상품 조회 ------
 router.get("/:_id", async(req, res, next) => {
+    console.log("---------------- 개별 상품 조회 시도 ---------------------")
+
     try {
         const { _id } = req.params;
-
-        if (!_id) {
-            console.error("_id 값이 없습니다.");
-            throw new Error("_id 값이 없습니다.");
-        }
-
+        
         const id = mongoose.Types.ObjectId(_id);
 
-        const product = await Product.findOne({ _id: id });
-
-        console.log(product);
-
-        // 상품을 찾지 못했을 경우 에러처리
+        // 동일한 _id값 이면서, 활성화 상태의 상품 검색
+        const product = await Product.findOne({ _id: id, activate : true });
         if (!product) {
-            console.error("존재하지 않는 상품입니다.");
+            console.error("상품 조회 실패.");
+            console.log("---------------- 상품 조회 실패 ---------------------")
             throw new Error("존재하지 않는 상품입니다.");
         } else {
-            // 찾았을 경우 성공, 반환
-            console.log(product);
-            res.status(200).json(product).end();
+            console.log("조회된 상품 : ", product);
+            console.log("---------------- 개별 상품 조회 성공 ---------------------")
+            res.status(200).json(product);
         }
     } catch (e) {
         next(e);

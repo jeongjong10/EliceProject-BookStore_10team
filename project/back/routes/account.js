@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const ObjectId = require("mongodb").ObjectId;
-const verifyUser = require("../middleware/verifyUser");
+const getHash = require("../utils/hash-password");
+const verifyUser = require("../middleware/verifyUser_middlewaring");
 const { Order } = require("../models/index");
 const { User } = require("../models/index");
 

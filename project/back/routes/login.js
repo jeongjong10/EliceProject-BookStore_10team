@@ -44,19 +44,29 @@ router.post("/", async(req, res, next) => {
             throw new Error("비밀번호가 일치하지 않음");
         }
 
+        // 계정 활성화 여부 activate 확인하기
+        if (user.activate !== true) {
+            console.error("비활성화 상태의 계정");
+            console.log(
+                "------------------- 사용자 로그인 실패 ------------------------"
+            );
+            throw new Error("비활성화 상태의 계정");
+        }
+
         // 로그인 성공 jwt token 생성
         console.log(
             "------------------- 사용자 토큰 발급 시도 ------------------------"
         );
         const token = generateToken(user._id.toJSON());
-        
-        // // 응답으로 JWT 전송
-        // res.status(200).json({
-        //     "JWT" : token,
-        //     "result" : "true",
-        //     "message" : "로그인 성공, 토큰 발급"
-        //   });
+
         // 응답으로 JWT 전송
+        if (user.admin) {
+            console.log("------------------- 관리자 토큰 발급 완료 ------------------------");
+            res.status(200).json({
+                JWT : token,
+                admin : true
+            });
+        }
         res.status(200).json({JWT : token});
         console.log("------------------- 사용자 토큰 발급 완료 ------------------------");
     } catch (err) {
