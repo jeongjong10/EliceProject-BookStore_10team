@@ -12,7 +12,7 @@ router.post("/", async(req, res, next) => {
         console.log(
             "------------------- 사용자 로그인 시도 ------------------------"
         );
-        const { email, password } = req.body;
+        const { email, password } = JSON.parse(req.body);
 
         console.log("사용자 입력 : ", email);
         console.log("사용자 입력 : ", password);

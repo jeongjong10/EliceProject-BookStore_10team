@@ -48,7 +48,7 @@ router.post("/", verifyUser(), async(req, res, next) => {
         // orderNumber, comment, status, orderList(productName, count),
         // totalProductPrice, shipping, totalPrice
 
-        const orders = req.body;
+        const orders = JSON.parse(req.body);
 
         console.log(orders.params);
         if (Object.keys(orders).length == 0) {
@@ -98,7 +98,7 @@ router.patch("/:_id", verifyUser(), async(req, res, next) => {
             throw new Error("req.params가 없습니다.");
         }
 
-        const updateOrder = req.body;
+        const updateOrder = JSON.parse(req.body);
         if (Object.keys(updateOrder).length == 0) {
             console.error("req.body 없음");
             console.log(
