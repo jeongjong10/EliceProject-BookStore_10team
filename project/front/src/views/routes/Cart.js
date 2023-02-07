@@ -10,14 +10,14 @@ const Cart = () => {
   // 로컬스토리지 cart 데이터 가공
   let carts = JSON.parse(localStorage.getItem("cart"));
 
-  const [totalCount, setTotalCount] = useState(0);
-  const [totalProductPrice, setTotalProductPrice] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
-
   let cartItemsId = [];
   if (carts) {
     cartItemsId = carts.map((v, i) => v._id);
   }
+
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalProductPrice, setTotalProductPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   // query parameter로 보내야 하는 URL 가공
   function getRouteURL() {
@@ -38,6 +38,7 @@ const Cart = () => {
       .get(`${getRouteURL()}`)
       .then((res) => {
         if (res.data.result !== "fail") {
+          console.log(res.data);
           const data = res.data;
           data.map((v, i) => {
             v["count"] = carts.filter((f) => f._id == v._id)[0].count;
