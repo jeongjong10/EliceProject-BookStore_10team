@@ -14,7 +14,7 @@ customAxios.interceptors.request.use((config) => {
   /* JWT 토큰 */
   const userAccessToken = localStorage.getItem("JWT");
   if (userAccessToken) {
-    config.headers["X-AUTH-TOKEN"] = userAccessToken;
+    config.headers["authorization"] = `Bearer ${userAccessToken}`;
   }
   return config;
 });
