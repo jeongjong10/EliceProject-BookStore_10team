@@ -15,7 +15,7 @@ router.get("/order", verifyUser(), async(req, res, next) => {
         const verifiedUser_id = req.verifiedUser_id;
         console.log(verifiedUser_id);
 
-        const orders = await Order.find({ userId: verifiedUser_id });
+        const orders = await Order.find({ userId: verifiedUser_id, activate: true });
 
         console.log(orders);
         if (!orders[0]) {

@@ -124,19 +124,17 @@ const Cart = () => {
         postalCode: zonecode,
         address1: address1,
         address2: address2,
-        recieverName: receiverName,
-        recieverPhoneNumber: receiverPhone,
+        receiverName: receiverName,
+        receiverPhoneNumber: receiverPhone,
       },
       orderList,
       comment: finalCommentReq,
       totalProductPrice: totalProductPrice,
-      totalPrice,
-      status: "배송 준비 중",
-      shipping: 3000,
+      totalPrice
     };
     console.log("params", params);
     return await customAxios
-      .post("/orders", JSON.stringify(params))
+      .post("/orders", { params })
       .then((res) => {
         console.log(res.data);
         sessionStorage.setItem("orderNumber", res.data.orderNumber);
@@ -147,40 +145,40 @@ const Cart = () => {
   return (
     <Container className="subContainer">
       <div className={cssCart.titleArea}>
-        <h2 className="page-title">주문결제</h2>
-      </div>
+        <h2 className="page-title"> 주문결제 </h2>{" "}
+      </div>{" "}
       <Row>
         <Col className={cssOrder.deliveryInfo}>
-          <h3>배송지 정보</h3>
+          <h3> 배송지 정보 </h3>{" "}
           <Form>
             <Form.Group className="mb-3" controlId="formBasicUsername">
-              <Form.Label>이름</Form.Label>
+              <Form.Label> 이름 </Form.Label>{" "}
               <Form.Control
                 type="username"
                 placeholder="이름"
                 defaultValue={receiverName}
                 onChange={(e) => setReceiverName(e.target.value)}
-              />
-            </Form.Group>
+              />{" "}
+            </Form.Group>{" "}
             <Form.Group className="mb-3" controlId="formBasicPhone">
-              <Form.Label>연락처</Form.Label>
+              <Form.Label> 연락처 </Form.Label>{" "}
               <Form.Control
                 type="phone"
                 placeholder="연락처 입력"
                 defaultValue={receiverPhone}
                 onChange={(e) => setReceiverPhone(e.target.value)}
-              />
-              <Form.Text className="text-muted">예시) 01012345678</Form.Text>
-            </Form.Group>
+              />{" "}
+              <Form.Text className="text-muted"> 예시) 01012345678 </Form.Text>{" "}
+            </Form.Group>{" "}
             <Form.Group className="mb-3" controlId="formBasicAddress">
-              <Form.Label>주소</Form.Label>
+              <Form.Label> 주소 </Form.Label>{" "}
               <InputGroup>
                 <Form.Control
                   className="mb-1"
                   placeholder="우편번호"
                   defaultValue={zonecode}
                   onChange={(e) => setZonecode(e.target.value)}
-                />
+                />{" "}
                 <Button
                   className="mb-1"
                   variant="outline-secondary"
@@ -189,8 +187,8 @@ const Cart = () => {
                     setPopup(!popup);
                   }}
                 >
-                  검색
-                </Button>
+                  검색{" "}
+                </Button>{" "}
                 {popup && (
                   <Post
                     address1={address1}
@@ -198,25 +196,25 @@ const Cart = () => {
                     zonecode={zonecode}
                     setZonecode={setZonecode}
                   ></Post>
-                )}
-              </InputGroup>
+                )}{" "}
+              </InputGroup>{" "}
               <Form.Control
                 className="mb-1"
                 type="text"
                 placeholder="주소"
                 defaultValue={address1}
                 onChange={(e) => setAddress1(e.target.value)}
-              />
+              />{" "}
               <Form.Control
                 className="mb-1"
                 type="text"
                 placeholder="상세주소 입력"
                 defaultValue={address2}
                 onChange={(e) => setAddress2(e.target.value)}
-              />
-            </Form.Group>
+              />{" "}
+            </Form.Group>{" "}
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>요청사항</Form.Label>
+              <Form.Label> 요청사항 </Form.Label>{" "}
               <Form.Select
                 className="mb-1"
                 placeholder="배송시 요청사항을 선택해 주세요."
@@ -224,15 +222,15 @@ const Cart = () => {
                   setSelected(comments[e.target.value]);
                 }}
               >
-                <option value="0">배송시 요청사항을 선택해 주세요.</option>
-                <option value="1">직접 수령하겠습니다.</option>
-                <option value="2">배송 전 연락 바랍니다.</option>
-                <option value="3">부재 시 경비실에 맡겨주세요.</option>
-                <option value="4">부재 시 문 앞에 놓아주세요.</option>
-                <option value="5">부재 시 택배함에 넣어주세요.</option>
-                <option value="6">직접 입력</option>
-              </Form.Select>
-              {/* comment 직접 입력 */}
+                <option value="0"> 배송시 요청사항을 선택해 주세요. </option>{" "}
+                <option value="1"> 직접 수령하겠습니다. </option>{" "}
+                <option value="2"> 배송 전 연락 바랍니다. </option>{" "}
+                <option value="3"> 부재 시 경비실에 맡겨주세요. </option>{" "}
+                <option value="4"> 부재 시 문 앞에 놓아주세요. </option>{" "}
+                <option value="5"> 부재 시 택배함에 넣어주세요. </option>{" "}
+                <option value="6"> 직접 입력 </option>{" "}
+              </Form.Select>{" "}
+              {/* comment 직접 입력 */}{" "}
               {selected == "6" && (
                 <Form.Control
                   type="text"
@@ -241,40 +239,41 @@ const Cart = () => {
                     setComment(e.target.value);
                   }}
                 />
-              )}
-            </Form.Group>
-          </Form>
-        </Col>
+              )}{" "}
+            </Form.Group>{" "}
+          </Form>{" "}
+        </Col>{" "}
         <Col xs lg="3">
           <Row className={cssCart.orderInfo}>
-            <h3>결제 정보</h3>
+            <h3> 결제 정보 </h3>{" "}
             <div>
               <div className={cssOrder.orderProductsList}>
-                <p>주문 상품</p>
+                <p> 주문 상품 </p>{" "}
                 <div className={cssCart.orderList}>
+                  {" "}
                   {products.map((v, i) => {
                     return (
                       <p key={i}>
-                        {v.productName} / {v.count} 개
+                        {" "}
+                        {v.productName}/ {v.count} 개{" "}
                       </p>
                     );
-                  })}
-                </div>
-              </div>
+                  })}{" "}
+                </div>{" "}
+              </div>{" "}
               <div className={cssCart.info}>
-                <p>총 상품금액</p>
-                <p>{totalProductPrice.toLocaleString("en-US")} 원</p>
-              </div>
+                <p> 총 상품금액 </p>{" "}
+                <p> {totalProductPrice.toLocaleString("en-US")}원 </p>{" "}
+              </div>{" "}
               <div className={cssCart.info}>
-                <p>배송비</p>
-                <p>3,000 원</p>
-              </div>
-            </div>
+                <p> 배송비 </p> <p> 3, 000 원 </p>{" "}
+              </div>{" "}
+            </div>{" "}
             <div className={cssCart.result}>
-              <p>총 결제금액</p>
-              <h4>{totalPrice.toLocaleString("en-US")} 원</h4>
-            </div>
-          </Row>
+              <p> 총 결제금액 </p>{" "}
+              <h4> {totalPrice.toLocaleString("en-US")}원 </h4>{" "}
+            </div>{" "}
+          </Row>{" "}
           <Row className="justify-content-md-center">
             <Col>
               <div className="d-grid gap-2">
@@ -287,13 +286,13 @@ const Cart = () => {
                     // navigate("/order/complete"); // 나중에 지워야 됨
                   }}
                 >
-                  결제하기
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+                  결제하기{" "}
+                </Button>{" "}
+              </div>{" "}
+            </Col>{" "}
+          </Row>{" "}
+        </Col>{" "}
+      </Row>{" "}
     </Container>
   );
 };
