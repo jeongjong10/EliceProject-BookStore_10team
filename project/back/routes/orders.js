@@ -16,7 +16,7 @@ router.get("/", verifyUser(), async(req, res, next) => {
         const orders = await Order.find({ userId: verifiedUser_id }); // 현재 유저의 주문내역 찾기
 
         if (!orders[0]) {
-            console.error("사용자의 주문 내역이 없습니다.")
+            console.error("사용자의 주문 내역이 없습니다.");
             console.log(
                 "---------------- 사용자 주문 조회 실패 ---------------------"
             );
@@ -44,11 +44,13 @@ router.post("/", verifyUser(), async(req, res, next) => {
         // 현재 유저 불러오기
         const verifiedUser_id = req.verifiedUser_id;
 
-        // req.body: address(postalCode, address1, address2, recieverName, recieverPhone), 
+        // req.body: address(postalCode, address1, address2, recieverName, recieverPhone),
         // orderNumber, comment, status, orderList(productName, count),
         // totalProductPrice, shipping, totalPrice
 
         const orders = req.body;
+
+        console.log(orders.params);
         if (Object.keys(orders).length == 0) {
             console.error("req.body 없음");
             console.log(
@@ -60,14 +62,18 @@ router.post("/", verifyUser(), async(req, res, next) => {
         // userId는 직접 추가
         // User의 userId와 혼동이 올 수 있음 (쥬문의 userId에는 User의 _id 값이 들어가기 때문 )
 
-        const newOrder = await Order.create({...orders, userId: verifiedUser_id });
+        const newOrder = await Order.create({
+            ...orders.params,
+            userId: verifiedUser_id,
+        });
+
         // create 자체에서 required된 값들에 대한 에러를 검사한다.
 
         console.log("생성된 주문 데이터 : ", newOrder);
         console.log(
             "---------------- 사용자 주문 데이터 생성 성공 ---------------------"
         );
-        res.status(200).json({ orderNumber : newOrder.orderNumber });
+        res.status(200).json({ orderNumber: newOrder.orderNumber });
     } catch (e) {
         next(e);
     }

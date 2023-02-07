@@ -15,11 +15,11 @@ const address = {
         type: String,
         required: true,
     },
-    recieverName: {
+    receiverName: {
         type: String,
         required: true,
     },
-    recieverPhoneNumber: {
+    receiverPhoneNumber: {
         type: String,
         required: true,
     },
@@ -39,7 +39,7 @@ const OrderSchema = new Schema({
         status: {
             type: String,
             required: true,
-            default: "상품 준비 중",
+            default: "배송준비",
         },
         // 주문 내역은 배열
         orderList: [{
@@ -59,7 +59,7 @@ const OrderSchema = new Schema({
         shipping: {
             type: Number,
             required: true,
-            default: 3000
+            default: 3000,
         },
         totalPrice: {
             type: Number,
