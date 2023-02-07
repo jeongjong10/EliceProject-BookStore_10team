@@ -6,7 +6,7 @@ const { User } = require("../models/index");
 router.post("/", async(req, res, next) => {
     console.log("---------------- 사용자 회원 가입 시도 ---------------------");
     try {
-        const createUser = JWON.parse(req.body);
+        const createUser = req.body;
 
         // ------ 중복된 이메일 확인 ------
         const foundEmail = await User.findOne({ email: createUser.email });
