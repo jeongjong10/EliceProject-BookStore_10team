@@ -26,20 +26,11 @@ const address = {
 };
 
 const OrderSchema = new Schema({
+    order : new Schema ({
         address,
-        orderNumber: nanoId,
-        userId: {
-            type: String,
-            required: true,
-        },
         comment: {
             type: String,
             required: true,
-        },
-        status: {
-            type: String,
-            required: true,
-            default: "상품 준비 중",
         },
         // 주문 내역은 배열
         orderList: [{
@@ -51,27 +42,37 @@ const OrderSchema = new Schema({
                 type: Number,
                 required: true,
             },
-        }, ],
-        totalProductPrice: {
-            type: Number,
-            required: true,
-        },
-        shipping: {
-            type: Number,
-            required: true,
-            default: 3000
-        },
+        }],
         totalPrice: {
             type: Number,
             required: true,
         },
-        activate: {
-            type: Boolean,
+        totalProductPrice: {
+            type: Number,
             required: true,
-            default: true,
         },
+    }),
+    orderNumber: nanoId,
+    userId: {
+        type: String,
+        required: true,
     },
-
+    shipping: {
+        type: Number,
+        required: true,
+        default: 3000
+    },
+    status: {
+        type: String,
+        required: true,
+        default: "상품 준비 중",
+    },
+    activate: {
+        type: Boolean,
+        required: true,
+        default: true,
+    },
+},
     {
         timestamps: true,
     }
