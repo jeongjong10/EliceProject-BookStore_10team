@@ -14,6 +14,7 @@ export const ModalCancel = (props) => {
       .then((res) => {
         console.log(res);
         setShow(false);
+        window.location.reload();
       })
       .catch((err) => console.log(err));
   };

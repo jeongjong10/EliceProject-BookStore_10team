@@ -15,7 +15,10 @@ router.get("/order", verifyUser(), async (req, res, next) => {
     const verifiedUser_id = req.verifiedUser_id;
     console.log(verifiedUser_id);
 
-    const orders = await Order.find({ userId: verifiedUser_id });
+    const orders = await Order.find({
+      userId: verifiedUser_id,
+      activate: true,
+    });
 
     console.log(orders);
     if (!orders[0]) {
@@ -129,7 +132,7 @@ router.delete("/", verifyUser(), async (req, res, next) => {
       _id: ObjectId(verifiedUser_id),
     });
 
-    if (checkpassword.password !== getHash(req.body.password)) {
+    if (checkpassword.password !== getHash(JSON.parse(req.body).password)) {
       console.error("비밀번호 불일치");
       console.log(
         "------------------- 사용자 로그인 실패 ------------------------"

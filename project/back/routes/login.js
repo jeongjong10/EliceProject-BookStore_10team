@@ -61,14 +61,20 @@ router.post("/", async(req, res, next) => {
 
         // 응답으로 JWT 전송
         if (user.admin) {
-            console.log("------------------- 관리자 토큰 발급 완료 ------------------------");
+            console.log(
+                "------------------- 관리자 토큰 발급 완료 ------------------------"
+            );
             res.status(200).json({
-                JWT : token,
-                admin : true
+                JWT: token,
+                admin: true,
             });
+        } else {
+            res.status(200).json({ JWT: token });
+            console.log(
+                "------------------- 사용자 토큰 발급 완료 ------------------------"
+            );
         }
-        res.status(200).json({JWT : token});
-        console.log("------------------- 사용자 토큰 발급 완료 ------------------------");
+
     } catch (err) {
         next(err);
     }

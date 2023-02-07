@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Container,
@@ -12,18 +12,42 @@ import { useNavigate } from "react-router-dom";
 import cssCart from "../css/Cart.module.css";
 import cssOrder from "../css/Order.module.css";
 import Post from "../components/Post";
+import { customAxios } from "../../config/customAxios";
 
 const AcountPrivacy = () => {
   const navigate = useNavigate();
 
-  const [receiverName, setReceiverName] = useState();
-  const [receiverPassword, setReceiverPassword] = useState();
-  const [receiverConfirmPassword, setReceiverConfirmPassword] = useState();
-  const [receiverPhone, setReceiverPhone] = useState();
-  const [address2, setAddress2] = useState();
+  const [receiverName, setReceiverName] = useState("");
+  const [receiverPassword, setReceiverPassword] = useState("");
+  const [receiverConfirmPassword, setReceiverConfirmPassword] = useState("");
+  const [receiverPhone, setReceiverPhone] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [address1, setAddress1] = useState("");
   const [address, setAddress] = useState("");
+  const [zonecode, setZonecode] = useState("");
 
   const [popup, setPopup] = React.useState(false);
+  const [user, setUser] = useState([]);
+  async function getData() {
+    return await customAxios
+      .get("/account")
+      .then((res) => {
+        setUser(res.data);
+        setReceiverName(res.data.userName);
+        if (res.data.phone) {
+          setReceiverPhone(res.data.phone);
+        }
+        if (res.data.address.postalCode) {
+          setZonecode(res.data.address.postalCode);
+          setAddress1(res.data.address.address1);
+          setAddress2(res.data.address.address2);
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    getData();
+  }, []);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -33,7 +57,24 @@ const AcountPrivacy = () => {
     } else if (receiverPhone.length < 11) {
       return alert("연락처를 확인해주세요.");
     } else {
-      return alert("회원 정보가 저장되었습니다."), navigate("/");
+      return await customAxios
+        .post("/account", {
+          userName: receiverName,
+          password: receiverPassword,
+          phone: receiverPhone,
+          address: {
+            postalCode: zonecode,
+            address1: address1,
+            address2: address2,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          alert("회원 정보가 저장되었습니다.");
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
     }
   };
 
@@ -57,25 +98,25 @@ const AcountPrivacy = () => {
               <Form.Control
                 type="username"
                 placeholder="이름"
-                value={receiverName}
+                defaultValue={receiverName}
                 onChange={(e) => setReceiverName(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicUsername">
+            <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>비밀번호</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="********"
-                value={receiverPassword}
+                defaultValue={receiverPassword}
                 onChange={(e) => setReceiverPassword(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicUsername">
+            <Form.Group className="mb-3" controlId="formBasicPasswordConfirm">
               <Form.Label>비밀번호 확인</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="********"
-                value={receiverConfirmPassword}
+                defaultValue={receiverConfirmPassword}
                 onChange={(e) => setReceiverConfirmPassword(e.target.value)}
               />
             </Form.Group>
@@ -84,15 +125,19 @@ const AcountPrivacy = () => {
               <Form.Control
                 type="phone"
                 placeholder="연락처 입력"
-                value={receiverPhone}
+                defaultValue={receiverPhone}
                 onChange={(e) => setReceiverPhone(e.target.value)}
               />
               <Form.Text className="text-muted">예시) 01012345678</Form.Text>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicAddress">
+            <Form.Group className="mb-3">
               <Form.Label>주소</Form.Label>
               <InputGroup>
-                {address}
+                <Form.Control
+                  className="mb-1"
+                  placeholder="우편번호"
+                  defaultValue={zonecode}
+                />
                 <Button
                   className="mb-1"
                   variant="outline-secondary"
@@ -101,18 +146,28 @@ const AcountPrivacy = () => {
                     setPopup(!popup);
                   }}
                 >
-                  주소 검색
+                  검색
                 </Button>
                 {popup && (
-                  <Post address={address} setAddress={setAddress}></Post>
+                  <Post
+                    address1={address1}
+                    setAddress1={setAddress1}
+                    zonecode={zonecode}
+                    setZonecode={setZonecode}
+                  ></Post>
                 )}
               </InputGroup>
-
+              <Form.Control
+                className="mb-1"
+                type="text"
+                placeholder="주소"
+                defaultValue={address1}
+              />
               <Form.Control
                 className="mb-1"
                 type="text"
                 placeholder="상세주소 입력"
-                value={address2}
+                defaultValue={address2}
                 onChange={(e) => setAddress2(e.target.value)}
               />
             </Form.Group>

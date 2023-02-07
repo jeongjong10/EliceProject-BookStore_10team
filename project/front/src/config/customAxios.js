@@ -1,7 +1,5 @@
 import axios from "axios";
 
-// const JWT = localStorage.key("JWT") ? localStorage.getItem("JWT") : "";
-// const JWT = localStorage.getItem("JWT");
 const token = localStorage.getItem("JWT") || "";
 const SERVER_ADDRESS = "http://localhost:3001";
 
