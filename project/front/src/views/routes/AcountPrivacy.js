@@ -136,7 +136,6 @@ const AcountPrivacy = () => {
                 <Form.Control
                   className="mb-1"
                   placeholder="우편번호"
-                  // readOnly
                   defaultValue={zonecode}
                 />
                 <Button
@@ -163,7 +162,6 @@ const AcountPrivacy = () => {
                 type="text"
                 placeholder="주소"
                 defaultValue={address1}
-                //readOnly
               />
               <Form.Control
                 className="mb-1"
