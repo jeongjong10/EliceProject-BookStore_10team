@@ -95,46 +95,23 @@ const Cart = () => {
         })
       )
       .catch((err) => console.log(err));
-
-    async function postNewOrder() {
-      const params = {
-        address: {},
-        orderList: [{ productName, count }],
-        comment: comment,
-        totalProductPrice: totalProductPrice,
-        totalPrice: totalPrice,
-      };
-      return await customAxios.post("/orders", { params }).then((res) => {
-        sessionStorage.setItem("orderNumber", res.data.orderNumber);
-      });
-    }
-    // return await customAxios
-    //   .get(`${getRouteURL()}`)
-    //   .then((res) => {
-    //     if (res.data.result !== "fail") {
-    //       const data = res.data;
-    //       data.map((v, i) => {
-    //         v["count"] = carts.filter((f) => f._id == v._id)[0].count;
-    //       }); // 데이터에 count 데이터 추가
-
-    //       setProducts(data);
-    //       console.log(data);
-    //       const tpp = data.reduce((a, b) => {
-    //         return a + b.price * b.count;
-    //       }, 0);
-    //       setTotalProductPrice(tpp);
-
-    //       const tp = data.reduce((a, b) => {
-    //         return a + b.price * b.count;
-    //       }, 3000);
-    //       setTotalPrice(tp);
-    //     }
-    //   })
-    //   .catch((err) => console.log(err));
   }
   useEffect(() => {
     getData();
   }, []);
+
+  // async function postNewOrder() {
+  //   const params = {
+  //     address: {},
+  //     orderList: [{ productName, count }],
+  //     comment: comment,
+  //     totalProductPrice: totalProductPrice,
+  //     totalPrice: totalPrice,
+  //   };
+  //   return await customAxios.post("/orders", { params }).then((res) => {
+  //     sessionStorage.setItem("orderNumber", res.data.orderNumber);
+  //   });
+  // }
 
   const [popup, setPopup] = React.useState(false);
 
