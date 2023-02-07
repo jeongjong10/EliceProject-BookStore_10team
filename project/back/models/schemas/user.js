@@ -18,24 +18,26 @@ const address = {
 };
 
 const UserSchema = new Schema({
-    address,
+    order: new Schema ({
+        address,
+        userName: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+        },
+        password: {
+            type: String,
+            required: true,
+        },
+        phone: {
+            type: String,
+            required: false,
+        },
+    }),
     userId: nanoId,
-    userName: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-    phone: {
-        type: String,
-        required: false,
-    },
     admin: {
         type: Boolean,
         required: true,

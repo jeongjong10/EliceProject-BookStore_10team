@@ -15,11 +15,11 @@ const address = {
         type: String,
         required: true,
     },
-    recieverName: {
+    receiverName: {
         type: String,
         required: true,
     },
-    recieverPhoneNumber: {
+    receiverPhoneNumber: {
         type: String,
         required: true,
     },
