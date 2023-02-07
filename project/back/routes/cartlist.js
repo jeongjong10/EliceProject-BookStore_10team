@@ -21,6 +21,16 @@ router.get("/", async(req, res, next) => {
             if (typeof idList !== "object") {
                 idList = [idList]; 
             }
+
+            // // 비활성화 상품 걸러주는 부분
+            // const filteredIdList =  idList.map(async (_id) => {
+            //     const { activate } = await Product.findOne({_id})
+            //     console.log(activate)
+            //     return false
+            // })
+            // console.log(idList)
+            // console.log(filteredIdList)
+
             // 쿼리 파라미터가 있을 때 해당 상품을 담을 products 생성
             products = await Promise.all(
                 idList.map(async(_id) => {
@@ -31,6 +41,9 @@ router.get("/", async(req, res, next) => {
                 })
             );
         } 
+        // 널값 제거
+        // const filterdProducts = products.filter((product)=>product !== null)
+
         
         // 상품을 찾지 못했을 경우 에러처리
         if (!products) {

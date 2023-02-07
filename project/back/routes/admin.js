@@ -10,7 +10,7 @@ router.post("/products", verifyUser(true), async(req, res, next) => {
     );
     try {
         const products = req.body;
-        if (!products) {
+        if (Object.keys(products).length == 0) {
             console.error("Body 없음.");
             console.log(
                 "---------------- 요청 데이터 Body 확인 실패 ---------------------"
@@ -19,18 +19,10 @@ router.post("/products", verifyUser(true), async(req, res, next) => {
         }
 
         const product = await Product.create(products);
-        if (!product) {
-            console.error("상품 데이터 생성 실패");
-            console.log(
-                "---------------- 관리자 상품 데이터 생성 실패 ---------------------"
-            );
-            throw new Error("상품 데이터 생성에 실패하였습니다.");
-        } else {
-            console.log("상품 등록", product);
-            console.log(
-                "---------------- 관리자 상품 데이터 생성 성공 ---------------------"
-            );
-        }
+        console.log("상품 등록 : ", product);
+        console.log(
+            "---------------- 관리자 상품 데이터 생성 성공 ---------------------"
+        );
 
         res.status(200).end();
     } catch (e) {
@@ -45,7 +37,7 @@ router.patch("/products/:_id", verifyUser(true), async(req, res, next) => {
     );
     try {
         const { _id } = req.params;
-        if (!_id) {
+        if (_id == ":_id") {
             console.error("params 없음.");
             console.log(
                 "---------------- 요청 데이터 Params 확인 실패 ---------------------"
@@ -118,7 +110,7 @@ router.delete("/products/:_id", verifyUser(true), async(req, res, next) => {
 });
 
 // ------ ADMIN: 전체 유저 주문 내역 조회 ------
-router.get("/admin/orders", verifyUser(true), async(req, res, next) => {
+router.get("/orders", verifyUser(true), async(req, res, next) => {
             console.log("--------------- 관리자 주문 내역 조회 시도 ------------------");
     try {
         // 모든 주문내역 찾기
@@ -139,17 +131,17 @@ router.get("/admin/orders", verifyUser(true), async(req, res, next) => {
 
 // ------ ADMIN: 주문 내역 수정 (배송상태) ------
 router.patch("/orders/:_id", verifyUser(true), async(req, res, next) => {
-            console.log("----------------- 관리자 주문 내역 수정 시도 ------------------");
+            console.log("----------------- 관리자 주문 내역(배송상태) 수정 시도 ------------------");
     try {
         const { _id } = req.params;
-        if (!_id) {
+        if (_id == ":_id") {
             console.error("params 없음.");
             console.log("--------------- 요청 데이터 Params 확인 실패 ------------------");
             throw new Error("params 내용이 없습니다.");
         }
 
         const { status } = req.body; // 수정 할 수 있는 것이 배송상태밖에 없겠지요..? 아직까지 아마도,,,
-        if (!status) {
+        if (Object.keys(status).length == 0) {
             console.error("req.body에 status 없음.");
             console.log("--------------- 요청 데이터 Body 확인 실패 ------------------");
             throw new Error("req.body에 status가 존재하지 않습니다.");
@@ -160,10 +152,12 @@ router.patch("/orders/:_id", verifyUser(true), async(req, res, next) => {
 
         if (order.status !== status) {
             console.log("사용자 주문 배송상태 수정 실패 : ", order.status);
-            console.log("--------------- 사용자 주문 배송상태 수정 실패 ------------------");
+            console.log("----------------- 관리자 주문 내역(배송상태) 수정 실패 ------------------");
             throw new Error("사용자 정보 수정에 실패.");
         } else {
             console.log("사용자 주문 배송상태 수정 성공 : ", order.status);
+            console.log("----------------- 관리자 주문 내역(배송상태) 수정 성공 ------------------");
+
         }
 
         res.status(200).end();
@@ -173,11 +167,11 @@ router.patch("/orders/:_id", verifyUser(true), async(req, res, next) => {
 });
 
 // ------ ADMIN: 주문내역 삭제 (비활성화) ------
-router.delete("/orders/_id", verifyUser(true), async(req, res, next) => {
+router.delete("/orders/:_id", verifyUser(true), async(req, res, next) => {
             console.log("----------------- 관리자 주문 내역 삭제(비활성화) 시도 ------------------");
     try {
         const { _id } = req.params;
-        if (!_id) {
+        if (_id == ":_id") {
             console.error("params 없음.");
             console.log("---------------- 요청 데이터 Params 확인 실패 ---------------------");
             throw new Error("params 내용이 없습니다.");
@@ -187,7 +181,7 @@ router.delete("/orders/_id", verifyUser(true), async(req, res, next) => {
         const order = await Order.findOne({ _id });
 
         if (order.activate == false) {
-            console.log("관리자 주문 내역 비활성화 완료");
+            console.log("관리자 주문 내역 비활성화 완료 : activate : ", order.activate);
         } else {
             console.log("관리자 주문 내역 비활성화 실패");
             console.log("---------------- 주문 내역 삭제(비활성화) 실패 ---------------------");
