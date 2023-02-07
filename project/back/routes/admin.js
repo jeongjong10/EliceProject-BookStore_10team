@@ -215,6 +215,35 @@ router.delete("/orders/:_id", verifyUser(true), async(req, res, next) => {
     } catch (e) {
         next(e);
     }
+
+    // ------ ADMIN: 비활성 주문 내역 완전 삭제 ------
+    router.delete("/falseOrders", verifyUser(true), async(req, res, next) => {
+        console.log(
+            "----------------- 관리자 비활성 주문 내역 완전 삭제 시도 ------------------"
+        );
+        try {
+            const orders = await Order.find({ activate: false });
+            if (!orders[0]) {
+                console.error("비활성 상태인 주문목록이 없습니다");
+                console.log(
+                    "---------------- 관리자 비활성 주문 내역 완전 삭제 실패 ---------------------"
+                );
+                throw new Error("비활성 상태인 주문목록이 없습니다");
+            } else {
+                console.log(
+                    `비활성 상태의 주문 ${orders.length}개를 완전 삭제 합니다.`
+                );
+                await Order.deleteMany({ activate: false });
+                console.log(
+                    "---------------- 관리자 비활성 주문 내역 완전 삭제 성공 ---------------------"
+                );
+            }
+
+            res.status(200).end();
+        } catch (e) {
+            next(e);
+        }
+    });
 });
 
 module.exports = router;
