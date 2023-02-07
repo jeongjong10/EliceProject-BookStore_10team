@@ -60,6 +60,13 @@ router.post("/", async(req, res, next) => {
         const token = generateToken(user._id.toJSON());
 
         // 응답으로 JWT 전송
+        if (user.admin) {
+            console.log("------------------- 관리자 토큰 발급 완료 ------------------------");
+            res.status(200).json({
+                JWT : token,
+                admin : true
+            });
+        }
         res.status(200).json({JWT : token});
         console.log("------------------- 사용자 토큰 발급 완료 ------------------------");
     } catch (err) {

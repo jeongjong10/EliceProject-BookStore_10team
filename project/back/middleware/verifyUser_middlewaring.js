@@ -39,12 +39,11 @@ const verifyUser = (isAdmin = false) => {
             }
 
             // 관리자 페이지에서 접근시 관리자 여부 에러
-            if (isAdmin) {
-                if (!admin) {
-                    console.error("관리자 계정이 아닙니다");
-                    throw new Error("관리자 계정이 아닙니다");
-                }
+            if (isAdmin && !admin) {
+                console.error("관리자 계정이 아닙니다");
+                throw new Error("관리자 계정이 아닙니다");
             }
+            
             console.log("사용자 계정 확인 완료");
             req.verifiedUser_id = verifiedUser_id;
             next();
