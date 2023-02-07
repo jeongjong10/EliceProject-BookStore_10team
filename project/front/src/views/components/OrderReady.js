@@ -17,6 +17,7 @@ import {
 import cssAccount from "../css/Account.module.css";
 import { item } from "../../orders";
 import { ModalCancel } from "./ModalCancel";
+import axios from "axios";
 
 export const OrderReady = () => {
   return (
@@ -41,7 +42,7 @@ export const OrderReady = () => {
                 {item.map((item, index) => {
                   if (item.deliver === "ready") {
                     return (
-                      <tr>
+                      <tr key={index}>
                         {/* table start */}
                         <td>{item.itemId}</td>
                         <td className={cssAccount.tdAlignLeft}>

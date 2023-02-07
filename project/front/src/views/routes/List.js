@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Nav } from "react-bootstrap";
 import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
-import axios from "axios";
+import { customAxios } from "../../config/customAxios";
 
 const List = () => {
   const navigate = useNavigate();
@@ -11,8 +11,8 @@ const List = () => {
   const [products, setProducts] = useState([]);
 
   async function getData() {
-    return await axios
-      .get("http://localhost:3001/products")
+    return await customAxios
+      .get("/products")
       .then((res) => {
         // 데이터에서 카테고리만 빼서 list에 push
         let list = [];
