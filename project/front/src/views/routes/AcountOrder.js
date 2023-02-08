@@ -1,23 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  Card,
-  Container,
-  Row,
-  Col,
-  ListGroup,
-  Nav,
-  Stack,
-  Tab,
-  Tabs,
-} from "react-bootstrap";
+import { Container, Row, Col, Stack, Tab, Tabs } from "react-bootstrap";
 import { OrderReady } from "../components/OrderReady";
 import { OrderStatus } from "../components/OrderStatus";
 import { OrderEnd } from "../components/OrderEnd";
+import { customAxios } from "../../config/customAxios";
 
 const AcountOrder = () => {
   // const {id} = useParams()
-  const navigate = useNavigate();
 
   return (
     <>
@@ -33,7 +23,7 @@ const AcountOrder = () => {
           <Col>
             <h1>주문조회</h1>
             <Tabs
-              defaultActiveKey="profile"
+              defaultActiveKey="orderStatus"
               id="fill-tab-example"
               className="mb-3"
               fill
