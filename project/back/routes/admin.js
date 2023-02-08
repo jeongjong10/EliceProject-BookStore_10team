@@ -215,48 +215,52 @@ router.delete("/orders/:_id", verifyUser(true), async(req, res, next) => {
     } catch (e) {
         next(e);
     }
+});
 
-    // ------ ADMIN: 비활성 주문 내역 완전 삭제 ------
-    router.delete(
-        "/falseOrders/:_id",
-        verifyUser(true),
-        async(req, res, next) => {
-            console.log(
-                "----------------- 관리자 비활성 주문 내역 완전 삭제 시도 ------------------"
-            );
-            try {
-                const { _id } = req.params;
-
-                if (_id == ":_id") {
-                    console.error("params 없음.");
-                    console.log(
-                        "--------------- 요청 데이터 Params 확인 실패 ------------------"
-                    );
-                    throw new Error("params 내용이 없습니다.");
-                }
-
-                const orders = await Order.find({ _id, activate: false });
-                console.log(orders);
-                if (!orders[0]) {
-                    console.error("비활성 상태인 주문목록이 없습니다");
-                    console.log(
-                        "---------------- 관리자 비활성 주문 내역 완전 삭제 실패 ---------------------"
-                    );
-                    throw new Error("비활성 상태인 주문목록이 없습니다");
-                } else {
-                    console.log(`비활성 상태의 주문을 완전히 삭제합니다.`);
-                    await Order.deleteOne({ _id, activate: false });
-                    console.log(
-                        "---------------- 관리자 비활성 주문 내역 완전 삭제 성공 ---------------------"
-                    );
-                }
-
-                res.status(200).end();
-            } catch (e) {
-                next(e);
-            }
-        }
+// ------ ADMIN: 비활성 주문 내역 완전 삭제 ------
+router.delete("/falseOrders/:_id", verifyUser(true), async(req, res, next) => {
+    console.log(
+        "----------------- 관리자 비활성 주문 내역 완전 삭제 시도 ------------------"
     );
+    try {
+        const { _id } = req.params;
+
+        if (_id == ":_id") {
+            console.error("params 없음.");
+            console.log(
+                "--------------- 요청 데이터 Params 확인 실패 ------------------"
+            );
+            throw new Error("params 내용이 없습니다.");
+        }
+
+        const order = await Order.findOne({ _id });
+        console.log("order:", order);
+        if (order === null) {
+            console.error("존재하지 않는 주문입니다.");
+            console.log(
+                "---------------- 관리자 비활성 주문 내역 완전 삭제 실패 ---------------------"
+            );
+            throw new Error("존재하지 않는 주문입니다.");
+        }
+
+        if (order.activate) {
+            console.error("현재 주문 내역은 비활성 상태가 아닙니다.");
+            console.log(
+                "---------------- 관리자 비활성 주문 내역 완전 삭제 실패 ---------------------"
+            );
+            throw new Error("비활성 상태인 주문목록이 없습니다");
+        } else {
+            console.log(`비활성 상태의 주문을 완전히 삭제합니다.`);
+            await Order.deleteOne({ _id, activate: false });
+            console.log(
+                "---------------- 관리자 비활성 주문 내역 완전 삭제 성공 ---------------------"
+            );
+        }
+
+        res.status(200).end();
+    } catch (e) {
+        next(e);
+    }
 });
 
 // ------ ADMIN: 카테고리 삭제 (비활성화)  ------
