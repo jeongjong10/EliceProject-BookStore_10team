@@ -42,8 +42,6 @@ router.get("/", verifyUser(), async(req, res, next) => {
         console.log(
             "-------------------  사용자 정보 관리 페이지 접근 ------------------------"
         );
-        // 수정 페이지 접근시 비밀번호 접수
-        const { password } = req.body;
 
         // 사용자 유효성 평가
         const verifiedUser_id = req.verifiedUser_id;
@@ -57,12 +55,6 @@ router.get("/", verifyUser(), async(req, res, next) => {
                 "------------------- 마이페이지 정보 검색 실패 ------------------------"
             );
             throw new Error("사용자의 정보가 없습니다");
-        } else if (user.password !== getHash(password)) {
-            console.error("사용자 입력 패스워드가 일치하지 않습니다");
-            console.log(
-                "------------------- 마이페이지 정보 검색 실패 ------------------------"
-            );
-            throw new Error("사용자 입력 패스워드가 일치하지 않습니다");
         }
 
         res.status(200).json(user);

@@ -8,12 +8,12 @@ const accountRouter = require("./routes/account");
 const adminRouter = require("./routes/admin");
 const cartlistRouter = require("./routes/cartlist");
 const loginRouter = require("./routes/login");
+const modalCheckRouter = require("./routes/modalChck");
 const orderRouter = require("./routes/orders");
 const productRouter = require("./routes/products");
 const registerRouter = require("./routes/register");
 const imageRouter = require("./routes/image");
 const imageRouter = require("./routes/image");
-
 // -------------------------
 
 // ------ 몽고DB 연결 ------
@@ -35,9 +35,10 @@ app.use(express.urlencoded({ extended: false }));
 
 // ------ 라우터 등록 ------
 app.use("/account", accountRouter);
-app.use("/admin", adminRouter); // 보류중
+app.use("/admin", adminRouter);
 app.use("/cartlist", cartlistRouter);
 app.use("/login", loginRouter);
+app.use("/modalCheck", modalCheckRouter);
 app.use("/orders", orderRouter);
 app.use("/products", productRouter);
 app.use("/register", registerRouter);
