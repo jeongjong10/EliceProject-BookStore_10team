@@ -20,6 +20,7 @@ const Secession = () => {
           window.location.reload();
         } else {
           alert("회원 탈퇴가 되었습니다.");
+          localStorage.removeItem("JWT");
           navigate("/");
         }
       })
