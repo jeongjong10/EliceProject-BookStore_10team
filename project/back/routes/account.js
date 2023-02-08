@@ -57,7 +57,7 @@ router.get("/", verifyUser(), async(req, res, next) => {
                 "------------------- 마이페이지 정보 검색 실패 ------------------------"
             );
             throw new Error("사용자의 정보가 없습니다");
-        } else if (user.password !== password) {
+        } else if (user.password !== getHash(password)) {
             console.error("사용자 입력 패스워드가 일치하지 않습니다");
             console.log(
                 "------------------- 마이페이지 정보 검색 실패 ------------------------"

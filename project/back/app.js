@@ -11,6 +11,7 @@ const loginRouter = require("./routes/login");
 const orderRouter = require("./routes/orders");
 const productRouter = require("./routes/products");
 const registerRouter = require("./routes/register");
+const imageRouter = require("./routes/image");
 
 // -------------------------
 
@@ -67,6 +68,7 @@ app.use("/login", loginRouter);
 app.use("/orders", orderRouter);
 app.use("/products", productRouter);
 app.use("/register", registerRouter);
+app.use("/image", imageRouter);
 //------------------------
 
 // ------ 오류처리 미들웨어 ------
