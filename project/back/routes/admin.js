@@ -1,7 +1,7 @@
 const express = require("express");
 const verifyUser = require("../middleware/verifyUser_middlewaring");
 const router = express.Router();
-const { Product, Order } = require("../models/index");
+const { Product, Order, User } = require("../models/index");
 
 // ------ ADMIN: 상품 등록 ------
 router.post("/products", verifyUser(true), async(req, res, next) => {
@@ -149,8 +149,8 @@ router.patch("/orders/:_id", verifyUser(true), async(req, res, next) => {
             throw new Error("params 내용이 없습니다.");
         }
 
-        const { status } = req.body; // 수정 할 수 있는 것이 배송상태밖에 없겠지요..? 아직까지 아마도,,,
-        if (Object.keys(status).length == 0) {
+        const updateData = req.body;
+        if (Object.keys(updateData).length == 0) {
             console.error("req.body에 status 없음.");
             console.log(
                 "--------------- 요청 데이터 Body 확인 실패 ------------------"
@@ -158,10 +158,10 @@ router.patch("/orders/:_id", verifyUser(true), async(req, res, next) => {
             throw new Error("req.body에 status가 존재하지 않습니다.");
         }
 
-        await Order.findOneAndUpdate({ _id }, { status });
+        await Order.findOneAndUpdate({ _id }, { status: updateData.status });
         const order = await Order.findById({ _id });
 
-        if (order.status !== status) {
+        if (order.status !== updateData.status) {
             console.log("사용자 주문 배송상태 수정 실패 : ", order.status);
             console.log(
                 "----------------- 관리자 주문 내역(배송상태) 수정 실패 ------------------"
@@ -263,6 +263,41 @@ router.delete("/falseOrders/:_id", verifyUser(true), async(req, res, next) => {
     }
 });
 
+// ------ ADMIN: 비활성 주문 내역 완전 삭제 ------
+router.delete("falseOrders/:_id", verifyUser(true), async(req, res, next) => {
+    console.log(
+        "----------------- 관리자 비활성 주문 내역 완전 삭제 시도 ------------------"
+    );
+    try {
+        if (_id == ":_id") {
+            console.error("params 없음.");
+            console.log(
+                "--------------- 요청 데이터 Params 확인 실패 ------------------"
+            );
+            throw new Error("params 내용이 없습니다.");
+        }
+
+        const orders = await Order.find({ _id, activate: false });
+        if (!orders[0]) {
+            console.error("비활성 상태인 주문목록이 없습니다");
+            console.log(
+                "---------------- 관리자 비활성 주문 내역 완전 삭제 실패 ---------------------"
+            );
+            throw new Error("비활성 상태인 주문목록이 없습니다");
+        } else {
+            console.log(`비활성 상태의 주문을 완전히 삭제합니다.`);
+            await Order.deleteMany({ activate: false });
+            console.log(
+                "---------------- 관리자 비활성 주문 내역 완전 삭제 성공 ---------------------"
+            );
+        }
+
+        res.status(200).end();
+    } catch (e) {
+        next(e);
+    }
+});
+
 // ------ ADMIN: 카테고리 삭제 (비활성화)  ------
 router.delete("/category", verifyUser(true), async(req, res, next) => {
     console.log(
@@ -282,6 +317,110 @@ router.delete("/category", verifyUser(true), async(req, res, next) => {
         await Product.updateMany({ categoryName }, { categoryName: "None-category" });
         console.log(
             "---------------- 관리자 카테고리 삭제 (비활성화) 성공 ---------------------"
+        );
+
+        res.status(200).end();
+    } catch (e) {
+        next(e);
+    }
+});
+
+// ------ ADMIN: 전체 사용자 정보 조회  ------
+router.get("/users", verifyUser(true), async(req, res, next) => {
+    console.log("--------------- 관리자 주문 내역 조회 시도 ------------------");
+    try {
+        // 모든 사용자 정보 찾기
+        const totalUsers = await User.find({});
+        if (!totalUsers[0]) {
+            console.error("관리자 : 존재하는 사용자 정보가 없음.");
+            console.log(
+                "----------------- 관리자 사용자 조회 실패 ---------------------"
+            );
+            throw new Error("관리자 :  존재하는 사용자 정보 정보가 없습니다.");
+        } else {
+            console.log(
+                "----------------- 관리자 주문 내역 조회 성공 ------------------"
+            );
+        }
+
+        res.status(200).json(totalUsers);
+    } catch (e) {
+        next(e);
+    }
+});
+
+// ------ ADMIN: 사용자 권한 변경   ------
+router.patch("/users/:_id", verifyUser(true), async(req, res, next) => {
+    console.log(
+        "----------------- 사용자 정보 (권한) 수정 시도 ------------------"
+    );
+    try {
+        const { _id } = req.params;
+        if (_id == ":_id") {
+            console.error("params 없음.");
+            console.log(
+                "--------------- 요청 데이터 Params 확인 실패 ------------------"
+            );
+            throw new Error("params 내용이 없습니다.");
+        }
+
+        const updateData = req.body;
+        if (Object.keys(updateData).length == 0) {
+            console.error("req.body에 admin 없음.");
+            console.log(
+                "--------------- 요청 데이터 Body 확인 실패 ------------------"
+            );
+            throw new Error("req.body에 admin이 존재하지 않습니다.");
+        }
+
+        await User.findOneAndUpdate({ _id }, { admin: updateData.admin });
+        const user = await User.findById({ _id });
+
+        if (user.admin !== updateData.admin) {
+            console.log("사용자 주문 배송상태 수정 실패 : ", user.status);
+            console.log(
+                "----------------- 관리자 주문 내역(배송상태) 수정 실패 ------------------"
+            );
+            throw new Error("사용자 정보 수정에 실패.");
+        } else {
+            console.log("사용자 주문 배송상태 수정 성공 : ", user.status);
+        }
+
+        res.status(200).end();
+    } catch (e) {
+        next(e);
+    }
+});
+
+// ------ ADMIN: 사용자 비활성화  ------
+router.delete("/users/:_id", verifyUser(true), async(req, res, next) => {
+    console.log(
+        "----------------- 관리자 주문 내역 삭제(비활성화) 시도 ------------------"
+    );
+    try {
+        const { _id } = req.params;
+        if (_id == ":_id") {
+            console.error("params 없음.");
+            console.log(
+                "---------------- 요청 데이터 Params 확인 실패 ---------------------"
+            );
+            throw new Error("params 내용이 없습니다.");
+        }
+
+        await User.findOneAndUpdate({ _id }, { activate: false });
+        const user = await User.findOne({ _id });
+
+        if (user.activate == false) {
+            console.log("관리자 사용자 비활성화 완료 : activate : ", user.activate);
+        } else {
+            console.log("관리자 사용자 비활성화 실패");
+            console.log(
+                "---------------- 사용자 정보 삭제(비활성화) 실패 ---------------------"
+            );
+            throw new Error("관리자 사용자 정보 비활성화 실패.");
+        }
+        console.log(
+            "----------------- 관리자 사용자 정보 삭제(비활성화) 성공 ------------------"
         );
 
         res.status(200).end();
