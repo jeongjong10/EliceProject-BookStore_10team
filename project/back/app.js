@@ -12,7 +12,6 @@ const orderRouter = require("./routes/orders");
 const productRouter = require("./routes/products");
 const registerRouter = require("./routes/register");
 const imageRouter = require("./routes/image");
-const imageRouter = require("./routes/image");
 // -------------------------
 
 // ------ 몽고DB 연결 ------
