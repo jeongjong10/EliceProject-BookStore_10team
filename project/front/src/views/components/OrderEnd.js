@@ -25,12 +25,51 @@ export const OrderEnd = () => {
   async function getData() {
     return await customAxios.get("/account/order").then((res) => {
       console.log(res.data);
+
       setOrders(res.data);
     });
   }
   useEffect(() => {
     getData();
   }, []);
+
+  const TbodyEndorders = (orders) => {
+    if (!orders.length) {
+      return (
+        <tr>
+          <h>주문내역이 존재하지 않습니다.</h>
+        </tr>
+      );
+    } else {
+      orders.map((orders, index) => {
+        if (orders.status === "배송완료") {
+          return (
+            <tr key={index}>
+              <td>{orders.orderNumber}</td>
+              <td className={cssAccount.tdAlignLeft}>
+                {/* <img
+                src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
+                className={`${cssAccount.productThumbnail}`}
+              /> */}
+                {OrderProduct(orders)}
+              </td>
+              <td>{orders.createdAt.slice(0, 10)}</td>
+              {/* <td>
+              <p className={cssAccount.qty}>
+                {orders.orderList.count}
+              </p>
+            </td> */}
+              <td>{orders.status}</td>
+              <td>{orders.totalPrice}</td>
+              <td>
+                <ModalCancel orderId={orders._id} />
+              </td>
+            </tr>
+          );
+        }
+      });
+    }
+  };
 
   return (
     <>
@@ -49,36 +88,7 @@ export const OrderEnd = () => {
                   <th>주문취소</th>
                 </tr>
               </thead>
-              <tbody>
-                {orders.map((orders, index) => {
-                  if (orders.status === "배송완료") {
-                    return (
-                      <tr key={index}>
-                        <td>{orders.orderNumber}</td>
-                        <td className={cssAccount.tdAlignLeft}>
-                          {/* <img
-                            src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssAccount.productThumbnail}`}
-                          /> */}
-                          {console.log(orders)}
-                          {OrderProduct(orders)}
-                        </td>
-                        <td>{orders.createdAt.slice(0, 10)}</td>
-                        {/* <td>
-                          <p className={cssAccount.qty}>
-                            {orders.orderList.count}
-                          </p>
-                        </td> */}
-                        <td>{orders.status}</td>
-                        <td>{orders.totalPrice}</td>
-                        <td>
-                          <ModalCancel orderId={orders._id} />
-                        </td>
-                      </tr>
-                    );
-                  }
-                })}
-              </tbody>
+              <tbody>{TbodyEndorders(orders)}</tbody>
             </Table>
           </Col>
         </Row>

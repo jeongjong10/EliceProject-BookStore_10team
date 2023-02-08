@@ -33,6 +33,46 @@ export const OrderReady = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const TbodyReadyorders = (orders) => {
+    if (!orders.length) {
+      return (
+        <tr>
+          <h>주문내역이 존재하지 않습니다.</h>
+        </tr>
+      );
+    } else {
+      orders.map((orders, index) => {
+        if (orders.status === "배송중") {
+          return (
+            <tr key={index}>
+              <td>{orders.orderNumber}</td>
+              <td className={cssAccount.tdAlignLeft}>
+                {/* <img
+                  src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
+                  className={`${cssAccount.productThumbnail}`}
+                /> */}
+                {OrderProduct(orders)}
+              </td>
+              <td>{orders.createdAt.slice(0, 10)}</td>
+              {/* <td>
+                <p className={cssAccount.qty}>
+                  {orders.orderList.count}
+                </p>
+              </td> */}
+              <td>{orders.status}</td>
+              <td>{orders.totalPrice}</td>
+              {console.log(orders._id)}
+              <td>
+                <ModalCancel orderId={orders._id} />
+              </td>
+            </tr>
+          );
+        }
+      });
+    }
+  };
+
   return (
     <>
       <Container className="subContainer">
@@ -51,36 +91,7 @@ export const OrderReady = () => {
                   <th>주문취소</th>
                 </tr>
               </thead>
-              <tbody>
-                {orders.map((orders, index) => {
-                  if (orders.status === "배송중") {
-                    return (
-                      <tr key={index}>
-                        <td>{orders.orderNumber}</td>
-                        <td className={cssAccount.tdAlignLeft}>
-                          {/* <img
-                            src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssAccount.productThumbnail}`}
-                          /> */}
-                          {OrderProduct(orders)}
-                        </td>
-                        <td>{orders.createdAt.slice(0, 10)}</td>
-                        {/* <td>
-                          <p className={cssAccount.qty}>
-                            {orders.orderList.count}
-                          </p>
-                        </td> */}
-                        <td>{orders.status}</td>
-                        <td>{orders.totalPrice}</td>
-                        {console.log(orders._id)}
-                        <td>
-                          <ModalCancel orderId={orders._id} />
-                        </td>
-                      </tr>
-                    );
-                  }
-                })}
-              </tbody>
+              <tbody>{TbodyReadyorders(orders)}</tbody>
             </Table>
           </Col>
         </Row>
