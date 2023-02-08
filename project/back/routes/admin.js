@@ -217,33 +217,45 @@ router.delete("/orders/:_id", verifyUser(true), async(req, res, next) => {
     }
 
     // ------ ADMIN: 비활성 주문 내역 완전 삭제 ------
-    router.delete("/falseOrders", verifyUser(true), async(req, res, next) => {
-        console.log(
-            "----------------- 관리자 비활성 주문 내역 완전 삭제 시도 ------------------"
-        );
-        try {
-            const orders = await Order.find({ activate: false });
-            if (!orders[0]) {
-                console.error("비활성 상태인 주문목록이 없습니다");
-                console.log(
-                    "---------------- 관리자 비활성 주문 내역 완전 삭제 실패 ---------------------"
-                );
-                throw new Error("비활성 상태인 주문목록이 없습니다");
-            } else {
-                console.log(
-                    `비활성 상태의 주문 ${orders.length}개를 완전 삭제 합니다.`
-                );
-                await Order.deleteMany({ activate: false });
-                console.log(
-                    "---------------- 관리자 비활성 주문 내역 완전 삭제 성공 ---------------------"
-                );
-            }
+    router.delete(
+        "falseOrders/:_id",
+        verifyUser(true),
+        async(req, res, next) => {
+            console.log(
+                "----------------- 관리자 비활성 주문 내역 완전 삭제 시도 ------------------"
+            );
+            try {
+                if (_id == ":_id") {
+                    console.error("params 없음.");
+                    console.log(
+                        "--------------- 요청 데이터 Params 확인 실패 ------------------"
+                    );
+                    throw new Error("params 내용이 없습니다.");
+                }
 
-            res.status(200).end();
-        } catch (e) {
-            next(e);
+                const orders = await Order.find({ _id, activate: false });
+                if (!orders[0]) {
+                    console.error("비활성 상태인 주문목록이 없습니다");
+                    console.log(
+                        "---------------- 관리자 비활성 주문 내역 완전 삭제 실패 ---------------------"
+                    );
+                    throw new Error("비활성 상태인 주문목록이 없습니다");
+                } else {
+                    console.log(
+                        `비활성 상태의 주문을 완전히 삭제합니다.`
+                    );
+                    await Order.deleteMany({ activate: false });
+                    console.log(
+                        "---------------- 관리자 비활성 주문 내역 완전 삭제 성공 ---------------------"
+                    );
+                }
+
+                res.status(200).end();
+            } catch (e) {
+                next(e);
+            }
         }
-    });
+    );
 });
 
 // ------ ADMIN: 카테고리 삭제 (비활성화)  ------
