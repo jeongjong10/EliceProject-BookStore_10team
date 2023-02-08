@@ -12,6 +12,15 @@ export const ShowItemList = ({ data, page }) => {
     await customAxios
       .delete(`/admin/products/${product._id}`)
       .then((res) => {
+        // 카테고리 - selectbox에 상태 유지
+        if (
+          data.filter((f) => f.categoryName == product.categoryName).length > 1
+        ) {
+          sessionStorage.setItem("currentCategory", product.categoryName);
+        } else {
+          sessionStorage.removeItem("currentCategory");
+        }
+        // 삭제 시 처리 로직
         alert("상품이 삭제 되었습니다.");
         window.location.reload();
       })

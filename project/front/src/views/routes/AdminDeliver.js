@@ -35,7 +35,7 @@ const AdminDeliver = () => {
           <Col>
             <h1>전체 주문 관리</h1>
             <Tabs
-              defaultActiveKey="profile"
+              defaultActiveKey="orderby"
               id="fill-tab-example"
               className="mb-3"
               fill
