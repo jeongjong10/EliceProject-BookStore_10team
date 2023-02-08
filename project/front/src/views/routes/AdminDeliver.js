@@ -1,22 +1,11 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import {
-  Card,
-  Container,
-  Row,
-  Col,
-  ListGroup,
-  Nav,
-  Stack,
-  Tab,
-  Tabs,
-} from "react-bootstrap";
+
+import { Container, Row, Col, Stack, Tab, Tabs } from "react-bootstrap";
 import { AdminDeliverEnd } from "../components/AdminDeliverEnd";
 import { AdminOrderby } from "../components/AdminOrderby";
 
 const AdminDeliver = () => {
   // const {id} = useParams()
-  const navigate = useNavigate();
 
   return (
     <>
