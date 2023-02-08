@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Form, Nav, Button, Modal } from "react-bootstrap";
 import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
 import { customAxios } from "../../config/customAxios";
+import uuid from "react-uuid";
 import cssList from "../css/List.module.css";
 import cssAdminCateg from "../css/AdminCategory.module.css";
 
@@ -26,7 +27,7 @@ const AdminCategory = () => {
         });
         list = ["전체", ...new Set(list)]; // 중복 제거
         setCategoryLists(list);
-        setCategory(list[0]);
+        setCategory(sessionStorage.getItem("currentCategory") || list[0]);
 
         setProducts(res.data);
         setSelectedProducts(res.data);
@@ -69,6 +70,14 @@ const AdminCategory = () => {
       .catch((err) => console.log(err));
   }
 
+  // 페이지 이탈시 카테고리 정보 지움
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem("currentCategory");
+    };
+  }, []);
+
+  console.log(category);
   return (
     <>
       <Container className="subContainer">
@@ -102,6 +111,8 @@ const AdminCategory = () => {
             <h2 className={cssList.pageTitle}>카테고리/상품 관리</h2>
             <div className={cssAdminCateg.selectBox}>
               <Form.Select
+                // defaultValue={category}
+                key={uuid()}
                 onChange={(e) => {
                   setCategory(e.target.value);
                 }}
@@ -112,6 +123,19 @@ const AdminCategory = () => {
                       {v}
                     </option>
                   );
+                  // if (category == v) {
+                  //   return (
+                  //     <option value={v} key={i} selected>
+                  //       {v}
+                  //     </option>
+                  //   );
+                  // } else {
+                  //   return (
+                  //     <option value={v} key={i}>
+                  //       {v}
+                  //     </option>
+                  //   );
+                  // }
                 })}
               </Form.Select>
               {category != "전체" && category != "None-category" && (
