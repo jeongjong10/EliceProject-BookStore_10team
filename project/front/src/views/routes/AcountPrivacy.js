@@ -50,7 +50,7 @@ const AcountPrivacy = () => {
   }
   useEffect(() => {
     getData();
-    setModal(true); // 페이지 진입시 모달 설정
+    // 페이지 진입시 모달 설정
   }, []);
 
   const onSubmitHandler = async (event) => {
@@ -60,6 +60,8 @@ const AcountPrivacy = () => {
       return alert("비밀번호가 비밀번호 확인과 일치하지 않습니다.");
     } else if (receiverPhone.length < 11) {
       return alert("연락처를 확인해주세요.");
+    } else if (!receiverPassword.length || !receiverConfirmPassword) {
+      return alert("비밀번호와 비밀번호 확인을 입력해주세요.");
     } else {
       return await customAxios
         .post("/account", {
@@ -107,7 +109,7 @@ const AcountPrivacy = () => {
               // onClick={(e) => {
               //   e.preventDefault();
               //   setModal(true);
-              // }}
+              // }} 회원 정보 관리 페이지에서 모달 접근x
             >
               회원정보관리
             </button>

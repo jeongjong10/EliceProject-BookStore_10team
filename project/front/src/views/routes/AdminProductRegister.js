@@ -14,31 +14,17 @@ const AdminProductRegister = () => {
   const [publisher, setPublisher] = useState("");
   const [detail, setDetail] = useState("");
   const [price, setPrice] = useState("");
-  const [file, setFile] = useState("");
+  const [files, setFiles] = useState("");
 
-  const onChangeImg = (e) => {
-    e.preventDefault();
-    const formdata = new FormData();
+  const onLoadFile = (e) => {
+    const file = e.target.files;
 
-    if (e.target.files) {
-      const uploadFile = e.target.files[0];
-      formdata.append("file", uploadFile);
-      setFile(uploadFile);
-      console.log(uploadFile);
-      console.log("===useState===");
-      console.log(file);
-    }
+    setFiles(file);
   };
 
   const onSubmitHandeler = async (e) => {
     e.preventDefault();
-    const formdata = new FormData();
-    // formdata.append("productName", productName);
-    // formdata.append("categoryName", selected);
-    // formdata.append("brand", publisher);
-    // formdata.append("detail", detail);
-    // formdata.append("img", file);
-    // formdata.append("price", price);
+
     if (
       productName.length == 0 ||
       detail.length == 0 ||
@@ -48,16 +34,25 @@ const AdminProductRegister = () => {
     ) {
       return alert("값을 입력해주세요.");
     } else {
+      const formdata = new FormData();
+      formdata.append("productName", productName);
+      formdata.append("categoryName", selected);
+      formdata.append("brand", publisher);
+      formdata.append("detail", detail);
+      formdata.append("img", files[0]);
+      formdata.append("price", price);
+
+      for (var key of formdata.keys()) {
+        console.log(key);
+      }
+      for (var value of formdata.values()) {
+        console.log(value);
+      }
       return await customAxios
         .post(
           "/admin/products",
-          { formdata }
-          // productName: productName,
-          // categoryName: selected,
-          // brand: publisher,
-          // detail: detail,
-          // img: files,
-          // price: price,
+          { formdata },
+          { headers: { "Content-Type": "multipart/form-data" } }
         )
         .then((response) => {
           console.log(response.data);
@@ -174,7 +169,7 @@ const AdminProductRegister = () => {
                 type="file"
                 id="image"
                 accept="img/*"
-                onChange={onChangeImg}
+                onChange={onLoadFile}
               />
             </Form.Group>
             <Button onClick={onSubmitHandeler}>저장</Button>

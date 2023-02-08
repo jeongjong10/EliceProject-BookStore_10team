@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { customAxios } from "../../config/customAxios";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Stack } from "react-bootstrap";
+import AccountPrivacyModal from "../components/AccountPrivacyModal";
 
 const Secession = () => {
+  const [modal, setModal] = useState(false);
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
@@ -14,7 +16,12 @@ const Secession = () => {
   const onClickConfirmButton = async (event) => {
     event.preventDefault();
     await customAxios
-      .delete("/account", { password })
+      .delete("/account", {
+        data: {
+          password,
+        },
+      })
+
       .then((response) => {
         if (response.data.message === "비밀번호가 일치하지 않음") {
           alert("비밀번호가 일치하지 않습니다.");
@@ -41,13 +48,20 @@ const Secession = () => {
               >
                 주문조회
               </button>
+              <AccountPrivacyModal
+                show={modal}
+                onHide={() => {
+                  setModal(false);
+                }}
+              />
               <button
                 className="manager"
-                onClick={() => {
-                  navigate("/account/privacy");
+                onClick={(e) => {
+                  e.preventDefault();
+                  setModal(true);
                 }}
               >
-                개인정보관리
+                회원정보관리
               </button>
               <button className="deleted">회원탈퇴</button>
             </Stack>
