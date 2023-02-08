@@ -146,6 +146,10 @@ function App() {
         <Route path="/account/privacy" element={<AcountPrivacy />} />
         <Route path="/account/secession" element={<Secession />} />
         <Route path="/admin/products" element={<AdminProductRegister />} />
+        <Route
+          path="/admin/category/products/:id"
+          element={<AdminProductRegister />}
+        />
         <Route path="/admin/category" element={<AdminCategory />} />
         <Route path="/admin" element={<AdminDeliver />} />
         <Route path="/order" element={<Order />} />

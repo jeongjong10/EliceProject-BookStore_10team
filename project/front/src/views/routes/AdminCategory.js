@@ -19,11 +19,12 @@ const AdminCategory = () => {
       .get("/products")
       .then((res) => {
         // 데이터에서 카테고리만 빼서 list에 push
-        let list = ["전체"];
+        let list = [];
         res.data.map((v, i) => {
           list.push(v.categoryName);
+          list.sort();
         });
-        list = [...new Set(list)]; // 중복 제거
+        list = ["전체", ...new Set(list)]; // 중복 제거
         setCategoryLists(list);
         setCategory(list[0]);
 
@@ -53,6 +54,20 @@ const AdminCategory = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  async function deleteCategory() {
+    return await customAxios
+      .delete("admin/category", {
+        data: {
+          categoryName: category,
+        },
+      })
+      .then((res) => {
+        window.location.reload();
+        handleClose();
+      })
+      .catch((err) => console.log(err));
+  }
 
   return (
     <>
@@ -89,7 +104,6 @@ const AdminCategory = () => {
               <Form.Select
                 onChange={(e) => {
                   setCategory(e.target.value);
-                  console.log(e.target.value);
                 }}
               >
                 {categoryLists.map((v, i) => {
@@ -124,7 +138,7 @@ const AdminCategory = () => {
             <Button variant="secondary" onClick={handleClose}>
               취소
             </Button>
-            <Button variant="danger" onClick={handleClose}>
+            <Button variant="danger" onClick={deleteCategory}>
               카테고리 삭제
             </Button>
           </Modal.Footer>

@@ -202,7 +202,7 @@ const Cart = () => {
               <Form.Control
                 type="username"
                 placeholder="이름"
-                defaultValue={receiverName}
+                value={receiverName}
                 onChange={(e) => handleChange(e, "name")}
               />
             </Form.Group>

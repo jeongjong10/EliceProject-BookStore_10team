@@ -7,6 +7,7 @@ import cssDetail from "../css/Detail.module.css";
 
 const Detail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   // 수량
   const [count, setCount] = useState(1);
@@ -65,6 +66,25 @@ const Detail = () => {
     }
   }
 
+  function directOrder() {
+    if (localStorage.getItem("JWT")) {
+      localStorage.setItem(
+        "cart",
+        JSON.stringify([
+          {
+            _id: product._id,
+            count,
+          },
+        ])
+      );
+      navigate("/order");
+    } else {
+      alert("회원만 주문이 가능합니다. 로그인 페이지로 이동시켜 드릴께요. 🚗");
+      sessionStorage.setItem("directOrder", true);
+      navigate("/login");
+    }
+  }
+
   return (
     <>
       <Container className="subContainer">
@@ -106,7 +126,7 @@ const Detail = () => {
             </div>
             <div>
               <Button onClick={addCart}>장바구니 추가</Button>{" "}
-              <Button>바로 구매</Button>
+              <Button onClick={directOrder}>바로 구매</Button>
             </div>
           </Col>
         </Row>
