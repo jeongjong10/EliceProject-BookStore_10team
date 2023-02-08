@@ -52,6 +52,11 @@ const Login = () => {
         } else if (response.data.message === "일치하는 사용자 이메일이 없음") {
           alert("일치하는 사용자가 없습니다.");
           window.location.reload();
+        } else if (sessionStorage.getItem("directOrder")) {
+          alert("로그인 완료");
+          localStorage.setItem("JWT", response.data.JWT);
+          sessionStorage.removeItem("directOrder");
+          navigate("/order");
         } else {
           alert("로그인 완료");
           if (response.data.admin) {
