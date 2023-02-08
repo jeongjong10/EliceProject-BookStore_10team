@@ -84,7 +84,7 @@ router.post("/", verifyUser(), async(req, res, next) => {
         const verifiedUser_id = req.verifiedUser_id;
 
         // 수정 요청 데이터 확인
-        const updateData = JSON.parse(req.body);
+        const updateData = req.body;
 
         if (Object.keys(updateData).length == 0) {
             console.error("req.body 확인 실패");
@@ -128,7 +128,7 @@ router.delete("/", verifyUser(), async(req, res, next) => {
             _id: ObjectId(verifiedUser_id),
         });
 
-        if (checkpassword.password !== getHash(JSON.parse(req.body).password)) {
+        if (checkpassword.password !== getHash(req.body.password)) {
             console.error("비밀번호 불일치");
             console.log(
                 "------------------- 사용자 로그인 실패 ------------------------"

@@ -45,7 +45,7 @@ router.patch("/products/:_id", verifyUser(true), async(req, res, next) => {
             throw new Error("params 내용이 없습니다.");
         }
 
-        const updateData = JSON.parse(req.body);
+        const updateData = req.body;
         if (Object.keys(updateData).length == 0) {
             console.error("Body 없음.");
             console.log(
@@ -149,7 +149,7 @@ router.patch("/orders/:_id", verifyUser(true), async(req, res, next) => {
             throw new Error("params 내용이 없습니다.");
         }
 
-        const { status } = JSON.parse(req.body); // 수정 할 수 있는 것이 배송상태밖에 없겠지요..? 아직까지 아마도,,,
+        const { status } = req.body; // 수정 할 수 있는 것이 배송상태밖에 없겠지요..? 아직까지 아마도,,,
         if (Object.keys(status).length == 0) {
             console.error("req.body에 status 없음.");
             console.log(
