@@ -33,3 +33,12 @@
   transform: scale(1);
   transition: 0.5s;
 }
+
+.textArea {
+  height: 90px;
+}
+
+.btn {
+  scale: 75%;
+  margin-left: -8px;
+}

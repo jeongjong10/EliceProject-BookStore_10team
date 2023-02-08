@@ -45,6 +45,7 @@ const Detail = () => {
           },
         ])
       );
+      alert("장바구니에 상품이 잘 담겼습니다. 🛍");
     } else {
       const currentItems = JSON.parse(localStorage.getItem("cart"));
       let currentItemsSet = new Set(currentItems);
@@ -59,6 +60,7 @@ const Detail = () => {
           count,
         });
         localStorage.setItem("cart", JSON.stringify(currentItemsSet));
+        alert("장바구니에 상품이 잘 담겼습니다. 🛍");
       }
     }
   }

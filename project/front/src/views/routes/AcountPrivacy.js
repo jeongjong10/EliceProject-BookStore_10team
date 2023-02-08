@@ -34,6 +34,7 @@ const AcountPrivacy = () => {
     return await customAxios
       .get("/account")
       .then((res) => {
+        console.log(res.data);
         setUser(res.data);
         setReceiverName(res.data.userName);
         if (res.data.phone) {

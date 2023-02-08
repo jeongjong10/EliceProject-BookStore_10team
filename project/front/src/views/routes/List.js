@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Nav } from "react-bootstrap";
 import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
 import { customAxios } from "../../config/customAxios";
 import cssList from "../css/List.module.css";
 
 const List = () => {
-  const navigate = useNavigate();
   const [categoryLists, setCategoryLists] = useState([]); // 전체 탭
   const [category, setCategory] = useState(""); // 선택 탭
   const [products, setProducts] = useState([]);
@@ -18,8 +16,11 @@ const List = () => {
         // 데이터에서 카테고리만 빼서 list에 push
         let list = [];
         res.data.map((v, i) => {
-          list.push(v.categoryName);
+          if (v.categoryName !== "None-category") {
+            list.push(v.categoryName);
+          }
         });
+
         list = [...new Set(list)]; // 중복 제거
         setCategoryLists(list);
         setCategory(list[0]);
@@ -54,13 +55,13 @@ const List = () => {
                 }
                 return (
                   <Nav.Item key={i} className={cssList.unSelected}>
-                    <Nav.Link
+                    <a
                       onClick={() => {
                         setCategory(v);
                       }}
                     >
                       {v}
-                    </Nav.Link>
+                    </a>
                   </Nav.Item>
                 );
               })}
@@ -70,7 +71,6 @@ const List = () => {
             <h2 className={cssList.pageTitle}>{category}</h2>
             <ShowItemList
               data={products.filter((f) => f.categoryName == category)}
-              // className={}
             />
           </Col>
         </Row>

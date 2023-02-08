@@ -10,13 +10,13 @@ import Post from "../components/Post";
 const Cart = () => {
   const navigate = useNavigate();
 
-  const [receiverName, setReceiverName] = useState();
+  const [receiverName, setReceiverName] = useState("");
   const [receiverPhone, setReceiverPhone] = useState("");
   const [zonecode, setZonecode] = useState("");
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [selected, setSelected] = useState("");
-  const [comment, setComment] = useState(null);
+  const [comment, setComment] = useState(" ");
   const [finalCommentReq, setFinalCommentReq] = useState(""); // 서버에 보낼 comment
   const [popup, setPopup] = React.useState(false); // 주소검색
 
@@ -83,13 +83,13 @@ const Cart = () => {
           if (res2.data.hasOwnProperty("_id")) {
             setReceiverName(res2.data.userName);
 
-            if (res2.data.address) {
+            if (res2.data.phone) {
+              setReceiverPhone(res2.data.phone);
+            }
+            if (res2.data.address.postalCode) {
               setAddress1(res2.data.address.address1);
               setAddress2(res2.data.address.address2);
               setZonecode(res2.data.address.postalCode);
-            }
-            if (res2.data.phone) {
-              setReceiverPhone(res2.data.phone);
             }
           }
         })
@@ -118,67 +118,113 @@ const Cart = () => {
     return obj;
   });
 
+  // 배송지 입력 검증
+  function checkedRules() {
+    let checked = true;
+
+    for (let item of [
+      receiverName,
+      receiverPhone,
+      zonecode,
+      address1,
+      address2,
+    ]) {
+      console.log("133", item);
+      if (item == "" || !item) {
+        checked = false;
+      }
+    }
+    console.log(checked);
+    return checked;
+  }
+
   async function postNewOrder() {
-    const params = {
-      address: {
-        postalCode: zonecode,
-        address1: address1,
-        address2: address2,
-        receiverName: receiverName,
-        receiverPhoneNumber: receiverPhone,
-      },
-      orderList,
-      comment: finalCommentReq,
-      totalProductPrice: totalProductPrice,
-      totalPrice
-    };
-    console.log("params", params);
-    return await customAxios
-      .post("/orders", { params })
-      .then((res) => {
-        console.log(res.data);
-        sessionStorage.setItem("orderNumber", res.data.orderNumber);
-      })
-      .catch((err) => console.log(err));
+    if (checkedRules()) {
+      const params = {
+        address: {
+          postalCode: zonecode,
+          address1: address1,
+          address2: address2,
+          receiverName: receiverName,
+          receiverPhoneNumber: receiverPhone,
+        },
+        orderList,
+        comment: finalCommentReq,
+        totalProductPrice: totalProductPrice,
+        totalPrice,
+      };
+      console.log("params", params);
+      return await customAxios
+        .post("/orders", { params })
+        .then((res) => {
+          console.log(res.data);
+          sessionStorage.setItem("orderNumber", res.data.orderNumber);
+          navigate("/order/complete");
+        })
+        .catch((err) => console.log(err));
+    } else {
+      alert("⚠ 배송지 정보 : 이름, 연락처, 주소를 입력해주세요.");
+    }
+  }
+
+  function handleChange(e, variable) {
+    console.log(e.target.value);
+    switch (variable) {
+      case "name":
+        setReceiverName(e.target.value);
+        break;
+      case "phone":
+        setReceiverPhone(e.target.value);
+        break;
+      case "zone":
+        setZonecode(e.target.value);
+        break;
+      case "address1":
+        setAddress1(e.target.value);
+        break;
+      case "address2":
+        setAddress2(e.target.value);
+        break;
+    }
   }
 
   return (
     <Container className="subContainer">
       <div className={cssCart.titleArea}>
-        <h2 className="page-title"> 주문결제 </h2>{" "}
-      </div>{" "}
+        <h2 className="page-title"> 주문결제 </h2>
+      </div>
       <Row>
         <Col className={cssOrder.deliveryInfo}>
-          <h3> 배송지 정보 </h3>{" "}
+          <h3> 배송지 정보 </h3>
           <Form>
             <Form.Group className="mb-3" controlId="formBasicUsername">
-              <Form.Label> 이름 </Form.Label>{" "}
+              <Form.Label> 이름 </Form.Label>
               <Form.Control
                 type="username"
                 placeholder="이름"
                 defaultValue={receiverName}
-                onChange={(e) => setReceiverName(e.target.value)}
-              />{" "}
-            </Form.Group>{" "}
+                onChange={(e) => handleChange(e, "name")}
+              />
+            </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPhone">
-              <Form.Label> 연락처 </Form.Label>{" "}
+              <Form.Label> 연락처 </Form.Label>
               <Form.Control
                 type="phone"
                 placeholder="연락처 입력"
                 defaultValue={receiverPhone}
-                onChange={(e) => setReceiverPhone(e.target.value)}
-              />{" "}
-              <Form.Text className="text-muted"> 예시) 01012345678 </Form.Text>{" "}
-            </Form.Group>{" "}
+                onChange={(e) => handleChange(e, "phone")}
+              />
+              <Form.Text className="text-muted"> 예시) 01012345678 </Form.Text>
+            </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicAddress">
-              <Form.Label> 주소 </Form.Label>{" "}
+              <Form.Label> 주소 </Form.Label>
               <InputGroup>
                 <Form.Control
                   className="mb-1"
                   placeholder="우편번호"
                   defaultValue={zonecode}
-                  onChange={(e) => setZonecode(e.target.value)}
-                />{" "}
+                  onChange={(e) => handleChange(e, "zone")}
+                />
                 <Button
                   className="mb-1"
                   variant="outline-secondary"
@@ -187,8 +233,8 @@ const Cart = () => {
                     setPopup(!popup);
                   }}
                 >
-                  검색{" "}
-                </Button>{" "}
+                  검색
+                </Button>
                 {popup && (
                   <Post
                     address1={address1}
@@ -196,25 +242,25 @@ const Cart = () => {
                     zonecode={zonecode}
                     setZonecode={setZonecode}
                   ></Post>
-                )}{" "}
-              </InputGroup>{" "}
+                )}
+              </InputGroup>
               <Form.Control
                 className="mb-1"
                 type="text"
                 placeholder="주소"
                 defaultValue={address1}
-                onChange={(e) => setAddress1(e.target.value)}
-              />{" "}
+                onChange={(e) => handleChange(e, "address1")}
+              />
               <Form.Control
                 className="mb-1"
                 type="text"
                 placeholder="상세주소 입력"
                 defaultValue={address2}
-                onChange={(e) => setAddress2(e.target.value)}
-              />{" "}
-            </Form.Group>{" "}
+                onChange={(e) => handleChange(e, "address2")}
+              />
+            </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label> 요청사항 </Form.Label>{" "}
+              <Form.Label> 요청사항 </Form.Label>
               <Form.Select
                 className="mb-1"
                 placeholder="배송시 요청사항을 선택해 주세요."
@@ -222,15 +268,15 @@ const Cart = () => {
                   setSelected(comments[e.target.value]);
                 }}
               >
-                <option value="0"> 배송시 요청사항을 선택해 주세요. </option>{" "}
-                <option value="1"> 직접 수령하겠습니다. </option>{" "}
-                <option value="2"> 배송 전 연락 바랍니다. </option>{" "}
-                <option value="3"> 부재 시 경비실에 맡겨주세요. </option>{" "}
-                <option value="4"> 부재 시 문 앞에 놓아주세요. </option>{" "}
-                <option value="5"> 부재 시 택배함에 넣어주세요. </option>{" "}
-                <option value="6"> 직접 입력 </option>{" "}
-              </Form.Select>{" "}
-              {/* comment 직접 입력 */}{" "}
+                <option value="0"> 배송시 요청사항을 선택해 주세요. </option>
+                <option value="1"> 직접 수령하겠습니다. </option>
+                <option value="2"> 배송 전 연락 바랍니다. </option>
+                <option value="3"> 부재 시 경비실에 맡겨주세요. </option>
+                <option value="4"> 부재 시 문 앞에 놓아주세요. </option>
+                <option value="5"> 부재 시 택배함에 넣어주세요. </option>
+                <option value="6"> 직접 입력 </option>
+              </Form.Select>
+              {/* comment 직접 입력 */}
               {selected == "6" && (
                 <Form.Control
                   type="text"
@@ -239,41 +285,39 @@ const Cart = () => {
                     setComment(e.target.value);
                   }}
                 />
-              )}{" "}
-            </Form.Group>{" "}
-          </Form>{" "}
-        </Col>{" "}
+              )}
+            </Form.Group>
+          </Form>
+        </Col>
         <Col xs lg="3">
           <Row className={cssCart.orderInfo}>
-            <h3> 결제 정보 </h3>{" "}
+            <h3> 결제 정보 </h3>
             <div>
               <div className={cssOrder.orderProductsList}>
-                <p> 주문 상품 </p>{" "}
+                <p> 주문 상품 </p>
                 <div className={cssCart.orderList}>
-                  {" "}
                   {products.map((v, i) => {
                     return (
                       <p key={i}>
-                        {" "}
-                        {v.productName}/ {v.count} 개{" "}
+                        {v.productName} / {v.count} 개
                       </p>
                     );
-                  })}{" "}
-                </div>{" "}
-              </div>{" "}
+                  })}
+                </div>
+              </div>
               <div className={cssCart.info}>
-                <p> 총 상품금액 </p>{" "}
-                <p> {totalProductPrice.toLocaleString("en-US")}원 </p>{" "}
-              </div>{" "}
+                <p> 총 상품금액 </p>
+                <p> {totalProductPrice.toLocaleString("en-US")} 원 </p>
+              </div>
               <div className={cssCart.info}>
-                <p> 배송비 </p> <p> 3, 000 원 </p>{" "}
-              </div>{" "}
-            </div>{" "}
+                <p> 배송비 </p> <p> 3,000 원 </p>
+              </div>
+            </div>
             <div className={cssCart.result}>
-              <p> 총 결제금액 </p>{" "}
-              <h4> {totalPrice.toLocaleString("en-US")}원 </h4>{" "}
-            </div>{" "}
-          </Row>{" "}
+              <p> 총 결제금액 </p>
+              <h4> {totalPrice.toLocaleString("en-US")}원 </h4>
+            </div>
+          </Row>
           <Row className="justify-content-md-center">
             <Col>
               <div className="d-grid gap-2">
@@ -281,18 +325,16 @@ const Cart = () => {
                   variant="primary"
                   size="lg"
                   onClick={() => {
-                    // * 데이터 서버와 통신
                     postNewOrder();
-                    // navigate("/order/complete"); // 나중에 지워야 됨
                   }}
                 >
-                  결제하기{" "}
-                </Button>{" "}
-              </div>{" "}
-            </Col>{" "}
-          </Row>{" "}
-        </Col>{" "}
-      </Row>{" "}
+                  결제하기
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
     </Container>
   );
 };

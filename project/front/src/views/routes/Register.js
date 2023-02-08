@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FloatingLabel, Button, Form } from "react-bootstrap";
 import { customAxios } from "../../config/customAxios";
 import { Regex } from "../components/Regex";
+import styles from "../css/Login.module.css";
+
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -11,16 +14,16 @@ const Register = () => {
   const navigate = useNavigate();
 
   const onNameHandler = (event) => {
-    setName(event.currentTarget.value);
+    setName(event.target.value);
   };
   const onEmailHandler = (event) => {
-    setEmail(event.currentTarget.value);
+    setEmail(event.target.value);
   };
   const onPasswordHandler = (event) => {
-    setPassword(event.currentTarget.value);
+    setPassword(event.target.value);
   };
   const onConfirmPasswordHandler = (event) => {
-    setConfirmPassword(event.currentTarget.value);
+    setConfirmPassword(event.target.value);
   };
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -58,54 +61,57 @@ const Register = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        height: "100vh",
-      }}
-    >
-      <form style={{ display: "flex", flexDirection: "column" }}>
-        <h1>Sign Up</h1>
-        <br />
-        <div>이름</div>
-        <input
-          type="text"
+    <div>
+      <form className={styles.loginForm}>
+        <h1 className={styles.title}>회원가입</h1>
+        <FloatingLabel
+          controlId="floatingInput"
+          label="이름"
+          className="mb-3"
           value={name}
-          placeholder="엘리스"
           onChange={onNameHandler}
-        />
-        <div>이메일</div>
-        <input
-          type="email"
+        >
+          <Form.Control type="text" placeholder="엘리스" />
+        </FloatingLabel>
+        <FloatingLabel
+          controlId="floatingEmail"
+          label="이메일 주소"
+          className="mb-3"
           value={email}
-          placeholder="abc@example.com"
           onChange={onEmailHandler}
-        />
-        <div>비밀번호</div>
-        <input
-          type="password"
+        >
+          <Form.Control type="email" placeholder="example@elice.com" />
+        </FloatingLabel>
+        <FloatingLabel
+          controlId="floatingPassword"
+          label="패스워드"
+          className="mb-3"
           value={password}
-          placeholder="******"
           onChange={onPasswordHandler}
-        />
-        <div>비밀번호 확인</div>
-        <input
           type="password"
-          value={confirmPassword}
           placeholder="******"
+        >
+          <Form.Control type="password" placeholder="Password" />
+        </FloatingLabel>
+        <FloatingLabel
+          controlId="floatingPasswordConfirm"
+          label="패스워드 확인"
+          className="mb-3"
+          value={confirmPassword}
           onChange={onConfirmPasswordHandler}
-        />
-        <br />
-        <button
+          type="password"
+        >
+          <Form.Control type="password" placeholder="Password" />
+        </FloatingLabel>
+        <Button
+          variant="primary"
+          size="lg"
           onClick={(event) => {
             onSubmitHandler(event);
           }}
         >
           회원가입
-        </button>
+        </Button>
       </form>
     </div>
   );
