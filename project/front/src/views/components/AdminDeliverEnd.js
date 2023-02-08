@@ -4,6 +4,7 @@ import { Container, Row, Col, Button, Table, Modal } from "react-bootstrap";
 import cssAdmin from "../css/Admin.module.css";
 
 import { customAxios } from "../../config/customAxios";
+import { OrderProduct } from "./OrderProduct";
 
 export const AdminDeliverEnd = () => {
   const [adminOrders, setAdminOrders] = useState([]);
@@ -18,16 +19,6 @@ export const AdminDeliverEnd = () => {
     getData();
   }, []);
 
-  const AdminOrderProduct = (adminOrders) => {
-    if (adminOrders.orderList.legnth > 1) {
-      return adminOrders.orderList.map(
-        (orderList, index) =>
-          `${adminOrders.orderList[index].productName} / ${adminOrders.orderList[index].count} 개`
-      );
-    } else {
-      return `${adminOrders.orderList[0].productName} / ${adminOrders.orderList[0].count} 개`;
-    }
-  };
   const CancelCount = (props) => {
     let count = 0;
     for (let orders of props) {
@@ -48,8 +39,8 @@ export const AdminDeliverEnd = () => {
         .delete(`/admin/falseOrders/${props.orderId}`)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
-      handleShow();
-      window.location.reload();
+      handleClose();
+      getData();
     };
 
     return (
@@ -116,7 +107,7 @@ export const AdminDeliverEnd = () => {
                             src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
                             className={`${cssAdmin.productThumbnail}`}
                           /> */}
-                          {AdminOrderProduct(adminOrders)}
+                          {OrderProduct(adminOrders)}
                         </td>
                         <td>{adminOrders.createdAt.slice(0, 10)}</td>
                         {/* <td>

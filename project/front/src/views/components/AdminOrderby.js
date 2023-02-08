@@ -19,17 +19,6 @@ export const AdminOrderby = () => {
     getData();
   }, []);
 
-  // const AdminOrderProduct = (adminOrders) => {
-  //   if (adminOrders.orderList.legnth > 1) {
-  //     return adminOrders.orderList.map(
-  //       (orderList, index) =>
-  //         `"${adminOrders.orderList[index].productName}" : ${adminOrders.orderList[index].count} 개  `
-  //     );
-  //   } else {
-  //     return `"${adminOrders.orderList[0].productName}" : ${adminOrders.orderList[0].count} 개`;
-  //   }
-  // };
-
   const statusHandler = async (e, index) => {
     const id = e.target.id;
     const status = e.target.value;
@@ -41,16 +30,15 @@ export const AdminOrderby = () => {
       .patch(`admin/orders/${id}`, { status })
       .then((res) => {
         console.log(res.data);
-        setAdminOrders(res.data);
+        // setAdminOrders(res.data);
         getData();
-        // window.location.reload();
       });
   };
 
   const StateCount = (props) => {
     let count = 0;
     for (let orders of props) {
-      if (orders.status === "배송준비") {
+      if (adminOrders.activate && orders.status === "배송준비") {
         count += 1;
       }
     }
@@ -60,7 +48,7 @@ export const AdminOrderby = () => {
   const DeliverCount = (props) => {
     let count = 0;
     for (let orders of props) {
-      if (orders.status === "배송중") {
+      if (adminOrders.activate && orders.status === "배송중") {
         count += 1;
       }
     }
@@ -70,7 +58,7 @@ export const AdminOrderby = () => {
   const EndCount = (props) => {
     let count = 0;
     for (let orders of props) {
-      if (orders.status === "배송완료") {
+      if (adminOrders.activate && orders.status === "배송완료") {
         count += 1;
       }
     }
@@ -87,8 +75,8 @@ export const AdminOrderby = () => {
         .delete(`/admin/orders/${props.orderId}`)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
-      handleShow();
-      window.location.reload();
+      handleClose();
+      getData();
     };
 
     return (
