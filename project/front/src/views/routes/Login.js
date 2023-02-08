@@ -15,6 +15,12 @@ const Login = () => {
   const [notAllow, setNotAllow] = useState(true);
 
   useEffect(() => {
+    return () => {
+      sessionStorage.removeItem("directOrder");
+    };
+  }, []);
+
+  useEffect(() => {
     if (emailValid && passwordValid) {
       setNotAllow(false);
       return;
