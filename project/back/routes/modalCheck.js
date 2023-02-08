@@ -20,3 +20,5 @@ router.post("/", verifyUser(true), (req, res, next) => {
         next(err);
     }
 })
+
+module.exports = router;
