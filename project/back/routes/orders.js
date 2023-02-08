@@ -51,7 +51,6 @@ router.post("/", verifyUser(), async(req, res, next) => {
         // orderNumber, comment, status, orderList(productName, count),
         // totalProductPrice, shipping, totalPrice
 
-        // const orders = JSON.parse(req.body);
         const orders = req.body;
         console.log("주문 요청 데이터", orders);
         if (Object.keys(orders).length == 0) {
