@@ -45,7 +45,7 @@ router.patch("/products/:_id", verifyUser(true), async(req, res, next) => {
             throw new Error("params 내용이 없습니다.");
         }
 
-        const updateData = JSON.parse(req.body);
+        const updateData = req.body;
         if (Object.keys(updateData).length == 0) {
             console.error("Body 없음.");
             console.log(
@@ -149,7 +149,7 @@ router.patch("/orders/:_id", verifyUser(true), async(req, res, next) => {
             throw new Error("params 내용이 없습니다.");
         }
 
-        const { status } = JSON.parse(req.body); // 수정 할 수 있는 것이 배송상태밖에 없겠지요..? 아직까지 아마도,,,
+        const { status } = req.body; // 수정 할 수 있는 것이 배송상태밖에 없겠지요..? 아직까지 아마도,,,
         if (Object.keys(status).length == 0) {
             console.error("req.body에 status 없음.");
             console.log(
@@ -218,13 +218,15 @@ router.delete("/orders/:_id", verifyUser(true), async(req, res, next) => {
 
     // ------ ADMIN: 비활성 주문 내역 완전 삭제 ------
     router.delete(
-        "falseOrders/:_id",
+        "/falseOrders/:_id",
         verifyUser(true),
         async(req, res, next) => {
             console.log(
                 "----------------- 관리자 비활성 주문 내역 완전 삭제 시도 ------------------"
             );
             try {
+                const { _id } = req.params;
+
                 if (_id == ":_id") {
                     console.error("params 없음.");
                     console.log(
@@ -234,6 +236,7 @@ router.delete("/orders/:_id", verifyUser(true), async(req, res, next) => {
                 }
 
                 const orders = await Order.find({ _id, activate: false });
+                console.log(orders);
                 if (!orders[0]) {
                     console.error("비활성 상태인 주문목록이 없습니다");
                     console.log(
@@ -241,10 +244,8 @@ router.delete("/orders/:_id", verifyUser(true), async(req, res, next) => {
                     );
                     throw new Error("비활성 상태인 주문목록이 없습니다");
                 } else {
-                    console.log(
-                        `비활성 상태의 주문을 완전히 삭제합니다.`
-                    );
-                    await Order.deleteMany({ activate: false });
+                    console.log(`비활성 상태의 주문을 완전히 삭제합니다.`);
+                    await Order.deleteOne({ _id, activate: false });
                     console.log(
                         "---------------- 관리자 비활성 주문 내역 완전 삭제 성공 ---------------------"
                     );
