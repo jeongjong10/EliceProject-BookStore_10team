@@ -111,7 +111,7 @@ const AdminCategory = () => {
             <h2 className={cssList.pageTitle}>카테고리/상품 관리</h2>
             <div className={cssAdminCateg.selectBox}>
               <Form.Select
-                // defaultValue={category}
+                defaultValue={category}
                 key={uuid()}
                 onChange={(e) => {
                   setCategory(e.target.value);
