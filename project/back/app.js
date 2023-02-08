@@ -5,7 +5,7 @@ const cors = require("cors");
 
 // --- 필요한 라우터 require ---
 const accountRouter = require("./routes/account");
-const adminRouter = require("./routes/admin"); // 보류중
+const adminRouter = require("./routes/admin");
 const cartlistRouter = require("./routes/cartlist");
 const loginRouter = require("./routes/login");
 const orderRouter = require("./routes/orders");
@@ -31,7 +31,7 @@ app.use(express.json()); // post 메서드를 받기 위함 : req.body를 읽을
 app.use(express.urlencoded({ extended: false }));
 //------------------------
 
-// ------ 이미지 업로드 관련 (임시) ------
+// // ------ 이미지 업로드 관련 (임시) ------
 // app.use("/images", express.static("public")); // images 경로를 통해 public 디렉토리에 포함된 파일을 로드할 수 있음.
 
 // const storage = multer.diskStorage({
@@ -40,7 +40,7 @@ app.use(express.urlencoded({ extended: false }));
 //         cb(null, Date.now() + path.extname(file.originalname)); // 파일 이름 형식 지정
 //     },
 // });
-//
+
 // const upload = multer({
 //     storage: storage,
 //     limits: { fileSize: 1000000 }, // 파일 사이즈 (단위는 byte)

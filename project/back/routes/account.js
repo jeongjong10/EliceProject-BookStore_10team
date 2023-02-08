@@ -60,13 +60,14 @@ router.get("/", verifyUser(), async (req, res, next) => {
         "------------------- 마이페이지 정보 검색 실패 ------------------------"
       );
       throw new Error("사용자의 정보가 없습니다");
-    } else if (user.password !== password) {
-      console.error("사용자 입력 패스워드가 일치하지 않습니다");
-      console.log(
-        "------------------- 마이페이지 정보 검색 실패 ------------------------"
-      );
-      throw new Error("사용자 입력 패스워드가 일치하지 않습니다");
     }
+    // else if (user.password !== password) {
+    //     console.error("사용자 입력 패스워드가 일치하지 않습니다");
+    //     console.log(
+    //         "------------------- 마이페이지 정보 검색 실패 ------------------------"
+    //     );
+    //     throw new Error("사용자 입력 패스워드가 일치하지 않습니다");
+    // }
 
     res.status(200).json(user);
     console.log("사용자 정보 전송 완료");
@@ -87,7 +88,7 @@ router.post("/", verifyUser(), async (req, res, next) => {
     const verifiedUser_id = req.verifiedUser_id;
 
     // 수정 요청 데이터 확인
-    const updateData = req.body;
+    const updateData = JSON.parse(req.body);
 
     if (Object.keys(updateData).length == 0) {
       console.error("req.body 확인 실패");

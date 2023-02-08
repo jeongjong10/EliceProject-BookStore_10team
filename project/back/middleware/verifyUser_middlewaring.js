@@ -29,7 +29,13 @@ const verifyUser = (isAdmin = false) => {
 
       // 관리자 권한 및 사용자 계정 활성화 확인
       const user = await User.findOne({ _id: ObjectId(verifiedUser_id) });
-      console.log(user);
+      if (!user) {
+        console.log("사용자 계정 확인 실패");
+        throw new Error("존재하지 않는 계정 입니다");
+      } else {
+        console.log("사용자 계정 : ", user);
+        console.log("사용자 계정 확인 완료");
+      }
       const { activate, admin } = user;
 
       // 비활성화 계정 에러
@@ -44,7 +50,6 @@ const verifyUser = (isAdmin = false) => {
         throw new Error("관리자 계정이 아닙니다");
       }
 
-      console.log("사용자 계정 확인 완료");
       req.verifiedUser_id = verifiedUser_id;
       next();
     } catch (err) {
