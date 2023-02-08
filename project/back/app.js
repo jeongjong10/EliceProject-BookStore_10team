@@ -1,14 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-// const multer = require("multer");
 
 // --- 필요한 라우터 require ---
 const accountRouter = require("./routes/account");
 const adminRouter = require("./routes/admin");
 const cartlistRouter = require("./routes/cartlist");
 const loginRouter = require("./routes/login");
-const modalCheckRouter = require("./routes/modalChck");
+const modalCheckRouter = require("./routes/modalCheck");
 const orderRouter = require("./routes/orders");
 const productRouter = require("./routes/products");
 const registerRouter = require("./routes/register");
@@ -29,7 +28,7 @@ const app = express();
 
 // ------ 미들웨어 등록 ------
 app.use(cors());
-app.use(express.json()); // post 메서드를 받기 위함 : req.body를 읽을 수 있음
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 //------------------------
 

@@ -3,7 +3,7 @@ const router = express.Router();
 const verifyUser = require("../middleware/verifyUser_middlewaring");
 const User = require("../models/index")
 
-router.post("/", verifyUser, (req, res, next) => {
+router.post("/", verifyUser(true), (req, res, next) => {
     console.log("------------------- 관리페이지 모달 PW 검사 실패 ------------------------");
     try {
         // 비밀번호 입력
