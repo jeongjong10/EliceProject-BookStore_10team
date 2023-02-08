@@ -1,11 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const multer = require("multer");
+// const multer = require("multer");
 
 // --- 필요한 라우터 require ---
 const accountRouter = require("./routes/account");
-const adminRouter = require("./routes/admin"); // 보류중
+const adminRouter = require("./routes/admin");
 const cartlistRouter = require("./routes/cartlist");
 const loginRouter = require("./routes/login");
 const orderRouter = require("./routes/orders");
@@ -40,6 +40,7 @@ app.use("/login", loginRouter);
 app.use("/orders", orderRouter);
 app.use("/products", productRouter);
 app.use("/register", registerRouter);
+app.use("/image", imageRouter);
 app.use("/image", imageRouter);
 //------------------------
 
