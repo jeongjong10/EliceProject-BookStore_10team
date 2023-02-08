@@ -85,9 +85,23 @@ const AdminProductRegister = () => {
       <Row>
         <Col xs lg="2">
           <Stack gap={3}>
-            <button className="order">전체 주문 관리</button>
+            <button
+              className="order"
+              onClick={() => {
+                navigate("/admin");
+              }}
+            >
+              전체 주문 관리
+            </button>
 
-            <button className="manager">카테고리/ 상품관리</button>
+            <button
+              className="manager"
+              onClick={() => {
+                navigate("/admin/category");
+              }}
+            >
+              카테고리/상품 관리
+            </button>
             <button className="deleted">상품등록</button>
           </Stack>
         </Col>

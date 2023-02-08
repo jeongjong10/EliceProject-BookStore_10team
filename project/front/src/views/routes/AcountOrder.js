@@ -1,22 +1,11 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  Card,
-  Container,
-  Row,
-  Col,
-  ListGroup,
-  Nav,
-  Stack,
-  Tab,
-  Tabs,
-} from "react-bootstrap";
+import { Container, Row, Col, Stack, Tab, Tabs } from "react-bootstrap";
 import { OrderReady } from "../components/OrderReady";
 import { OrderStatus } from "../components/OrderStatus";
 import { OrderEnd } from "../components/OrderEnd";
 
 const AcountOrder = () => {
-  // const {id} = useParams()
   const navigate = useNavigate();
 
   return (
@@ -26,8 +15,22 @@ const AcountOrder = () => {
           <Col xs lg="2">
             <Stack gap={3}>
               <button className="order">주문조회</button>
-              <button className="manager">개인정보관리</button>
-              <button className="deleted">회원탈퇴</button>
+              <button
+                className="manager"
+                onClick={() => {
+                  navigate("/account/privacy");
+                }}
+              >
+                개인정보관리
+              </button>
+              <button
+                className="deleted"
+                onClick={() => {
+                  navigate("/account/secession");
+                }}
+              >
+                회원탈퇴
+              </button>
             </Stack>
           </Col>
           <Col>

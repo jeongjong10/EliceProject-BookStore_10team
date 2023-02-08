@@ -50,6 +50,7 @@ const AcountPrivacy = () => {
   }
   useEffect(() => {
     getData();
+    setModal(true); // 페이지 진입시 모달 설정
   }, []);
 
   const onSubmitHandler = async (event) => {
@@ -103,10 +104,10 @@ const AcountPrivacy = () => {
             />
             <button
               className="manager"
-              onClick={(e) => {
-                e.preventDefault();
-                setModal(true);
-              }}
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   setModal(true);
+              // }}
             >
               회원정보관리
             </button>

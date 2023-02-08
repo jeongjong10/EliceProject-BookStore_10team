@@ -63,14 +63,14 @@ const AdminCategory = () => {
               <Nav.Item className={cssList.unSelected}>
                 <a
                   onClick={() => {
-                    navigate("/admin/products");
+                    navigate("/admin");
                   }}
                 >
                   전체 주문 관리
                 </a>
               </Nav.Item>
               <Nav.Item className={cssList.selected}>
-                <a onClick={() => {}}>카테고리/상품 관리</a>
+                <a>카테고리/상품 관리</a>
               </Nav.Item>
               <Nav.Item className={cssList.unSelected}>
                 <a
