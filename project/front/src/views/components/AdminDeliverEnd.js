@@ -45,10 +45,11 @@ export const AdminDeliverEnd = () => {
 
     const handleDataDelete = async (e) => {
       await customAxios
-        .delete(`/admin/falseOrders${props.orderId}`)
+        .delete(`/admin/falseOrders/${props.orderId}`)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
-      handleClose();
+      handleShow();
+      window.location.reload();
     };
 
     return (
@@ -66,7 +67,7 @@ export const AdminDeliverEnd = () => {
           <Modal.Header closeButton>
             <Modal.Title>주문삭제</Modal.Title>
           </Modal.Header>
-          <Modal.Body>주문을 삭제하시겠습니까?{props._id}</Modal.Body>
+          <Modal.Body>주문을 삭제하시겠습니까?</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               아니요

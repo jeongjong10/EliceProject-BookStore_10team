@@ -43,7 +43,7 @@ export const AdminOrderby = () => {
         console.log(res.data);
         setAdminOrders(res.data);
         getData();
-        window.location.reload();
+        // window.location.reload();
       });
   };
 
@@ -87,7 +87,8 @@ export const AdminOrderby = () => {
         .delete(`/admin/orders/${props.orderId}`)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
-      handleClose();
+      handleShow();
+      window.location.reload();
     };
 
     return (
@@ -105,7 +106,7 @@ export const AdminOrderby = () => {
           <Modal.Header closeButton>
             <Modal.Title>주문취소</Modal.Title>
           </Modal.Header>
-          <Modal.Body>주문을 취소하시겠습니까?{props.orderId}</Modal.Body>
+          <Modal.Body>주문을 취소하시겠습니까?</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               아니요
