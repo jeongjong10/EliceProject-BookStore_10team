@@ -158,9 +158,10 @@ export const AdminOrderby = () => {
               <tbody>
                 {adminOrders.map((adminOrders, index) => {
                   if (
-                    adminOrders.status === "배송준비" ||
-                    adminOrders.status === "배송중" ||
-                    adminOrders.status === "배송완료"
+                    adminOrders.activate &&
+                    (adminOrders.status === "배송준비" ||
+                      adminOrders.status === "배송중" ||
+                      adminOrders.status === "배송완료")
                   ) {
                     return (
                       <tr key={index}>
