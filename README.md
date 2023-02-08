@@ -22,8 +22,8 @@
 
 ## 3. 서비스 구성도
   - 서비스 구조도 그림 (사용한 기술 스택)
-  - 와이어프레임 링크 (예상 웹 화면 UI) e.g) figma 사용
-  - API 명세를 문서화한 링크
+  - 와이어프레임 figma : https://www.figma.com/file/yr7i1KO0DRpgRhR3tmml64/elice-1%EC%B0%A8-%ED%8C%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=311%3A2
+  - API 명세 : https://www.notion.so/API-d25a39b6f4ec4f18a1b6b9e2f92928d1
 
 ## 4. 프로젝트 팀원 역할 분담
 | 이름 | 담당 업무 |
