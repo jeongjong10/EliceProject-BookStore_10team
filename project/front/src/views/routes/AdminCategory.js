@@ -122,19 +122,6 @@ const AdminCategory = () => {
                       {v}
                     </option>
                   );
-                  // if (category == v) {
-                  //   return (
-                  //     <option value={v} key={i} selected>
-                  //       {v}
-                  //     </option>
-                  //   );
-                  // } else {
-                  //   return (
-                  //     <option value={v} key={i}>
-                  //       {v}
-                  //     </option>
-                  //   );
-                  // }
                 })}
               </Form.Select>
               {category != "전체" && category != "None-category" && (

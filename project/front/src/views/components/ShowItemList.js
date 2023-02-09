@@ -18,29 +18,63 @@ export const ShowItemList = ({ data, page }) => {
       .delete(`/admin/products/${product._id}`)
       .then((res) => {
         let data = res.data;
-        console.log("data", data);
-        let filteredData = data.filter(
-          (f) =>
-            f.categoryName == sessionStorage.getItem("currentCategory") &&
-            f.activate == true
-        );
-        console.log(filteredData);
-        setRefreshData(filteredData);
-
         // 카테고리 - selectbox에 상태 유지
+        // console.log(
+        //   data.filter((f) => f.categoryName == product.categoryName).length
+        // );
         if (
-          data.filter((f) => f.categoryName == product.categoryName).length > 1
+          data.filter(
+            (f) => f.categoryName == product.categoryName && f.activate == true
+          ).length > 0
         ) {
-          localStorage.setItem("currentCategory", product.categoryName);
+          sessionStorage.setItem("currentCategory", product.categoryName);
         } else {
           sessionStorage.removeItem("currentCategory");
         }
-        // 삭제 시 처리 로직
+
+        // 상품 리스트 리렌더링
+        let filteredData;
+        if (sessionStorage.getItem("currentCategory")) {
+          filteredData = data.filter(
+            (f) =>
+              f.categoryName == sessionStorage.getItem("currentCategory") &&
+              f.activate == true
+          );
+        } else {
+          filteredData = data.filter((f) => f.activate);
+        }
+        setRefreshData(filteredData);
+
         alert("상품이 삭제 되었습니다.");
-        // window.location.reload();
       })
       .catch((err) => console.log(err));
   }
+  // async function deleteProduct(product) {
+  //   await customAxios
+  //     .delete(`/admin/products/${product._id}`)
+  //     .then((res) => {
+  //       let data = res.data;
+  //       // 카테고리 - selectbox에 상태 유지
+  //       if (
+  //         data.filter((f) => f.categoryName == product.categoryName).length > 1
+  //       ) {
+  //         sessionStorage.setItem("currentCategory", product.categoryName);
+  //       } else {
+  //         sessionStorage.removeItem("currentCategory");
+  //       }
+
+  //       // 상품 리스트 리렌더링
+  //       let filteredData = data.filter(
+  //         (f) =>
+  //           f.categoryName == sessionStorage.getItem("currentCategory") &&
+  //           f.activate == true
+  //       );
+  //       setRefreshData(filteredData);
+
+  //       alert("상품이 삭제 되었습니다.");
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
 
   return (
     <Container>
