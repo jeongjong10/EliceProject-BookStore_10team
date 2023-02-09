@@ -13,8 +13,8 @@ export const ModalCancel = (props) => {
       .delete(`/orders/${props.orderId}`)
       .then((res) => {
         console.log(res);
-        setShow(false);
-        window.location.reload();
+        handleClose();
+        // window.location.reload();
       })
       .catch((err) => console.log(err));
   };

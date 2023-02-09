@@ -15,7 +15,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import cssAccount from "../css/Account.module.css";
-import { item } from "../../orders";
+
 import { ModalCancel } from "./ModalCancel";
 import { customAxios } from "../../config/customAxios";
 import { OrderProduct } from "./OrderProduct";
@@ -26,7 +26,6 @@ export const OrderStatus = () => {
   async function getData() {
     return await customAxios.get("/account/order").then((res) => {
       console.log(res.data);
-
       setOrders(res.data);
     });
   }
@@ -36,15 +35,12 @@ export const OrderStatus = () => {
 
   const TbodyStatusorders = (orders) => {
     if (!orders.length) {
-      console.log(orders);
-      return (
-        <tr>
-          <h>주문내역이 존재하지 않습니다.</h>
-        </tr>
-      );
+      return <tr>주문내역이 존재하지 않습니다.</tr>;
     } else {
+      console.log(orders);
       orders.map((orders, index) => {
         if (orders.status === "배송준비") {
+          console.log(orders);
           return (
             <tr key={index}>
               <td>{orders.orderNumber}</td>
@@ -63,7 +59,6 @@ export const OrderStatus = () => {
               </td> */}
               <td>{orders.status}</td>
               <td>{orders.totalPrice}</td>
-              {console.log(orders._id)}
               <td>
                 <ModalCancel orderId={orders._id} />
               </td>

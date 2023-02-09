@@ -35,14 +35,11 @@ export const OrderEnd = () => {
 
   const TbodyEndorders = (orders) => {
     if (!orders.length) {
-      return (
-        <tr>
-          <h>주문내역이 존재하지 않습니다.</h>
-        </tr>
-      );
+      return <tr>주문내역이 존재하지 않습니다.</tr>;
     } else {
       orders.map((orders, index) => {
         if (orders.status === "배송완료") {
+          console.log(orders);
           return (
             <tr key={index}>
               <td>{orders.orderNumber}</td>

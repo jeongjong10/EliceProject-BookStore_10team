@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Stack, Tab, Tabs } from "react-bootstrap";
 import { OrderReady } from "../components/OrderReady";
 import { OrderStatus } from "../components/OrderStatus";
 import { OrderEnd } from "../components/OrderEnd";
-import { customAxios } from "../../config/customAxios";
 
 const AcountOrder = () => {
   // const {id} = useParams()
