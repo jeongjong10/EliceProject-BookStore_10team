@@ -12,13 +12,18 @@ function AccountPrivacyModal({ show, onHide }) {
   const onClickConfirmButton = async (e) => {
     e.preventDefault();
     await customAxios
-      .post("/account", { password })
+      .post("/modalCheck", { password })
       .then((response) => {
-        if (response.data.message === "비밀번호가 일치하지 않음") {
+        console.log("account axios" + response.data.message);
+        if (
+          response.data.message === "사용자 입력 패스워드가 일치하지 않습니다"
+        ) {
+          console.log("account axios failed");
           alert("비밀번호가 일치하지 않습니다.");
-          window.location.reload();
         } else {
+          console.log("account axios successful");
           alert("비밀번호가 일치합니다.");
+
           navigate("/account/privacy");
         }
       })
@@ -30,7 +35,7 @@ function AccountPrivacyModal({ show, onHide }) {
 
   return (
     <>
-      <Modal show={show} onHide={onHide}>
+      <Modal show={show} onHide={onHide} backdrop="static" keyboard={false}>
         <Modal.Header closeButton>
           <Modal.Title>비밀번호 확인</Modal.Title>
         </Modal.Header>
@@ -53,7 +58,6 @@ function AccountPrivacyModal({ show, onHide }) {
           <Button
             onClick={(e) => {
               onClickConfirmButton(e);
-              onHide(e);
             }}
           >
             확인

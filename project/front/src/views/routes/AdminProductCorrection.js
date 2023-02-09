@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useParams } from "react";
 import { Button, Container, Row, Col, Form, Stack } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import cssCart from "../css/Cart.module.css";
 import cssOrder from "../css/Order.module.css";
 import { customAxios } from "../../config/customAxios";
 
-const AdminProductRegister = () => {
+const AdminProductCorrection = () => {
+  // const { id } = useParams();
   const navigate = useNavigate();
 
   const [selected, setSelected] = useState("");
@@ -16,9 +17,22 @@ const AdminProductRegister = () => {
   const [price, setPrice] = useState("");
   const [files, setFiles] = useState("");
 
+  // const [product, setProduct] = useState({});
+  // async function getData() {
+  //   return await customAxios
+  //     .get(`/products/${id}`)
+  //     .then((res) => {
+  //       setProduct(res.data);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
+  // useEffect(() => {
+  //   getData();
+  // }, []);
+
   const onLoadFile = (e) => {
     const file = e.target.files;
-
+    console.log(file);
     setFiles(file);
   };
 
@@ -34,33 +48,7 @@ const AdminProductRegister = () => {
     ) {
       return alert("값을 입력해주세요.");
     } else {
-      const formdata = new FormData();
-      formdata.append("productName", productName);
-      formdata.append("categoryName", selected);
-      formdata.append("brand", publisher);
-      formdata.append("detail", detail);
-      formdata.append("img", files[0]);
-      formdata.append("price", price);
-
-      for (var key of formdata.keys()) {
-        console.log(key);
-      }
-      for (var value of formdata.values()) {
-        console.log(value);
-      }
-      return await customAxios
-        .post(
-          "/admin/products",
-          { formdata },
-          { headers: { "Content-Type": "multipart/form-data" } }
-        )
-        .then((response) => {
-          console.log(response.data);
-          alert("상품 등록이 완료되었습니다.");
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
+      return;
     }
   };
   const categories = {
@@ -75,7 +63,7 @@ const AdminProductRegister = () => {
   return (
     <Container className="subContainer">
       <div className={cssCart.titleArea}>
-        <h2 className="page-title">상품등록</h2>
+        <h2 className="page-title">상품수정</h2>
       </div>
       <Row>
         <Col xs lg="2">
@@ -180,4 +168,4 @@ const AdminProductRegister = () => {
   );
 };
 
-export default AdminProductRegister;
+export default AdminProductCorrection;

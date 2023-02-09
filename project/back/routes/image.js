@@ -20,7 +20,7 @@ router.post(
         console.log(req.body);
         console.log(req.file);
         console.log(req.file.location);
-        const fileLocation = req.file.loaction;
+        const fileLocation = req.file.originalname;
         try {
             const { categoryName, productName } = req.body;
             res.status(200).json({
