@@ -11,23 +11,15 @@ export const AdminDeliverEnd = () => {
 
   async function getData() {
     return await customAxios.get("admin/orders").then((res) => {
-      console.log(res.data);
-      setAdminOrders(res.data);
+      const AdminOrders = res.data.filter((order) => order.activate === false);
+      console.log(AdminOrders);
+      setAdminOrders(AdminOrders);
     });
   }
+
   useEffect(() => {
     getData();
   }, []);
-
-  const CancelCount = (props) => {
-    let count = 0;
-    for (let orders of props) {
-      if (orders.activate === false) {
-        count += 1;
-      }
-    }
-    return count;
-  };
 
   const AdminModalDelete = (props) => {
     const [show, setShow] = useState(false);
@@ -79,7 +71,7 @@ export const AdminDeliverEnd = () => {
           <Row>
             <Col>
               <h>총 주문취소 수</h>
-              <h2>{CancelCount(adminOrders)}</h2>
+              <h2>{adminOrders.length}</h2>
             </Col>
           </Row>
         </Container>
@@ -96,45 +88,28 @@ export const AdminDeliverEnd = () => {
                 </tr>
               </thead>
               <tbody>
-                {adminOrders.map((adminOrders, index) => {
-                  if (adminOrders.activate === false) {
+                {!adminOrders.length ? (
+                  <tr>
+                    <td>주문취소내역이 존재하지 않습니다.</td>
+                  </tr>
+                ) : (
+                  adminOrders.map((adminOrders, index) => {
                     return (
                       <tr key={index}>
-                        {/* table start */}
                         <td>{adminOrders.orderNumber}</td>
                         <td className={cssAdmin.tdAlignLeft}>
-                          {/* <img
-                            src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssAdmin.productThumbnail}`}
-                          /> */}
                           {OrderProduct(adminOrders)}
                         </td>
                         <td>{adminOrders.createdAt.slice(0, 10)}</td>
-                        {/* <td>
-                          <Button
-                            variant="outline-secondary"
-                            className={cssAdmin.qtyButton}
-                            value="item"
-                          >
-                            -
-                          </Button>
-                          <p className={cssAdmin.qty}>{adminOrders.amount}</p>
-                          <Button
-                            variant="outline-secondary"
-                            className={cssAdmin.qtyButton}
-                            value="item"
-                          >
-                            +
-                          </Button>
-                        </td> */}
+
                         <td>{adminOrders.totalPrice}</td>
                         <td>
                           <AdminModalDelete orderId={adminOrders._id} />
                         </td>
                       </tr>
                     );
-                  }
-                })}
+                  })
+                )}
               </tbody>
             </Table>
           </Col>
