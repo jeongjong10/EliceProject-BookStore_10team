@@ -7,7 +7,6 @@ router.post("/", async(req, res, next) => {
     console.log("---------------- 사용자 회원 가입 시도 ---------------------");
     try {
         const createUser = req.body;
-        // ------ 에러) 유니크 중복 ------
 
         // ------ 중복된 이메일 확인 ------
         const foundEmail = await User.findOne({ email: createUser.email });

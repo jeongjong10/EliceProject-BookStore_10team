@@ -13,7 +13,10 @@ router.get("/", verifyUser(), async(req, res, next) => {
 
         const verifiedUser_id = req.verifiedUser_id;
 
-        const orders = await Order.find({ userId: verifiedUser_id }); // 현재 유저의 주문내역 찾기
+        const orders = await Order.find({
+            userId: verifiedUser_id,
+            activate: true,
+        }); // 현재 유저의 주문내역 찾기
 
         if (!orders[0]) {
             console.error("사용자의 주문 내역이 없습니다.");
@@ -49,8 +52,7 @@ router.post("/", verifyUser(), async(req, res, next) => {
         // totalProductPrice, shipping, totalPrice
 
         const orders = req.body;
-
-        console.log(orders.params);
+        console.log("주문 요청 데이터", orders);
         if (Object.keys(orders).length == 0) {
             console.error("req.body 없음");
             console.log(
@@ -63,7 +65,7 @@ router.post("/", verifyUser(), async(req, res, next) => {
         // User의 userId와 혼동이 올 수 있음 (쥬문의 userId에는 User의 _id 값이 들어가기 때문 )
 
         const newOrder = await Order.create({
-            ...orders.params,
+            ...orders,
             userId: verifiedUser_id,
         });
 
