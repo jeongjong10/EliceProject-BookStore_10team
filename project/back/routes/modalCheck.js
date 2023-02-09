@@ -18,7 +18,7 @@ router.post("/", verifyUser(), async(req, res, next) => {
         if (!user) {
             console.error("사용자의 정보가 없습니다");
             console.log(
-                "------------------- 마이페이지 정보 검색 실패 ------------------------"
+                "------------------- 사용자 정보 검색 실패 ------------------------"
             );
             throw new Error("사용자의 정보가 없습니다");
         } else if (user.password !== getHash(password)) {
@@ -29,7 +29,7 @@ router.post("/", verifyUser(), async(req, res, next) => {
             throw new Error("사용자 입력 패스워드가 일치하지 않습니다");
         } else {
             console.log(
-                "------------------- 비밀번호 일치 확인! ------------------------"
+                "------------------- 관리페이지 모달 PW 검사 성공 ------------------------"
             );
         }
 
