@@ -304,17 +304,17 @@ router.delete("/category", verifyUser(true), async(req, res, next) => {
         "----------------- 관리자 카테고리 삭제 (비활성화) 시도 ------------------"
     );
     try {
-        const { categoryName } = req.body;
+        const updateData = req.body;
 
-        if (!categoryName) {
-            console.error("body에 categoryName 없음.");
+        if (Object.keys(updateData).length == 0) {
+            console.error("body 없음.");
             console.log(
                 "---------------- 요청 데이터 Body 확인 실패 ---------------------"
             );
-            throw new Error("Body에 categoryName이 없습니다.");
+            throw new Error("req.body에 categoryName이 존재하지 않습니다.");
         }
 
-        await Product.updateMany({ categoryName }, { categoryName: "None-category" });
+        await Product.updateMany({ categoryName: updateData.categoryName }, { categoryName: "None-category" });
         console.log(
             "---------------- 관리자 카테고리 삭제 (비활성화) 성공 ---------------------"
         );
@@ -413,7 +413,7 @@ router.delete("/users/:_id", verifyUser(true), async(req, res, next) => {
         if (user.activate == false) {
             console.log("관리자 사용자 비활성화 완료 : activate : ", user.activate);
         } else {
-            console.log("관리자 사용자 비활성화 실패");
+            console.log("관리자 사용자 비활성화 실패.");
             console.log(
                 "---------------- 사용자 정보 삭제(비활성화) 실패 ---------------------"
             );
