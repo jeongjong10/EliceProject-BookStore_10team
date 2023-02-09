@@ -49,13 +49,9 @@ const AdminProductRegister = () => {
         console.log(value);
       }
       return await customAxios
-        .post(
-          "/admin/products",
-           formdata ,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        )
+        .post("/admin/products", formdata, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
         .then((response) => {
           console.log(response.data);
           alert("상품 등록이 완료되었습니다.");

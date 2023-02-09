@@ -16,7 +16,7 @@ import Order from "./views/routes/Order";
 import Complete from "./views/routes/Complete";
 import AdminDeliver from "./views/routes/AdminDeliver";
 import AdminCategory from "./views/routes/AdminCategory";
-
+import AdminProductCorrection from "./views/routes/AdminProductCorrection";
 function App() {
   const navigate = useNavigate();
 
@@ -148,7 +148,7 @@ function App() {
         <Route path="/admin/products" element={<AdminProductRegister />} />
         <Route
           path="/admin/category/products/:id"
-          element={<AdminProductRegister />}
+          element={<AdminProductCorrection />}
         />
         <Route path="/admin/category" element={<AdminCategory />} />
         <Route path="/admin" element={<AdminDeliver />} />
