@@ -15,7 +15,7 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-const allowedExtensions = [".png", "jpg", "jpeg", "bmp"]; // 업로드 가능한 이미지 확장자명 리스트 작성
+const allowedExtensions = [".png", ".jpg", ".jpeg", ".bmp"]; // 업로드 가능한 이미지 확장자명 리스트 작성
 
 const imageUploader = multer({
     storage: multerS3({
