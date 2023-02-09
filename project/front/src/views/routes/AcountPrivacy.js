@@ -6,14 +6,12 @@ import {
   Col,
   Form,
   InputGroup,
-  Stack,
+  Nav,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import cssCart from "../css/Cart.module.css";
-import cssOrder from "../css/Order.module.css";
-import Post from "../components/Post";
 import { customAxios } from "../../config/customAxios";
-import AccountPrivacyModal from "../components/AccountPrivacyModal";
+import Post from "../components/Post";
+import cssList from "../css/List.module.css";
 
 const AcountPrivacy = () => {
   const navigate = useNavigate();
@@ -34,7 +32,6 @@ const AcountPrivacy = () => {
     return await customAxios
       .get("/account")
       .then((res) => {
-        console.log(res.data);
         setUser(res.data);
         setReceiverName(res.data.userName);
         if (res.data.phone) {
@@ -50,7 +47,6 @@ const AcountPrivacy = () => {
   }
   useEffect(() => {
     getData();
-    // 페이지 진입시 모달 설정
   }, []);
 
   const onSubmitHandler = async (event) => {
@@ -75,7 +71,6 @@ const AcountPrivacy = () => {
           },
         })
         .then((response) => {
-          console.log(response.data);
           alert("회원 정보가 저장되었습니다.");
         })
         .catch((error) => {
@@ -86,43 +81,35 @@ const AcountPrivacy = () => {
 
   return (
     <Container className="subContainer">
-      <div className={cssCart.titleArea}>
-        <h2 className="page-title">회원 정보 관리</h2>
-      </div>
       <Row>
         <Col xs lg="2">
-          <Stack gap={3}>
-            <button
-              className="order"
-              onClick={() => navigate("/account/orders")}
-            >
-              주문조회
-            </button>
-            <AccountPrivacyModal
-              show={modal}
-              onHide={() => {
-                setModal(false);
-              }}
-            />
-            <button
-              className="manager"
-              // onClick={(e) => {
-              //   e.preventDefault();
-              //   setModal(true);
-              // }} 회원 정보 관리 페이지에서 모달 접근x
-            >
-              회원정보관리
-            </button>
-            <button
-              className="deleted"
-              onClick={() => navigate("/account/secession")}
-            >
-              회원탈퇴
-            </button>
-          </Stack>
+          <Nav className="flex-column">
+            <Nav.Item className={cssList.unSelected}>
+              <a
+                onClick={() => {
+                  navigate("/account/orders");
+                }}
+              >
+                주문 조회
+              </a>
+            </Nav.Item>
+            <Nav.Item className={cssList.selected}>
+              <a>회원정보 관리</a>
+            </Nav.Item>
+            <Nav.Item className={cssList.unSelected}>
+              <a
+                onClick={() => {
+                  navigate("/account/secession");
+                }}
+              >
+                회원탈퇴
+              </a>
+            </Nav.Item>
+          </Nav>
         </Col>
-        <Col className={cssOrder.deliveryInfo}>
-          <Form>
+        <Col>
+          <h2 className={cssList.pageTitle}>회원정보 관리</h2>
+          <Form style={{ marginLeft: "24px" }}>
             <Form.Group className="mb-3" controlId="formBasicUsername">
               <Form.Label>이름</Form.Label>
               <Form.Control

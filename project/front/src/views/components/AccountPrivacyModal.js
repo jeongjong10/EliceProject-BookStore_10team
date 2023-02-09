@@ -42,7 +42,7 @@ function AccountPrivacyModal({ show, onHide }) {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>비밀번호</Form.Label>
+              <Form.Label>본인확인을 위해 비밀번호를 입력해 주세요.</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="********"
@@ -54,7 +54,9 @@ function AccountPrivacyModal({ show, onHide }) {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={onHide}>닫기</Button>
+          <Button variant="secondary" onClick={onHide}>
+            취소
+          </Button>
           <Button
             onClick={(e) => {
               onClickConfirmButton(e);
