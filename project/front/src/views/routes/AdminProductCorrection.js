@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useParams } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Container, Row, Col, Form, Stack } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import cssCart from "../css/Cart.module.css";
 import cssOrder from "../css/Order.module.css";
 import { customAxios } from "../../config/customAxios";
 
 const AdminProductCorrection = () => {
-  // const { id } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [selected, setSelected] = useState("");
@@ -17,18 +17,24 @@ const AdminProductCorrection = () => {
   const [price, setPrice] = useState("");
   const [files, setFiles] = useState("");
 
-  // const [product, setProduct] = useState({});
-  // async function getData() {
-  //   return await customAxios
-  //     .get(`/products/${id}`)
-  //     .then((res) => {
-  //       setProduct(res.data);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
-  // useEffect(() => {
-  //   getData();
-  // }, []);
+  const [product, setProduct] = useState({});
+  async function getData() {
+    return await customAxios
+      .get(`products/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        setProduct(res.data);
+        setProductName(res.data.productName);
+        setPublisher(res.data.brand);
+        setDetail(res.data.detail);
+        setPrice(res.data.price);
+        setSelected(res.data.categoryName);
+      })
+      .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    getData();
+  }, []);
 
   const onLoadFile = (e) => {
     const file = e.target.files;
