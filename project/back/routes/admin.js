@@ -35,8 +35,6 @@ router.post(
             );
 
             res.status(200).json({...products, img: req.file.location });
-
-            // res.status(200).end();
         } catch (e) {
             next(e);
         }
