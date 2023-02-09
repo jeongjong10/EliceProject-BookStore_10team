@@ -6,11 +6,7 @@ import { OrderStatus } from "../components/OrderStatus";
 import { OrderEnd } from "../components/OrderEnd";
 
 const AcountOrder = () => {
-<<<<<<< HEAD
   const navigate = useNavigate();
-=======
-  // const {id} = useParams()
->>>>>>> feature-FE-account
 
   return (
     <>
