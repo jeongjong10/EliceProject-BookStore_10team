@@ -101,12 +101,13 @@ const AdminProductCorrection = () => {
       }
 
       return await customAxios
-        .patch("/admin/products/${id}", formdata, {
+        .patch(`/admin/products/${id}`, formdata, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
           console.log(response.data);
           alert("상품 수정이 완료되었습니다.");
+          navigate("/admin/category");
         })
         .catch((error) => {
           console.log(error.response);
