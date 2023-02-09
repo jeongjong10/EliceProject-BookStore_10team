@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col, Form, Nav, Button, Modal } from "react-bootstrap";
-import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Nav,
+  Button,
+  Modal,
+  Card,
+} from "react-bootstrap";
+// import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
+import cssItemList from "../css/ShowItemList.module.css";
 import { customAxios } from "../../config/customAxios";
 import uuid from "react-uuid";
 import cssList from "../css/List.module.css";
@@ -15,22 +25,31 @@ const AdminCategory = () => {
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
 
+  // const childCategoryHandler = (childCategory) => {
+  //   setCategory(childCategory);
+  // };
+
+  // const childProductHandler = (childProduct) => {
+  //   setProducts(childProduct);
+  // };
+
   async function getData() {
     return await customAxios
       .get("/products")
       .then((res) => {
         // 데이터에서 카테고리만 빼서 list에 push
+        let data = res.data.filter((f) => f.activate);
         let list = [];
-        res.data.map((v, i) => {
+        data.map((v, i) => {
           list.push(v.categoryName);
-          list.sort();
         });
+        list.sort();
         list = ["전체", ...new Set(list)]; // 중복 제거
         setCategoryLists(list);
         setCategory(sessionStorage.getItem("currentCategory") || list[0]);
 
-        setProducts(res.data);
-        setSelectedProducts(res.data);
+        setProducts(data);
+        setSelectedProducts(data);
       })
       .catch((err) => console.log(err));
   }
@@ -49,7 +68,51 @@ const AdminCategory = () => {
 
   useEffect(() => {
     showSelectedProducts();
-  }, [category]);
+  }, [category, products]);
+
+  async function deleteProduct(product) {
+    await customAxios
+      .delete(`/admin/products/${product._id}`)
+      .then((res) => {
+        let data = res.data;
+        // 카테고리 - selectbox에 상태 유지
+        // console.log(
+        //   data.filter((f) => f.categoryName == product.categoryName).length
+        // );
+        if (
+          data.filter(
+            (f) => f.categoryName == product.categoryName && f.activate == true
+          ).length > 0
+        ) {
+          sessionStorage.setItem("currentCategory", product.categoryName);
+        } else {
+          let newList = [...categoryLists];
+          newList.splice(
+            newList.indexOf(
+              sessionStorage.getItem("currentCategory") || product.categoryName
+            ),
+            1
+          );
+          sessionStorage.removeItem("currentCategory");
+          setCategory("전체");
+          setCategoryLists(newList);
+        }
+
+        // 상품 리스트 리렌더링
+        let filteredData = res.data.filter((f) => f.activate);
+        setProducts(filteredData);
+        if (sessionStorage.getItem("currentCategory")) {
+          filteredData = data.filter(
+            (f) => f.categoryName == sessionStorage.getItem("currentCategory")
+          );
+          setSelectedProducts(filteredData);
+        }
+        setSelectedProducts(filteredData);
+
+        alert("상품이 삭제 되었습니다.");
+      })
+      .catch((err) => console.log(err));
+  }
 
   // 카테고리 삭제 Modal
   const [show, setShow] = useState(false);
@@ -64,7 +127,26 @@ const AdminCategory = () => {
         },
       })
       .then((res) => {
-        window.location.reload();
+        if (
+          sessionStorage.getItem("currentCategory") &&
+          sessionStorage.getItem("currentCategory") == category
+        ) {
+          sessionStorage.removeItem("currentCategory");
+        }
+
+        let newList = [...categoryLists];
+        newList.splice(newList.indexOf(category), 1);
+
+        let newProduct = [...products].filter(
+          (f) => f.categoryName != category
+        );
+        let deletedProduct = [...products].filter(
+          (f) => f.categoryName == category
+        );
+        deletedProduct.map((v, i) => (v.categoryName = "None-category"));
+        setCategoryLists(newList);
+        setProducts([...newProduct, ...deletedProduct]);
+        setCategory("전체");
         handleClose();
       })
       .catch((err) => console.log(err));
@@ -130,7 +212,62 @@ const AdminCategory = () => {
                 </Button>
               )}
             </div>
-            <ShowItemList data={selectedProducts} page={"admin"} />
+            {/* <ShowItemList
+              data={selectedProducts}
+              page={"admin"}
+              categoryHandler={childCategoryHandler}
+              productHandler={childProductHandler}
+            /> */}
+            <Container>
+              <Row className={cssItemList.row}>
+                {selectedProducts.map((product, i) => {
+                  return (
+                    <Card key={i} className={cssItemList.card}>
+                      <div
+                        className={cssItemList.productThumbnail}
+                        onClick={() => {
+                          navigate(`/products/${product._id}`);
+                        }}
+                      >
+                        <img src={product.img} />
+                      </div>
+                      <Card.Body>
+                        <div className={cssItemList.textArea}>
+                          <Card.Title
+                            onClick={() => {
+                              navigate(`/products/${product._id}`);
+                            }}
+                          >
+                            {product.productName}
+                          </Card.Title>
+                          <Card.Text>
+                            {product.price.toLocaleString("en-US")} 원
+                          </Card.Text>
+                        </div>
+                        <Button
+                          variant="outline-secondary"
+                          className={cssItemList.btn}
+                          onClick={() => {
+                            navigate(`products/${product._id}`);
+                          }}
+                        >
+                          수정
+                        </Button>
+                        <Button
+                          variant="outline-danger"
+                          className={cssItemList.btn}
+                          onClick={() => {
+                            deleteProduct(product);
+                          }}
+                        >
+                          삭제
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  );
+                })}
+              </Row>
+            </Container>
           </Col>
         </Row>
 

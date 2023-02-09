@@ -4,51 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { customAxios } from "../../config/customAxios";
 import cssItemList from "../css/ShowItemList.module.css";
 
-export const ShowItemList = ({ data, page }) => {
+export const ShowItemList = ({ data, page, handleDelete }) => {
   const pageLocation = page || "";
   const navigate = useNavigate();
 
   const [refreshData, setRefreshData] = useState([]);
   useEffect(() => {
-    setRefreshData(data);
+    setRefreshData(data.filter((f) => f.activate == true));
   }, [data]);
 
-  async function deleteProduct(product) {
-    await customAxios
-      .delete(`/admin/products/${product._id}`)
-      .then((res) => {
-        let data = res.data;
-        // 카테고리 - selectbox에 상태 유지
-        // console.log(
-        //   data.filter((f) => f.categoryName == product.categoryName).length
-        // );
-        if (
-          data.filter(
-            (f) => f.categoryName == product.categoryName && f.activate == true
-          ).length > 0
-        ) {
-          sessionStorage.setItem("currentCategory", product.categoryName);
-        } else {
-          sessionStorage.removeItem("currentCategory");
-        }
-
-        // 상품 리스트 리렌더링
-        let filteredData;
-        if (sessionStorage.getItem("currentCategory")) {
-          filteredData = data.filter(
-            (f) =>
-              f.categoryName == sessionStorage.getItem("currentCategory") &&
-              f.activate == true
-          );
-        } else {
-          filteredData = data.filter((f) => f.activate);
-        }
-        setRefreshData(filteredData);
-
-        alert("상품이 삭제 되었습니다.");
-      })
-      .catch((err) => console.log(err));
-  }
   // async function deleteProduct(product) {
   //   await customAxios
   //     .delete(`/admin/products/${product._id}`)
@@ -103,7 +67,7 @@ export const ShowItemList = ({ data, page }) => {
                     {product.price.toLocaleString("en-US")} 원
                   </Card.Text>
                 </div>
-                {pageLocation == "admin" && (
+                {/* {pageLocation == "admin" && (
                   <>
                     <Button
                       variant="outline-secondary"
@@ -124,7 +88,7 @@ export const ShowItemList = ({ data, page }) => {
                       삭제
                     </Button>
                   </>
-                )}
+                )} */}
               </Card.Body>
             </Card>
           );
