@@ -16,14 +16,6 @@ router.post(
     try {
       const products = req.body;
 
-      // --------- formData 테스트 ----------
-
-      console.log(req.body);
-      console.log(req.file);
-      console.log(req.file.location);
-
-      // --------- formData 테스트 ----------
-
       if (Object.keys(products).length == 0) {
         console.error("Body 없음.");
         console.log(
@@ -42,8 +34,6 @@ router.post(
       );
 
       res.status(200).json({ ...products, img: req.file.location });
-
-      // res.status(200).end();
     } catch (e) {
       next(e);
     }
