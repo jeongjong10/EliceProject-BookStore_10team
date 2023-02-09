@@ -9,25 +9,29 @@ export const ShowItemList = ({ data, page }) => {
   const navigate = useNavigate();
 
   const [refreshData, setRefreshData] = useState([]);
-  console.log("useEffect 전 ", refreshData);
-
   useEffect(() => {
     setRefreshData(data);
   }, [data]);
-
-  console.log("data", data);
-  console.log("useEffect 후 ", refreshData);
 
   async function deleteProduct(product) {
     await customAxios
       .delete(`/admin/products/${product._id}`)
       .then((res) => {
-        console.log(res.data);
+        let data = res.data;
+        console.log("data", data);
+        let filteredData = data.filter(
+          (f) =>
+            f.categoryName == sessionStorage.getItem("currentCategory") &&
+            f.activate == true
+        );
+        console.log(filteredData);
+        setRefreshData(filteredData);
+
         // 카테고리 - selectbox에 상태 유지
         if (
           data.filter((f) => f.categoryName == product.categoryName).length > 1
         ) {
-          sessionStorage.setItem("currentCategory", product.categoryName);
+          localStorage.setItem("currentCategory", product.categoryName);
         } else {
           sessionStorage.removeItem("currentCategory");
         }
