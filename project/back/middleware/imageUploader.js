@@ -24,7 +24,7 @@ const imageUploader = multer({
         key: (req, file, callback) => {
             console.log(file);
             console.log(req.body);
-            const uploadDirectory = "test"; // 버킷 내에 생성되어있는 products imgs 폴더에 업로드
+            const uploadDirectory = "Books"; // 버킷 내에 생성되어있는 products imgs 폴더에 업로드
             const extension = path.extname(file.originalname); // 확장자명 얻어오기
 
             // 올바른 확장자가 들어왔는지 확인

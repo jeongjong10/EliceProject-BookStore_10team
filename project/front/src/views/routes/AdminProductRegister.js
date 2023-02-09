@@ -51,8 +51,10 @@ const AdminProductRegister = () => {
       return await customAxios
         .post(
           "/admin/products",
-          { formdata },
-          { headers: { "Content-Type": "multipart/form-data" } }
+           formdata ,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
         )
         .then((response) => {
           console.log(response.data);
