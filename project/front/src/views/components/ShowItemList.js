@@ -8,10 +8,21 @@ export const ShowItemList = ({ data, page }) => {
   const pageLocation = page || "";
   const navigate = useNavigate();
 
+  const [refreshData, setRefreshData] = useState([]);
+  console.log("useEffect 전 ", refreshData);
+
+  useEffect(() => {
+    setRefreshData(data);
+  }, [data]);
+
+  console.log("data", data);
+  console.log("useEffect 후 ", refreshData);
+
   async function deleteProduct(product) {
     await customAxios
       .delete(`/admin/products/${product._id}`)
       .then((res) => {
+        console.log(res.data);
         // 카테고리 - selectbox에 상태 유지
         if (
           data.filter((f) => f.categoryName == product.categoryName).length > 1
@@ -22,7 +33,7 @@ export const ShowItemList = ({ data, page }) => {
         }
         // 삭제 시 처리 로직
         alert("상품이 삭제 되었습니다.");
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((err) => console.log(err));
   }
@@ -30,7 +41,7 @@ export const ShowItemList = ({ data, page }) => {
   return (
     <Container>
       <Row className={cssItemList.row}>
-        {data.map((product, i) => {
+        {refreshData.map((product, i) => {
           return (
             <Card key={i} className={cssItemList.card}>
               <div

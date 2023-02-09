@@ -77,7 +77,6 @@ const AdminCategory = () => {
     };
   }, []);
 
-  console.log(category);
   return (
     <>
       <Container className="subContainer">
