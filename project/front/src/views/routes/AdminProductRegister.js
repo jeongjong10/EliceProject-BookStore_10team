@@ -42,12 +42,6 @@ const AdminProductRegister = () => {
       formdata.append("img", files[0]);
       formdata.append("price", price);
 
-      for (var key of formdata.keys()) {
-        console.log(key);
-      }
-      for (var value of formdata.values()) {
-        console.log(value);
-      }
       return await customAxios
         .post("/admin/products", formdata, {
           headers: { "Content-Type": "multipart/form-data" },
@@ -55,6 +49,7 @@ const AdminProductRegister = () => {
         .then((response) => {
           console.log(response.data);
           alert("상품 등록이 완료되었습니다.");
+          navigate("/admin");
         })
         .catch((error) => {
           console.log(error.response);

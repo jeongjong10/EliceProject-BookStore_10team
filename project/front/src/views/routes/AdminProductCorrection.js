@@ -81,11 +81,37 @@ const AdminProductCorrection = () => {
       detail.length == 0 ||
       publisher.length == 0 ||
       price.length == 0 ||
-      selected == 0
+      category == 0
     ) {
       return alert("값을 입력해주세요.");
     } else {
-      return;
+      const formdata = new FormData();
+      formdata.append("productName", productName);
+      formdata.append("categoryName", requestCategory);
+      formdata.append("brand", publisher);
+      formdata.append("detail", detail);
+      formdata.append("img", files[0]);
+      formdata.append("price", price);
+
+      for (var key of formdata.keys()) {
+        console.log(key); //formdata에 담긴 key 확인
+      }
+      for (var value of formdata.values()) {
+        console.log(value); //formdata에 담긴 value 확인
+      }
+
+      return await customAxios
+        .patch(`/admin/products/${id}`, formdata, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((response) => {
+          console.log(response.data);
+          alert("상품 수정이 완료되었습니다.");
+          navigate("/admin/category");
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
     }
   };
 

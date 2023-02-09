@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { customAxios } from "../../config/customAxios";
 import Post from "../components/Post";
 import cssList from "../css/List.module.css";
+import { Regex } from "../components/Regex";
 
 const AcountPrivacy = () => {
   const navigate = useNavigate();
@@ -54,8 +55,8 @@ const AcountPrivacy = () => {
 
     if (receiverPassword !== receiverConfirmPassword) {
       return alert("비밀번호가 비밀번호 확인과 일치하지 않습니다.");
-    } else if (receiverPhone.length < 11) {
-      return alert("연락처를 확인해주세요.");
+    } else if (!Regex(receiverPassword)) {
+      return alert("영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.");
     } else if (!receiverPassword.length || !receiverConfirmPassword) {
       return alert("비밀번호와 비밀번호 확인을 입력해주세요.");
     } else {
@@ -72,6 +73,7 @@ const AcountPrivacy = () => {
         })
         .then((response) => {
           alert("회원 정보가 저장되었습니다.");
+          navigate("/account/orders");
         })
         .catch((error) => {
           console.log(error.response);
