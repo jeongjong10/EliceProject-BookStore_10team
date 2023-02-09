@@ -133,8 +133,10 @@ router.delete("/products/:_id", verifyUser(true), async(req, res, next) => {
             console.log("---------------- 상품 조회 실패 ---------------------");
             throw new Error("상품을 찾을 수 없습니다.");
         }
-        console.log("---------------- 사용자 주문 내역 삭제(비활성화)  전체 상품 반환 ---------------------");
-        res.status(200).end();
+        console.log(
+            "---------------- 사용자 주문 내역 삭제(비활성화)  전체 상품 반환 ---------------------"
+        );
+        res.status(200).send(products);
     } catch (e) {
         next(e);
     }
@@ -292,8 +294,6 @@ router.delete("/falseOrders/:_id", verifyUser(true), async(req, res, next) => {
         next(e);
     }
 });
-
-
 
 // ------ ADMIN: 카테고리 삭제 (비활성화)  ------
 router.delete("/category", verifyUser(true), async(req, res, next) => {
