@@ -6,7 +6,11 @@ import { OrderStatus } from "../components/OrderStatus";
 import { OrderEnd } from "../components/OrderEnd";
 
 const AcountOrder = () => {
+<<<<<<< HEAD
   const navigate = useNavigate();
+=======
+  // const {id} = useParams()
+>>>>>>> feature-FE-account
 
   return (
     <>
@@ -36,7 +40,7 @@ const AcountOrder = () => {
           <Col>
             <h1>주문조회</h1>
             <Tabs
-              defaultActiveKey="profile"
+              defaultActiveKey="orderStatus"
               id="fill-tab-example"
               className="mb-3"
               fill
