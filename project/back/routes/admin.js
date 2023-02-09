@@ -28,6 +28,7 @@ router.post(
         ...products,
         img: req.file.location,
       });
+
       console.log("상품 등록 : ", product);
       console.log(
         "---------------- 관리자 상품 데이터 생성 성공 ---------------------"
@@ -41,42 +42,71 @@ router.post(
 );
 
 // ------ ADMIN: 상품 수정 ------
-router.patch("/products/:_id", verifyUser(true), async (req, res, next) => {
-  console.log(
-    "-------------------- 관리자 상품 수정 시도 ------------------------"
-  );
-  try {
-    const { _id } = req.params;
-    if (_id == ":_id") {
-      console.error("params 없음.");
-      console.log(
-        "---------------- 요청 데이터 Params 확인 실패 ---------------------"
-      );
-      throw new Error("params 내용이 없습니다.");
-    }
-
-    const updateData = req.body;
-    if (Object.keys(updateData).length == 0) {
-      console.error("Body 없음.");
-      console.log(
-        "---------------- 요청 데이터 Body 확인 실패 ---------------------"
-      );
-      throw new Error("Body 내용이 없습니다.");
-    }
-
-    await Product.findOneAndUpdate({ _id }, updateData);
-    const product = await Product.findOne({ _id });
-
-    console.log("수정된 상품 데이터 : ", product);
+router.patch(
+  "/products/:_id",
+  verifyUser(true),
+  imageUploader.single("img"),
+  async (req, res, next) => {
     console.log(
-      "---------------- 관리자 상품 데이터 수정 성공 ---------------------"
+      "-------------------- 관리자 상품 수정 시도 ------------------------"
     );
+    try {
+      // 파람 확인, 상품 식별
+      const { _id } = req.params;
+      if (_id == ":_id") {
+        console.error("params 없음.");
+        console.log(
+          "---------------- 요청 데이터 Params 확인 실패 ---------------------"
+        );
+        throw new Error("params 내용이 없습니다.");
+      }
+      console.log(_id);
+      // 바디 확인
 
-    res.status(200).end();
-  } catch (e) {
-    next(e);
+      const updateData = req.body;
+      console.log(updateData);
+      if (Object.keys(updateData).length == 0) {
+        console.error("Body 없음.");
+        console.log(
+          "---------------- 요청 데이터 Body 확인 실패 ---------------------"
+        );
+        throw new Error("Body 내용이 없습니다.");
+      }
+
+      // 전송된 이미지 파일 유무에 따라 분기
+      if (req.file) {
+        await Product.findOneAndUpdate(
+          { _id },
+          {
+            ...updateData,
+            img: req.file.location,
+          }
+        );
+        console.log("새로운 이미지 업로드 및 저장 완료");
+      } else {
+        const product = await Product.findOne({ _id });
+        await Product.findOneAndUpdate(
+          { _id },
+          {
+            ...updateData,
+            img: product.img,
+          }
+        );
+      }
+
+      // 업데이트 여부 확인
+      const updatedProduct = await Product.findOne({ _id });
+      console.log("수정된 상품 데이터 : ", updatedProduct);
+      console.log(
+        "---------------- 관리자 상품 데이터 수정 성공 ---------------------"
+      );
+
+      res.status(200).end();
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
 // ------ ADMIN: 상품 삭제 (비활성화) ------
 router.delete("/products/:_id", verifyUser(true), async (req, res, next) => {
