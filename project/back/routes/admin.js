@@ -201,7 +201,7 @@ router.patch("/orders/:_id", verifyUser(true), async(req, res, next) => {
         const order = await Order.findById({ _id });
 
         if (order.status !== updateData.status) {
-            console.log("사용자 주문 배송상태 수정 실패 : ", order.status);
+            console.log("관리자 주문 배송상태 수정 실패 : ", order.status);
             console.log(
                 "----------------- 관리자 주문 내역(배송상태) 수정 실패 ------------------"
             );
@@ -331,7 +331,7 @@ router.delete("/category", verifyUser(true), async(req, res, next) => {
 
 // ------ ADMIN: 전체 사용자 정보 조회  ------
 router.get("/users", verifyUser(true), async(req, res, next) => {
-    console.log("--------------- 관리자 주문 내역 조회 시도 ------------------");
+    console.log("--------------- 관리자 :  사용자 조회 시도 ------------------");
     try {
         // 모든 사용자 정보 찾기
         const totalUsers = await User.find({});
@@ -343,7 +343,7 @@ router.get("/users", verifyUser(true), async(req, res, next) => {
             throw new Error("관리자 :  존재하는 사용자 정보 정보가 없습니다.");
         } else {
             console.log(
-                "----------------- 관리자 주문 내역 조회 성공 ------------------"
+                "----------------- 관리자 :  사용자 조회 성공 ------------------"
             );
         }
 
@@ -381,13 +381,13 @@ router.patch("/users/:_id", verifyUser(true), async(req, res, next) => {
         const user = await User.findById({ _id });
 
         if (user.admin !== updateData.admin) {
-            console.log("사용자 주문 배송상태 수정 실패 : ", user.status);
+            console.log("사용자 정보 (권한) 수정 실패 : ", user.status);
             console.log(
-                "----------------- 관리자 주문 내역(배송상태) 수정 실패 ------------------"
+                "----------------- 사용자 정보 (권한) 수정 실패 ------------------"
             );
-            throw new Error("사용자 정보 수정에 실패.");
+            throw new Error("사용자 정보 (권한) 수정에 실패.");
         } else {
-            console.log("사용자 주문 배송상태 수정 성공 : ", user.status);
+            console.log("사용자 정보 (권한) 수정 성공 : ", user.status);
         }
 
         res.status(200).end();
@@ -399,7 +399,7 @@ router.patch("/users/:_id", verifyUser(true), async(req, res, next) => {
 // ------ ADMIN: 사용자 비활성화  ------
 router.delete("/users/:_id", verifyUser(true), async(req, res, next) => {
     console.log(
-        "----------------- 관리자 주문 내역 삭제(비활성화) 시도 ------------------"
+        "----------------- 사용자 정보 삭제(비활성화) 시도 ------------------"
     );
     try {
         const { _id } = req.params;
@@ -426,6 +426,52 @@ router.delete("/users/:_id", verifyUser(true), async(req, res, next) => {
         console.log(
             "----------------- 관리자 사용자 정보 삭제(비활성화) 성공 ------------------"
         );
+
+        res.status(200).end();
+    } catch (e) {
+        next(e);
+    }
+});
+
+// ------ ADMIN: 비활성 사용자 완전 삭제 ------
+router.delete("/falseUsers/:_id", verifyUser(true), async(req, res, next) => {
+    console.log(
+        "----------------- 관리자 비활성 사용자 완전 삭제 시도 ------------------"
+    );
+    try {
+        const { _id } = req.params;
+
+        if (_id == ":_id") {
+            console.error("params 없음.");
+            console.log(
+                "--------------- 요청 데이터 Params 확인 실패 ------------------"
+            );
+            throw new Error("params 내용이 없습니다.");
+        }
+
+        const user = await User.findOne({ _id });
+        console.log("user:", user);
+        if (user === null) {
+            console.error("존재하지 않는 사용자입니다.");
+            console.log(
+                "---------------- 관리자 비활성 사용자 완전 삭제 실패 ---------------------"
+            );
+            throw new Error("존재하지 않는 사용자입니다.");
+        }
+
+        if (user.activate) {
+            console.error("현재 사용자는 비활성 상태가 아닙니다.");
+            console.log(
+                "---------------- 관리자 비활성 사용자 완전 삭제 실패 ---------------------"
+            );
+            throw new Error("비활성 상태인 주문목록이 없습니다");
+        } else {
+            console.log(`비활성 상태의 사용자를 완전히 삭제합니다.`);
+            await User.deleteOne({ _id, activate: false });
+            console.log(
+                "---------------- 관리자 비활성 사용자 완전 삭제 성공 ---------------------"
+            );
+        }
 
         res.status(200).end();
     } catch (e) {
