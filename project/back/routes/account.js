@@ -127,7 +127,7 @@ router.delete("/", verifyUser(), async(req, res, next) => {
         if (checkpassword.password !== getHash(req.body.password)) {
             console.error("비밀번호 불일치");
             console.log(
-                "------------------- 사용자 로그인 실패 ------------------------"
+                "------------------- 사용자 비밀번호 확인 실패 ------------------------"
             );
             throw new Error("비밀번호가 일치하지 않음");
         }
@@ -141,11 +141,12 @@ router.delete("/", verifyUser(), async(req, res, next) => {
             console.log("사용자 계정 비활성화 완료 : ", user.activate);
         } else {
             console.log("사용자 계정 비활성화 실패 : ", user.activate);
+            throw new Error("이미 비활성 상태의 계정입니다.");
         }
 
         res.status(200).end();
         console.log(
-            "------------------- 사용자 정보 비활성화 완료 ------------------------"
+            "------------------- 마이페이지 회원 탈퇴 성공 ------------------------"
         );
     } catch (err) {
         next(err);
