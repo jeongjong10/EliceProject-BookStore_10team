@@ -13,6 +13,7 @@
 
 .productThumbnail {
   width: 210px;
+  height: 310px;
   background-color: rgb(232, 232, 232);
   border-radius: 8px;
   overflow: hidden;

@@ -1,34 +1,70 @@
-import React, { useState, useEffect, useParams } from "react";
-import { Button, Container, Row, Col, Form, Stack } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import cssCart from "../css/Cart.module.css";
-import cssOrder from "../css/Order.module.css";
+import React, { useState, useEffect } from "react";
+import { Button, Container, Row, Col, Form, Nav } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
 import { customAxios } from "../../config/customAxios";
+import axios from "axios"; // original axios가 필요한 페이지 입니다. 삭제 금지
+import uuid from "react-uuid";
+import cssList from "../css/List.module.css";
 
 const AdminProductCorrection = () => {
-  // const { id } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [selected, setSelected] = useState("");
   const [productName, setProductName] = useState("");
-  const [category, setCategory] = useState(null);
+  const [categoryLists, setCategoryLists] = useState([]); // 전체 카테고리
+  const [category, setCategory] = useState(""); // select 카테고리
+  const [newCategory, setNewCategory] = useState(null); // 직접 입력 카테고리 (생성)
+  const [requestCategory, setRequestCategory] = useState(""); // 서버에 보낼 카테고리명
   const [publisher, setPublisher] = useState("");
   const [detail, setDetail] = useState("");
   const [price, setPrice] = useState("");
   const [files, setFiles] = useState("");
+  const [product, setProduct] = useState({});
 
-  // const [product, setProduct] = useState({});
-  // async function getData() {
-  //   return await customAxios
-  //     .get(`/products/${id}`)
-  //     .then((res) => {
-  //       setProduct(res.data);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
-  // useEffect(() => {
-  //   getData();
-  // }, []);
+  // 요한님 🙋‍♀️ 데이터 patch 보내실 때 -> categoryName: requestCategory
+
+  async function getData() {
+    Promise.all(
+      [`products/${id}`, "/products"].map((url) => customAxios.get(url))
+    )
+      .then(
+        axios.spread((res1, res2) => {
+          // res1 : 상품 정보 데이터
+          console.log(res1.data);
+          setProduct(res1.data);
+          setProductName(res1.data.productName);
+          setPublisher(res1.data.brand);
+          setDetail(res1.data.detail);
+          setPrice(res1.data.price);
+          setCategory(res1.data.categoryName);
+          // setCategory(res1.data.cate)
+
+          // res2 : 카테고리 리스트
+          // 데이터에서 카테고리만 빼서 list에 push
+          let list = [];
+          res2.data.map((v, i) => {
+            list.push(v.categoryName);
+          });
+          list = [...new Set(list)]; // 중복 제거
+
+          setCategoryLists(list);
+        })
+      )
+      .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // 서버에 보낼 카테고리 useEffect 처리
+  useEffect(() => {
+    if (newCategory == null) {
+      setRequestCategory(category);
+    } else {
+      setRequestCategory(newCategory);
+    }
+  }, [category, newCategory]);
 
   const onLoadFile = (e) => {
     const file = e.target.files;
@@ -44,52 +80,71 @@ const AdminProductCorrection = () => {
       detail.length == 0 ||
       publisher.length == 0 ||
       price.length == 0 ||
-      selected == 0
+      category == 0
     ) {
       return alert("값을 입력해주세요.");
     } else {
-      return;
+      const formdata = new FormData();
+      formdata.append("productName", productName);
+      formdata.append("categoryName", requestCategory);
+      formdata.append("brand", publisher);
+      formdata.append("detail", detail);
+      formdata.append("img", files[0]);
+      formdata.append("price", price);
+
+      for (var key of formdata.keys()) {
+        console.log(key); //formdata에 담긴 key 확인
+      }
+      for (var value of formdata.values()) {
+        console.log(value); //formdata에 담긴 value 확인
+      }
+
+      return await customAxios
+        .patch(`/admin/products/${id}`, formdata, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((response) => {
+          console.log(response.data);
+          alert("상품 수정이 완료되었습니다.");
+          navigate("/admin/category");
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
     }
-  };
-  const categories = {
-    0: "",
-    1: "소설",
-    2: "에세이",
-    3: "경제경영",
-    4: "예술",
-    5: "5",
   };
 
   return (
     <Container className="subContainer">
-      <div className={cssCart.titleArea}>
-        <h2 className="page-title">상품수정</h2>
-      </div>
       <Row>
         <Col xs lg="2">
-          <Stack gap={3}>
-            <button
-              className="order"
-              onClick={() => {
-                navigate("/admin");
-              }}
-            >
-              전체 주문 관리
-            </button>
-
-            <button
-              className="manager"
-              onClick={() => {
-                navigate("/admin/category");
-              }}
-            >
-              카테고리/상품 관리
-            </button>
-            <button className="deleted">상품등록</button>
-          </Stack>
+          <Nav className="flex-column">
+            <Nav.Item className={cssList.unSelected}>
+              <a
+                onClick={() => {
+                  navigate("/admin");
+                }}
+              >
+                전체 주문 관리
+              </a>
+            </Nav.Item>
+            <Nav.Item className={cssList.unSelected}>
+              <a
+                onClick={() => {
+                  navigate("/admin/category");
+                }}
+              >
+                카테고리/상품 관리
+              </a>
+            </Nav.Item>
+            <Nav.Item className={cssList.selected}>
+              <a>상품 등록</a>
+            </Nav.Item>
+          </Nav>
         </Col>
-        <Col className={cssOrder.deliveryInfo}>
-          <Form>
+        <Col>
+          <h2 className={cssList.pageTitle}>상품 수정</h2>
+          <Form style={{ marginLeft: "24px" }}>
             <Form.Group className="mb-3" controlId="formBasicProductname">
               <Form.Label>상품명</Form.Label>
               <Form.Control
@@ -102,25 +157,30 @@ const AdminProductCorrection = () => {
               <Form.Label>분류</Form.Label>
               <Form.Select
                 className="mb-1"
-                placeholder="분류를 선택해주세요."
+                defaultValue={category}
+                key={uuid()}
                 onChange={(e) => {
-                  setSelected(categories[e.target.value]);
+                  setCategory(e.target.value);
+                  setNewCategory(null);
                 }}
               >
-                <option value="0">분류를 선택해주세요.</option>
-                <option value="1">소설</option>
-                <option value="2">에세이</option>
-                <option value="3">경제경영</option>
-                <option value="4">예술</option>
-                <option value="5">직접 입력</option>
+                {categoryLists.map((v, i) => {
+                  return (
+                    <option value={v} key={i}>
+                      {v}
+                    </option>
+                  );
+                })}
+                <option value="직접 입력">직접 입력</option>
               </Form.Select>
               {/* Category 직접 입력 */}
-              {selected == "5" && (
+              {category == "직접 입력" && (
                 <Form.Control
                   type="text"
-                  placeholder="직접 입력"
+                  placeholder="생성할 카테고리 이름 입력"
                   onChange={(e) => {
-                    setCategory(e.target.value);
+                    setNewCategory(e.target.value);
+                    console.log(newCategory);
                   }}
                 />
               )}
@@ -152,8 +212,7 @@ const AdminProductCorrection = () => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicImg">
               <Form.Label>사진</Form.Label>
-              <br />
-              <input
+              <Form.Control
                 type="file"
                 id="image"
                 accept="img/*"

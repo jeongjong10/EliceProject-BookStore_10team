@@ -1,22 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import {
-  Card,
-  Container,
-  Row,
-  Col,
-  ListGroup,
-  Nav,
-  Stack,
-  Tab,
-  Tabs,
-  Button,
-  Table,
-  Modal,
-} from "react-bootstrap";
+import { Container, Row, Col, Table, Button, Modal } from "react-bootstrap";
 import cssAccount from "../css/Account.module.css";
-import { item } from "../../orders";
-import { ModalCancel } from "./ModalCancel";
+import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";
 import { OrderProduct } from "./OrderProduct";
 
@@ -25,13 +10,60 @@ export const OrderStatus = () => {
 
   async function getData() {
     return await customAxios.get("/account/order").then((res) => {
-      console.log(res.data);
-      setOrders(res.data);
+      const statusOrders = res.data.filter(
+        (order) => order.status === "배송준비"
+      );
+      console.log(statusOrders);
+      setOrders(statusOrders);
     });
   }
   useEffect(() => {
     getData();
   }, []);
+  const ModalCancel = (props) => {
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const handleDataDelete = async (e) => {
+      await customAxios
+        .delete(`/orders/${props.orderId}`)
+        .then((res) => {
+          handleClose();
+          getData();
+        })
+        .catch((err) => console.log(err));
+    };
+
+    return (
+      <>
+        <Button variant="secondary" onClick={handleShow}>
+          주문취소
+        </Button>
+
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>주문취소</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>주문을 취소하시겠습니까?</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              아니요
+            </Button>
+            <Button variant="danger" onClick={handleDataDelete}>
+              예
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  };
+
   return (
     <>
       <Container className="subContainer">
@@ -43,41 +75,38 @@ export const OrderStatus = () => {
                   <th>주문번호</th>
                   <th>상품명</th>
                   <th>주문날짜</th>
-                  {/* <th>수량</th> */}
+
                   <th>배송상태</th>
                   <th>가격</th>
-                  {/* <th>수정</th> */}
+
                   <th>주문취소</th>
                 </tr>
               </thead>
               <tbody>
-                {orders.map((orders, index) => {
-                  if (orders.status === "배송준비") {
+                {!orders.length ? (
+                  <tr>
+                    <td colSpan={6} className={cssCart.emptyCart}>
+                      <h4>🤔 주문내역이 존재하지 않습니다.</h4>
+                    </td>
+                  </tr>
+                ) : (
+                  orders.map((orders, index) => {
                     return (
                       <tr key={index}>
                         <td>{orders.orderNumber}</td>
                         <td className={cssAccount.tdAlignLeft}>
-                          {/* <img
-                            src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssAccount.productThumbnail}`}
-                          /> */}
                           {OrderProduct(orders)}
                         </td>
                         <td>{orders.createdAt.slice(0, 10)}</td>
-                        {/* <td>
-                          <p className={cssAccount.qty}>
-                            {orders.orderList.count}
-                          </p>
-                        </td> */}
                         <td>{orders.status}</td>
-                        <td>{orders.totalPrice}</td>
+                        <td>{orders.totalPrice.toLocaleString("en-US")}</td>
                         <td>
-                          <ModalCancel orderId={orders._id} />
+                          <ModalCancel orderId={orders._id} orders={orders} />
                         </td>
                       </tr>
                     );
-                  }
-                })}
+                  })
+                )}
               </tbody>
             </Table>
           </Col>

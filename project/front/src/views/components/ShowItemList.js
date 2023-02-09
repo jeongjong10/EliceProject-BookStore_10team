@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Card, Row, Container, Button, Modal } from "react-bootstrap";
+import { Card, Row, Container, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { customAxios } from "../../config/customAxios";
 import cssItemList from "../css/ShowItemList.module.css";
 
 export const ShowItemList = ({ data, page, handleDelete }) => {
@@ -12,33 +11,6 @@ export const ShowItemList = ({ data, page, handleDelete }) => {
   useEffect(() => {
     setRefreshData(data.filter((f) => f.activate == true));
   }, [data]);
-
-  // async function deleteProduct(product) {
-  //   await customAxios
-  //     .delete(`/admin/products/${product._id}`)
-  //     .then((res) => {
-  //       let data = res.data;
-  //       // 카테고리 - selectbox에 상태 유지
-  //       if (
-  //         data.filter((f) => f.categoryName == product.categoryName).length > 1
-  //       ) {
-  //         sessionStorage.setItem("currentCategory", product.categoryName);
-  //       } else {
-  //         sessionStorage.removeItem("currentCategory");
-  //       }
-
-  //       // 상품 리스트 리렌더링
-  //       let filteredData = data.filter(
-  //         (f) =>
-  //           f.categoryName == sessionStorage.getItem("currentCategory") &&
-  //           f.activate == true
-  //       );
-  //       setRefreshData(filteredData);
-
-  //       alert("상품이 삭제 되었습니다.");
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
 
   return (
     <Container>
@@ -67,28 +39,6 @@ export const ShowItemList = ({ data, page, handleDelete }) => {
                     {product.price.toLocaleString("en-US")} 원
                   </Card.Text>
                 </div>
-                {/* {pageLocation == "admin" && (
-                  <>
-                    <Button
-                      variant="outline-secondary"
-                      className={cssItemList.btn}
-                      onClick={() => {
-                        navigate(`products/${product._id}`);
-                      }}
-                    >
-                      수정
-                    </Button>
-                    <Button
-                      variant="outline-danger"
-                      className={cssItemList.btn}
-                      onClick={() => {
-                        deleteProduct(product);
-                      }}
-                    >
-                      삭제
-                    </Button>
-                  </>
-                )} */}
               </Card.Body>
             </Card>
           );

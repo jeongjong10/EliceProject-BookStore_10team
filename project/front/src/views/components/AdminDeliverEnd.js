@@ -1,42 +1,30 @@
 import React, { useState, useEffect } from "react";
-
-import { Container, Row, Col, Button, Table, Modal } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Table,
+  Modal,
+  Form,
+} from "react-bootstrap";
 import cssAdmin from "../css/Admin.module.css";
-
 import { customAxios } from "../../config/customAxios";
+import { OrderProduct } from "./OrderProduct";
 
 export const AdminDeliverEnd = () => {
   const [adminOrders, setAdminOrders] = useState([]);
 
   async function getData() {
     return await customAxios.get("admin/orders").then((res) => {
-      console.log(res.data);
-      setAdminOrders(res.data);
+      const AdminOrders = res.data.filter((order) => order.activate === false);
+      setAdminOrders(AdminOrders);
     });
   }
+
   useEffect(() => {
     getData();
   }, []);
-
-  const AdminOrderProduct = (adminOrders) => {
-    if (adminOrders.orderList.legnth > 1) {
-      return adminOrders.orderList.map(
-        (orderList, index) =>
-          `${adminOrders.orderList[index].productName} / ${adminOrders.orderList[index].count} 개`
-      );
-    } else {
-      return `${adminOrders.orderList[0].productName} / ${adminOrders.orderList[0].count} 개`;
-    }
-  };
-  const CancelCount = (props) => {
-    let count = 0;
-    for (let orders of props) {
-      if (orders.activate === false) {
-        count += 1;
-      }
-    }
-    return count;
-  };
 
   const AdminModalDelete = (props) => {
     const [show, setShow] = useState(false);
@@ -45,15 +33,16 @@ export const AdminDeliverEnd = () => {
 
     const handleDataDelete = async (e) => {
       await customAxios
-        .delete(`/admin/falseOrders`)
+        .delete(`/admin/falseOrders/${props.orderId}`)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
       handleClose();
+      getData();
     };
 
     return (
       <>
-        <Button variant="primary" onClick={handleShow}>
+        <Button variant="secondary" onClick={handleShow}>
           주문삭제
         </Button>
 
@@ -66,12 +55,12 @@ export const AdminDeliverEnd = () => {
           <Modal.Header closeButton>
             <Modal.Title>주문삭제</Modal.Title>
           </Modal.Header>
-          <Modal.Body>주문을 삭제하시겠습니까?{props._id}</Modal.Body>
+          <Modal.Body>주문을 삭제하시겠습니까?</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               아니요
             </Button>
-            <Button variant="primary" onClick={handleDataDelete}>
+            <Button variant="danger" onClick={handleDataDelete}>
               예
             </Button>
           </Modal.Footer>
@@ -84,11 +73,9 @@ export const AdminDeliverEnd = () => {
     <>
       <Container className="subContainer">
         <Container>
-          <Row>
-            <Col>
-              <h>총 주문취소 수</h>
-              <h2>{CancelCount(adminOrders)}</h2>
-            </Col>
+          <Row className={cssAdmin.infoBox}>
+            <p>총 주문취소 수</p>
+            <h2>{adminOrders.length}</h2>
           </Row>
         </Container>
         <Row>
@@ -104,45 +91,30 @@ export const AdminDeliverEnd = () => {
                 </tr>
               </thead>
               <tbody>
-                {adminOrders.map((adminOrders, index) => {
-                  if (adminOrders.activate === false) {
+                {!adminOrders.length ? (
+                  <tr>
+                    <td>주문취소내역이 존재하지 않습니다.</td>
+                  </tr>
+                ) : (
+                  adminOrders.map((adminOrders, index) => {
                     return (
                       <tr key={index}>
-                        {/* table start */}
                         <td>{adminOrders.orderNumber}</td>
                         <td className={cssAdmin.tdAlignLeft}>
-                          {/* <img
-                            src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssAdmin.productThumbnail}`}
-                          /> */}
-                          {AdminOrderProduct(adminOrders)}
+                          {OrderProduct(adminOrders)}
                         </td>
                         <td>{adminOrders.createdAt.slice(0, 10)}</td>
-                        {/* <td>
-                          <Button
-                            variant="outline-secondary"
-                            className={cssAdmin.qtyButton}
-                            value="item"
-                          >
-                            -
-                          </Button>
-                          <p className={cssAdmin.qty}>{adminOrders.amount}</p>
-                          <Button
-                            variant="outline-secondary"
-                            className={cssAdmin.qtyButton}
-                            value="item"
-                          >
-                            +
-                          </Button>
-                        </td> */}
-                        <td>{adminOrders.totalPrice}</td>
+
+                        <td>
+                          {adminOrders.totalPrice.toLocaleString("en-US")}
+                        </td>
                         <td>
                           <AdminModalDelete orderId={adminOrders._id} />
                         </td>
                       </tr>
                     );
-                  }
-                })}
+                  })
+                )}
               </tbody>
             </Table>
           </Col>

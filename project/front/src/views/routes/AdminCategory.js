@@ -10,7 +10,6 @@ import {
   Modal,
   Card,
 } from "react-bootstrap";
-// import { ShowItemList } from "../components/ShowItemList"; // 상품 list components
 import cssItemList from "../css/ShowItemList.module.css";
 import { customAxios } from "../../config/customAxios";
 import uuid from "react-uuid";
@@ -76,9 +75,6 @@ const AdminCategory = () => {
       .then((res) => {
         let data = res.data;
         // 카테고리 - selectbox에 상태 유지
-        // console.log(
-        //   data.filter((f) => f.categoryName == product.categoryName).length
-        // );
         if (
           data.filter(
             (f) => f.categoryName == product.categoryName && f.activate == true
@@ -212,12 +208,6 @@ const AdminCategory = () => {
                 </Button>
               )}
             </div>
-            {/* <ShowItemList
-              data={selectedProducts}
-              page={"admin"}
-              categoryHandler={childCategoryHandler}
-              productHandler={childProductHandler}
-            /> */}
             <Container>
               <Row className={cssItemList.row}>
                 {selectedProducts.map((product, i) => {

@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
-
-import { Container, Row, Col, Button, Table, Modal } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Table,
+  Modal,
+  Form,
+} from "react-bootstrap";
 import cssAdmin from "../css/Admin.module.css";
 import { customAxios } from "../../config/customAxios";
 import { OrderProduct } from "./OrderProduct";
@@ -10,25 +17,20 @@ export const AdminOrderby = () => {
 
   async function getData() {
     return await customAxios.get("admin/orders").then((res) => {
-      console.log(res.data);
-      setAdminOrders(res.data);
+      const AdminOrders = res.data.filter(
+        (order) =>
+          order.activate &&
+          (order.status === "배송준비" ||
+            order.status === "배송중" ||
+            order.status === "배송완료")
+      );
+      setAdminOrders(AdminOrders);
     });
   }
 
   useEffect(() => {
     getData();
   }, []);
-
-  // const AdminOrderProduct = (adminOrders) => {
-  //   if (adminOrders.orderList.legnth > 1) {
-  //     return adminOrders.orderList.map(
-  //       (orderList, index) =>
-  //         `"${adminOrders.orderList[index].productName}" : ${adminOrders.orderList[index].count} 개  `
-  //     );
-  //   } else {
-  //     return `"${adminOrders.orderList[0].productName}" : ${adminOrders.orderList[0].count} 개`;
-  //   }
-  // };
 
   const statusHandler = async (e, index) => {
     const id = e.target.id;
@@ -40,10 +42,7 @@ export const AdminOrderby = () => {
     return await customAxios
       .patch(`admin/orders/${id}`, { status })
       .then((res) => {
-        console.log(res.data);
-        setAdminOrders(res.data);
         getData();
-        window.location.reload();
       });
   };
 
@@ -85,14 +84,15 @@ export const AdminOrderby = () => {
     const handleDataDelete = async (e) => {
       await customAxios
         .delete(`/admin/orders/${props.orderId}`)
-        .then((res) => console.log(res))
+        // .then((res) => console.log("👩‍🦰"))
         .catch((err) => console.log(err));
       handleClose();
+      getData();
     };
 
     return (
       <>
-        <Button variant="primary" onClick={handleShow}>
+        <Button variant="secondary" onClick={handleShow}>
           주문취소
         </Button>
 
@@ -105,12 +105,12 @@ export const AdminOrderby = () => {
           <Modal.Header closeButton>
             <Modal.Title>주문취소</Modal.Title>
           </Modal.Header>
-          <Modal.Body>주문을 취소하시겠습니까?{props.orderId}</Modal.Body>
+          <Modal.Body>주문을 취소하시겠습니까?</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               아니요
             </Button>
-            <Button variant="primary" onClick={handleDataDelete}>
+            <Button variant="danger" onClick={handleDataDelete}>
               예
             </Button>
           </Modal.Footer>
@@ -123,22 +123,22 @@ export const AdminOrderby = () => {
     <>
       <Container className="subContainer">
         <Container>
-          <Row>
+          <Row className={cssAdmin.infoBox}>
             <Col>
-              <h>총 주문수</h>
-              <h2>{adminOrders.length}</h2>
+              <p>총 주문수</p>
+              <h3>{adminOrders.length}</h3>
             </Col>
             <Col>
-              <h>배송대기중</h>
-              <h2>{StateCount(adminOrders)}</h2>
+              <p>배송대기중</p>
+              <h3>{StateCount(adminOrders)}</h3>
             </Col>
             <Col>
-              <h>배송중</h>
-              <h2>{DeliverCount(adminOrders)}</h2>
+              <p>배송중</p>
+              <h3>{DeliverCount(adminOrders)}</h3>
             </Col>
             <Col>
-              <h>배송완료</h>
-              <h2>{EndCount(adminOrders)}</h2>
+              <p>배송완료</p>
+              <h3>{EndCount(adminOrders)}</h3>
             </Col>
           </Row>
         </Container>
@@ -156,43 +156,23 @@ export const AdminOrderby = () => {
                 </tr>
               </thead>
               <tbody>
-                {adminOrders.map((adminOrders, index) => {
-                  if (
-                    adminOrders.status === "배송준비" ||
-                    adminOrders.status === "배송중" ||
-                    adminOrders.status === "배송완료"
-                  ) {
+                {!adminOrders.length ? (
+                  <tr>
+                    <td>주문내역이 존재하지 않습니다.</td>
+                  </tr>
+                ) : (
+                  adminOrders.map((adminOrders, index) => {
                     return (
                       <tr key={index}>
                         {/* table start */}
                         <td>{adminOrders.orderNumber}</td>
                         <td className={cssAdmin.tdAlignLeft}>
-                          {/* <img
-                            src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
-                            className={`${cssAdmin.productThumbnail}`} useEffec쪽이 문제인줄알았는데 음....
-                          /> */}
                           {OrderProduct(adminOrders)}
                         </td>
                         <td>{adminOrders.createdAt.slice(0, 10)}</td>
-                        {/* <td>
-                          <Button
-                            variant="outline-secondary"
-                            className={cssAdmin.qtyButton}
-                            value="item"
-                          >
-                            -
-                          </Button>
-                          <p className={cssAdmin.qty}>{adminOrders.amount}</p>
-                          <Button
-                            variant="outline-secondary"
-                            className={cssAdmin.qtyButton}
-                            value="item"
-                          >
-                            +
-                          </Button>
-                        </td> */}
+
                         <td>
-                          <select
+                          <Form.Select
                             id={adminOrders._id}
                             value={adminOrders.status}
                             name="status"
@@ -201,16 +181,18 @@ export const AdminOrderby = () => {
                             <option value={"배송준비"}>{"배송준비"}</option>
                             <option value={"배송중"}>{"배송중"}</option>
                             <option value={"배송완료"}>{"배송완료"}</option>
-                          </select>
+                          </Form.Select>
                         </td>
-                        <td>{adminOrders.totalPrice}</td>
+                        <td>
+                          {adminOrders.totalPrice.toLocaleString("en-US")}
+                        </td>
                         <td>
                           <AdminModalCancel orderId={adminOrders._id} />
                         </td>
                       </tr>
                     );
-                  }
-                })}
+                  })
+                )}
               </tbody>
             </Table>
           </Col>
