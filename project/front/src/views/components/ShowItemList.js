@@ -3,8 +3,7 @@ import { Card, Row, Container, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import cssItemList from "../css/ShowItemList.module.css";
 
-export const ShowItemList = ({ data, page, handleDelete }) => {
-  const pageLocation = page || "";
+export const ShowItemList = ({ data }) => {
   const navigate = useNavigate();
 
   const [refreshData, setRefreshData] = useState([]);
