@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-
 import { Container, Row, Col, Table, Button, Modal } from "react-bootstrap";
 import cssAccount from "../css/Account.module.css";
-
+import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";
 import { OrderProduct } from "./OrderProduct";
 
@@ -38,7 +37,7 @@ export const OrderStatus = () => {
 
     return (
       <>
-        <Button variant="primary" onClick={handleShow}>
+        <Button variant="secondary" onClick={handleShow}>
           주문취소
         </Button>
 
@@ -56,7 +55,7 @@ export const OrderStatus = () => {
             <Button variant="secondary" onClick={handleClose}>
               아니요
             </Button>
-            <Button variant="primary" onClick={handleDataDelete}>
+            <Button variant="danger" onClick={handleDataDelete}>
               예
             </Button>
           </Modal.Footer>
@@ -86,7 +85,9 @@ export const OrderStatus = () => {
               <tbody>
                 {!orders.length ? (
                   <tr>
-                    <td>주문내역이 존재하지 않습니다.</td>
+                    <td colSpan={6} className={cssCart.emptyCart}>
+                      <h4>🤔 주문내역이 존재하지 않습니다.</h4>
+                    </td>
                   </tr>
                 ) : (
                   orders.map((orders, index) => {
@@ -98,7 +99,7 @@ export const OrderStatus = () => {
                         </td>
                         <td>{orders.createdAt.slice(0, 10)}</td>
                         <td>{orders.status}</td>
-                        <td>{orders.totalPrice}</td>
+                        <td>{orders.totalPrice.toLocaleString("en-US")}</td>
                         <td>
                           <ModalCancel orderId={orders._id} orders={orders} />
                         </td>

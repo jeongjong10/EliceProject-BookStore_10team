@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Button, Container, Row, Col, Form, Stack } from "react-bootstrap";
+import { Button, Container, Row, Col, Form, Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
-import cssCart from "../css/Cart.module.css";
-import cssOrder from "../css/Order.module.css";
+import cssList from "../css/List.module.css";
 import { customAxios } from "../../config/customAxios";
 
 const AdminProductRegister = () => {
@@ -18,10 +17,12 @@ const AdminProductRegister = () => {
   const [detail, setDetail] = useState("");
   const [price, setPrice] = useState("");
   const [files, setFiles] = useState("");
+  const [isCreate, setIsCreate] = useState(false);
+
+  useEffect(() => {}, [isCreate]);
 
   const onLoadFile = (e) => {
     const file = e.target.files;
-
     setFiles(file);
   };
 
@@ -80,7 +81,7 @@ const AdminProductRegister = () => {
         .then((response) => {
           console.log(response.data);
           alert("상품 등록이 완료되었습니다.");
-          navigate("/admin");
+          navigate("/admin/category");
         })
         .catch((error) => {
           console.log(error.response);
@@ -90,34 +91,35 @@ const AdminProductRegister = () => {
 
   return (
     <Container className="subContainer">
-      <div className={cssCart.titleArea}>
-        <h2 className="page-title">상품등록</h2>
-      </div>
       <Row>
         <Col xs lg="2">
-          <Stack gap={3}>
-            <button
-              className="order"
-              onClick={() => {
-                navigate("/admin");
-              }}
-            >
-              전체 주문 관리
-            </button>
-
-            <button
-              className="manager"
-              onClick={() => {
-                navigate("/admin/category");
-              }}
-            >
-              카테고리/상품 관리
-            </button>
-            <button className="deleted">상품등록</button>
-          </Stack>
+          <Nav className="flex-column">
+            <Nav.Item className={cssList.unSelected}>
+              <a
+                onClick={() => {
+                  navigate("/admin");
+                }}
+              >
+                전체 주문 관리
+              </a>
+            </Nav.Item>
+            <Nav.Item className={cssList.unSelected}>
+              <a
+                onClick={() => {
+                  navigate("/admin/category");
+                }}
+              >
+                카테고리/상품 관리
+              </a>
+            </Nav.Item>
+            <Nav.Item className={cssList.selected}>
+              <a>상품 등록</a>
+            </Nav.Item>
+          </Nav>
         </Col>
-        <Col className={cssOrder.deliveryInfo}>
-          <Form>
+        <Col>
+          <h2 className={cssList.pageTitle}>상품 등록</h2>
+          <Form style={{ marginLeft: "24px" }}>
             <Form.Group className="mb-3" controlId="formBasicProductname">
               <Form.Label>상품명</Form.Label>
               <Form.Control
@@ -158,7 +160,7 @@ const AdminProductRegister = () => {
                 />
               )}
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPublisher">
+            <Form.Group className="mb-3">
               <Form.Label>출판사</Form.Label>
               <Form.Control
                 placeholder="엘리스"
@@ -166,7 +168,7 @@ const AdminProductRegister = () => {
                 onChange={(e) => setPublisher(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicDetail">
+            <Form.Group className="mb-3">
               <Form.Label>발행</Form.Label>
               <Form.Control
                 placeholder="2000년 01월"
@@ -175,7 +177,7 @@ const AdminProductRegister = () => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPrice">
+            <Form.Group className="mb-3">
               <Form.Label>가격</Form.Label>
               <Form.Control
                 placeholder="1000"
@@ -183,17 +185,16 @@ const AdminProductRegister = () => {
                 onChange={(e) => setPrice(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicImg">
+            <Form.Group className="mb-3">
               <Form.Label>사진</Form.Label>
-              <br />
-              <input
+              <Form.Control
                 type="file"
                 id="image"
                 accept="img/*"
                 onChange={onLoadFile}
               />
             </Form.Group>
-            <Button onClick={onSubmitHandeler}>저장</Button>
+            <Button onClick={onSubmitHandeler}>등록</Button>
           </Form>
         </Col>
       </Row>

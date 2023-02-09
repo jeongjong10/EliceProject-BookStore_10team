@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-import { Container, Row, Col, Button, Table, Modal } from "react-bootstrap";
+import { Container, Row, Col, Table } from "react-bootstrap";
 import cssAccount from "../css/Account.module.css";
-
+import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";
 import { OrderProduct } from "./OrderProduct";
 export const OrderEnd = () => {
@@ -14,7 +14,6 @@ export const OrderEnd = () => {
       const statusOrders = res.data.filter(
         (order) => order.status === "배송완료"
       );
-      console.log(statusOrders);
       setOrders(statusOrders);
     });
   }
@@ -75,16 +74,16 @@ export const OrderEnd = () => {
                   <th>주문번호</th>
                   <th>주문상품</th>
                   <th>주문날짜</th>
-                  {/* <th>수량</th> */}
                   <th>배송상태</th>
                   <th>가격</th>
-                  <th>주문취소</th>
                 </tr>
               </thead>
               <tbody>
                 {!orders.length ? (
                   <tr>
-                    <td>주문내역이 존재하지 않습니다.</td>
+                    <td colSpan={6} className={cssCart.emptyCart}>
+                      <h4>🤔 주문내역이 존재하지 않습니다.</h4>
+                    </td>
                   </tr>
                 ) : (
                   orders.map((orders, index) => {
@@ -96,10 +95,7 @@ export const OrderEnd = () => {
                         </td>
                         <td>{orders.createdAt.slice(0, 10)}</td>
                         <td>{orders.status}</td>
-                        <td>{orders.totalPrice}</td>
-                        <td>
-                          <ModalCancel orderId={orders._id} />
-                        </td>
+                        <td>{orders.totalPrice.toLocaleString("en-US")}</td>
                       </tr>
                     );
                   })

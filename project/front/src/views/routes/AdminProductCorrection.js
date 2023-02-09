@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Button, Container, Row, Col, Form, Stack } from "react-bootstrap";
+import { Button, Container, Row, Col, Form, Nav } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { customAxios } from "../../config/customAxios";
 import axios from "axios"; // original axios가 필요한 페이지 입니다. 삭제 금지
 import uuid from "react-uuid";
-import cssCart from "../css/Cart.module.css";
-import cssOrder from "../css/Order.module.css";
+import cssList from "../css/List.module.css";
 
 const AdminProductCorrection = () => {
   const { id } = useParams();
@@ -31,7 +30,6 @@ const AdminProductCorrection = () => {
       .then(
         axios.spread((res1, res2) => {
           // res1 : 상품 정보 데이터
-
           setProduct(res1.data);
           setProductName(res1.data.productName);
           setPublisher(res1.data.brand);
@@ -116,34 +114,35 @@ const AdminProductCorrection = () => {
 
   return (
     <Container className="subContainer">
-      <div className={cssCart.titleArea}>
-        <h2 className="page-title">상품수정</h2>
-      </div>
       <Row>
         <Col xs lg="2">
-          <Stack gap={3}>
-            <button
-              className="order"
-              onClick={() => {
-                navigate("/admin");
-              }}
-            >
-              전체 주문 관리
-            </button>
-
-            <button
-              className="manager"
-              onClick={() => {
-                navigate("/admin/category");
-              }}
-            >
-              카테고리/상품 관리
-            </button>
-            <button className="deleted">상품등록</button>
-          </Stack>
+          <Nav className="flex-column">
+            <Nav.Item className={cssList.unSelected}>
+              <a
+                onClick={() => {
+                  navigate("/admin");
+                }}
+              >
+                전체 주문 관리
+              </a>
+            </Nav.Item>
+            <Nav.Item className={cssList.unSelected}>
+              <a
+                onClick={() => {
+                  navigate("/admin/category");
+                }}
+              >
+                카테고리/상품 관리
+              </a>
+            </Nav.Item>
+            <Nav.Item className={cssList.selected}>
+              <a>상품 등록</a>
+            </Nav.Item>
+          </Nav>
         </Col>
-        <Col className={cssOrder.deliveryInfo}>
-          <Form>
+        <Col>
+          <h2 className={cssList.pageTitle}>상품 수정</h2>
+          <Form style={{ marginLeft: "24px" }}>
             <Form.Group className="mb-3" controlId="formBasicProductname">
               <Form.Label>상품명</Form.Label>
               <Form.Control
@@ -211,8 +210,7 @@ const AdminProductCorrection = () => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicImg">
               <Form.Label>사진</Form.Label>
-              <br />
-              <input
+              <Form.Control
                 type="file"
                 id="image"
                 accept="img/*"
