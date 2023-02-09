@@ -17,7 +17,7 @@ import cssAccount from "../css/Account.module.css";
 
 import { ModalCancel } from "./ModalCancel";
 import { customAxios } from "../../config/customAxios";
-
+import { OrderProduct } from "./OrderProduct";
 export const OrderEnd = () => {
   const [orders, setOrders] = useState([]);
 
@@ -25,6 +25,7 @@ export const OrderEnd = () => {
   async function getData() {
     return await customAxios.get("/account/order").then((res) => {
       console.log(res.data);
+      setOrders(res.data);
     });
   }
   useEffect(() => {
@@ -40,36 +41,38 @@ export const OrderEnd = () => {
               <thead>
                 <tr>
                   <th>주문번호</th>
-                  <th>상품명</th>
+                  <th>주문상품</th>
                   <th>주문날짜</th>
-                  <th>수량</th>
+                  {/* <th>수량</th> */}
                   <th>배송상태</th>
                   <th>가격</th>
+                  <th>주문취소</th>
                 </tr>
               </thead>
               <tbody>
                 {orders.map((orders, index) => {
                   if (orders.status === "배송완료") {
                     return (
-                      <tr>
+                      <tr key={index}>
                         <td>{orders.orderNumber}</td>
                         <td className={cssAccount.tdAlignLeft}>
-                          <img
+                          {/* <img
                             src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
                             className={`${cssAccount.productThumbnail}`}
-                          />
-                          {orders.orderList.productName}
+                          /> */}
+                          {console.log(orders)}
+                          {OrderProduct(orders)}
                         </td>
-                        <td>{orders.createdAt}</td>
-                        <td>
+                        <td>{orders.createdAt.slice(0, 10)}</td>
+                        {/* <td>
                           <p className={cssAccount.qty}>
                             {orders.orderList.count}
                           </p>
-                        </td>
-                        <td>배송완료</td>
+                        </td> */}
+                        <td>{orders.status}</td>
                         <td>{orders.totalPrice}</td>
                         <td>
-                          <ModalCancel />
+                          <ModalCancel orderId={orders._id} />
                         </td>
                       </tr>
                     );

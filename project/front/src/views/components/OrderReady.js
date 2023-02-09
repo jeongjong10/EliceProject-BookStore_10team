@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Card,
@@ -17,9 +17,22 @@ import {
 import cssAccount from "../css/Account.module.css";
 import { item } from "../../orders";
 import { ModalCancel } from "./ModalCancel";
-import axios from "axios";
+
+import { OrderProduct } from "./OrderProduct";
+import { customAxios } from "../../config/customAxios";
 
 export const OrderReady = () => {
+  const [orders, setOrders] = useState([]);
+
+  async function getData() {
+    return await customAxios.get("/account/order").then((res) => {
+      console.log(res.data);
+      setOrders(res.data);
+    });
+  }
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <>
       <Container className="subContainer">
@@ -31,7 +44,7 @@ export const OrderReady = () => {
                   <th>주문번호</th>
                   <th>상품명</th>
                   <th>주문날짜</th>
-                  <th>수량</th>
+                  {/* <th>수량</th> */}
                   <th>배송상태</th>
                   <th>가격</th>
                   {/* <th>수정</th> */}
@@ -39,27 +52,29 @@ export const OrderReady = () => {
                 </tr>
               </thead>
               <tbody>
-                {item.map((item, index) => {
-                  if (item.deliver === "ready") {
+                {orders.map((orders, index) => {
+                  if (orders.status === "배송중") {
                     return (
                       <tr key={index}>
-                        {/* table start */}
-                        <td>{item.itemId}</td>
+                        <td>{orders.orderNumber}</td>
                         <td className={cssAccount.tdAlignLeft}>
-                          <img
+                          {/* <img
                             src={`${process.env.PUBLIC_URL}/img/thumb1.png`}
                             className={`${cssAccount.productThumbnail}`}
-                          />
-                          {item.itemName}
+                          /> */}
+                          {OrderProduct(orders)}
                         </td>
-                        <td>{item.orderday}</td>
+                        <td>{orders.createdAt.slice(0, 10)}</td>
+                        {/* <td>
+                          <p className={cssAccount.qty}>
+                            {orders.orderList.count}
+                          </p>
+                        </td> */}
+                        <td>{orders.status}</td>
+                        <td>{orders.totalPrice}</td>
+                        {console.log(orders._id)}
                         <td>
-                          <p className={cssAccount.qty}>{item.amount}</p>
-                        </td>
-                        <td>배송중</td>
-                        <td>{item.amount * item.price}</td>
-                        <td>
-                          <ModalCancel />
+                          <ModalCancel orderId={orders._id} />
                         </td>
                       </tr>
                     );

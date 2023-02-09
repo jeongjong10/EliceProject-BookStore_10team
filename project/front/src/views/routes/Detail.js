@@ -4,10 +4,10 @@ import { Button, Container, Row, Col, Form } from "react-bootstrap";
 import { customAxios } from "../../config/customAxios";
 
 import cssDetail from "../css/Detail.module.css";
-import cssItemList from "../css/ShowItemList.module.css";
 
 const Detail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   // 수량
   const [count, setCount] = useState(1);
@@ -46,6 +46,7 @@ const Detail = () => {
           },
         ])
       );
+      alert("장바구니에 상품이 잘 담겼습니다. 🛍");
     } else {
       const currentItems = JSON.parse(localStorage.getItem("cart"));
       let currentItemsSet = new Set(currentItems);
@@ -60,7 +61,27 @@ const Detail = () => {
           count,
         });
         localStorage.setItem("cart", JSON.stringify(currentItemsSet));
+        alert("장바구니에 상품이 잘 담겼습니다. 🛍");
       }
+    }
+  }
+
+  function directOrder() {
+    if (localStorage.getItem("JWT")) {
+      localStorage.setItem(
+        "cart",
+        JSON.stringify([
+          {
+            _id: product._id,
+            count,
+          },
+        ])
+      );
+      navigate("/order");
+    } else {
+      alert("회원만 주문이 가능합니다. 로그인 페이지로 이동시켜 드릴께요. 🚗");
+      sessionStorage.setItem("directOrder", true);
+      navigate("/login");
     }
   }
 
@@ -68,12 +89,12 @@ const Detail = () => {
     <>
       <Container className="subContainer">
         <Row>
-          <Col sm={4}>
-            <div className={cssItemList.productThumbnail}>
+          <Col>
+            <div className={cssDetail.productThumbnail}>
               <img src={product.img} />
             </div>
           </Col>
-          <Col sm={8} className={cssDetail.productDescription}>
+          <Col className={cssDetail.productDescription}>
             <h2>{product.productName}</h2>
             <h4>{product.price.toLocaleString("en-US")} 원</h4>
 
@@ -105,7 +126,7 @@ const Detail = () => {
             </div>
             <div>
               <Button onClick={addCart}>장바구니 추가</Button>{" "}
-              <Button>바로 구매</Button>
+              <Button onClick={directOrder}>바로 구매</Button>
             </div>
           </Col>
         </Row>

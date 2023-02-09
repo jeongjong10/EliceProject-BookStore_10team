@@ -38,7 +38,6 @@ const Cart = () => {
       .get(`${getRouteURL()}`)
       .then((res) => {
         if (res.data.result !== "fail") {
-          console.log(res.data);
           const data = res.data;
           data.map((v, i) => {
             v["count"] = carts.filter((f) => f._id == v._id)[0].count;
@@ -95,11 +94,14 @@ const Cart = () => {
   }
 
   // 개별 삭제
-  function removeProduct(id) {
+  function removeProduct(i, id) {
     cartItemsId = cartItemsId.filter((f) => f !== id);
     setProducts(products.filter((f) => f._id !== id));
     carts = carts.filter((f) => f._id !== id);
     localStorage.setItem("cart", JSON.stringify(carts));
+    setTotalCount(totalCount - products[i].count);
+    setTotalProductPrice(totalProductPrice - products[i].price);
+    setTotalPrice(totalPrice - products[i].price);
   }
 
   // 전체삭제 : 모달에 들어갈 onClick
@@ -111,6 +113,9 @@ const Cart = () => {
     cartItemsId = [];
     setProducts([]);
     carts = [];
+    setTotalCount(0);
+    setTotalProductPrice(0);
+    setTotalPrice(0);
     localStorage.removeItem("cart");
     handleClose();
   }
@@ -166,45 +171,68 @@ const Cart = () => {
                         />
                         {v.productName}
                       </td>
-                      <td>{v.price.toLocaleString("en-US")}</td>
-                      <td>
-                        <Button
-                          variant="outline-secondary"
-                          className={cssCart.qtyButton}
-                          onClick={() => {
-                            handleCountUp(i, "+");
-                          }}
-                        >
-                          +
-                        </Button>
-                        <p className={cssCart.qty}>
-                          {v.count}
-                          {/* 주문데이터 -> 수량 */}
-                        </p>
-                        <Button
-                          variant="outline-secondary"
-                          className={cssCart.qtyButton}
-                          onClick={() => {
-                            handleCountUp(i, "-");
-                          }}
-                        >
-                          -
-                        </Button>
-                      </td>
-                      <td>
-                        {(v.price * v.count).toLocaleString("en-US")}
-                        {/* 주문 수량 곱해줘야 함 */}
-                      </td>
-                      <td>
-                        <Button
-                          variant="secondary"
-                          onClick={() => {
-                            removeProduct(v._id);
-                          }}
-                        >
-                          삭제
-                        </Button>
-                      </td>
+                      {v.activate && (
+                        <>
+                          <td>{v.price.toLocaleString("en-US")}</td>
+                          <td>
+                            <Button
+                              variant="outline-secondary"
+                              className={cssCart.qtyButton}
+                              onClick={() => {
+                                handleCountUp(i, "+");
+                              }}
+                            >
+                              +
+                            </Button>
+                            <p className={cssCart.qty}>{v.count}</p>
+                            <Button
+                              variant="outline-secondary"
+                              className={cssCart.qtyButton}
+                              onClick={() => {
+                                handleCountUp(i, "-");
+                              }}
+                            >
+                              -
+                            </Button>
+                          </td>
+                          <td>{(v.price * v.count).toLocaleString("en-US")}</td>
+                          <td>
+                            <Button
+                              variant="secondary"
+                              onClick={() => {
+                                removeProduct(i, v._id);
+                              }}
+                            >
+                              삭제
+                            </Button>
+                          </td>
+                        </>
+                      )}
+                      {!v.activate && (
+                        <>
+                          <td colSpan={4}>
+                            <p className="mb-2">판매 중지된 상품 입니다.</p>
+                            <Button
+                              variant="danger"
+                              onClick={() => {
+                                removeProduct(i, v._id);
+                              }}
+                            >
+                              삭제
+                            </Button>
+                          </td>
+                          {/* <td>
+                            <Button
+                              variant="secondary"
+                              onClick={() => {
+                                removeProduct(i, v._id);
+                              }}
+                            >
+                              삭제
+                            </Button>
+                          </td> */}
+                        </>
+                      )}
                     </tr>
                   );
                 })}
@@ -242,19 +270,23 @@ const Cart = () => {
                   variant="primary"
                   size="lg"
                   onClick={() => {
-                    if (
-                      localStorage.getItem("JWT") &&
-                      carts &&
-                      carts.length !== 0
-                    ) {
-                      navigate("/order");
-                    } else if (!carts || carts.length !== 0) {
+                    if (!carts || carts.length == 0) {
                       alert("장바구니가 비었습니다.");
                     } else if (!localStorage.getItem("JWT")) {
                       alert(
                         "회원만 주문이 가능합니다. 로그인 페이지로 이동시켜 드릴께요. 🚗"
                       );
                       navigate("/login");
+                    } else if (
+                      products.filter((f) => !f.activate).length !== 0
+                    ) {
+                      alert("판매 중지된 상품을 삭제하고 다시 시도해주세요.");
+                    } else if (
+                      localStorage.getItem("JWT") &&
+                      carts &&
+                      carts.length !== 0
+                    ) {
+                      navigate("/order");
                     }
                   }}
                 >

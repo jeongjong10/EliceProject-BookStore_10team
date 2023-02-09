@@ -1,21 +1,10 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import {
-  Card,
-  Container,
-  Row,
-  Col,
-  ListGroup,
-  Nav,
-  Stack,
-  Tab,
-  Tabs,
-} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { Container, Row, Col, Stack, Tab, Tabs } from "react-bootstrap";
 import { AdminDeliverEnd } from "../components/AdminDeliverEnd";
 import { AdminOrderby } from "../components/AdminOrderby";
 
 const AdminDeliver = () => {
-  // const {id} = useParams()
   const navigate = useNavigate();
 
   return (
@@ -25,14 +14,28 @@ const AdminDeliver = () => {
           <Col xs lg="2">
             <Stack gap={3}>
               <button className="order">전체 주문 관리</button>
-              <button className="manager">카테고리/상품 관리</button>
-              <button className="deleted">상품 등록</button>
+              <button
+                className="manager"
+                onClick={() => {
+                  navigate("/admin/category");
+                }}
+              >
+                카테고리/상품 관리
+              </button>
+              <button
+                className="deleted"
+                onClick={() => {
+                  navigate("/admin/products");
+                }}
+              >
+                상품 등록
+              </button>
             </Stack>
           </Col>
           <Col>
             <h1>전체 주문 관리</h1>
             <Tabs
-              defaultActiveKey="profile"
+              defaultActiveKey="orderby"
               id="fill-tab-example"
               className="mb-3"
               fill

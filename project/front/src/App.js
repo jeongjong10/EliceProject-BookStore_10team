@@ -15,26 +15,26 @@ import AdminProductRegister from "./views/routes/AdminProductRegister";
 import Order from "./views/routes/Order";
 import Complete from "./views/routes/Complete";
 import AdminDeliver from "./views/routes/AdminDeliver";
+import AdminCategory from "./views/routes/AdminCategory";
 
 function App() {
   const navigate = useNavigate();
 
   // JWT 토큰 localstorage 저장
   const JWT = localStorage.getItem("JWT");
+
+  // admin 여부 검증
   let isAdmin = false;
-  // 임시 => JWT 해석해서 _id 에 admin = true로 임의로 해보고
-  // 이 admin이 true 이면, Navbar=> admin 화면으로 변경
-  if (JWT) {
-    isAdmin =
-      atob(JWT.split(".")[1]) === "63ddef45f5075428f51969df" ? true : false;
-    isAdmin = false;
-    // console.log(isAdmin);
-    // 이거 실제로 해보면..??
-    // isAdmin = JSON.parse(atob(JWT.split(".")[1])).admin
+  if (localStorage.getItem("admin") == "Admin-Access-succeeded") {
+    isAdmin = true;
   }
 
-  function clearJwt() {
+  // 로그아웃
+  function logOutUser() {
     localStorage.removeItem("JWT");
+    if (localStorage.getItem("admin")) {
+      localStorage.removeItem("admin");
+    }
     alert("로그아웃 완료");
     navigate("/");
   }
@@ -42,17 +42,17 @@ function App() {
   return (
     <div className="App">
       {/* 내비게이션 */}
-      <Navbar bg="light" variant="light">
+      <Navbar variant="light">
         <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link
+            <div
+              className="nav-logo"
               onClick={() => {
                 navigate("/");
               }}
             >
-              HOME
-            </Nav.Link>
+              <img src={`${process.env.PUBLIC_URL}/img/logo.png`} />
+            </div>
             <Nav.Link
               onClick={() => {
                 navigate("/product/list");
@@ -83,7 +83,7 @@ function App() {
               <>
                 <Nav.Link
                   onClick={() => {
-                    clearJwt();
+                    logOutUser();
                   }}
                 >
                   로그아웃
@@ -107,7 +107,7 @@ function App() {
               <>
                 <Nav.Link
                   onClick={() => {
-                    clearJwt();
+                    logOutUser();
                   }}
                 >
                   로그아웃
@@ -146,6 +146,11 @@ function App() {
         <Route path="/account/privacy" element={<AcountPrivacy />} />
         <Route path="/account/secession" element={<Secession />} />
         <Route path="/admin/products" element={<AdminProductRegister />} />
+        <Route
+          path="/admin/category/products/:id"
+          element={<AdminProductRegister />}
+        />
+        <Route path="/admin/category" element={<AdminCategory />} />
         <Route path="/admin" element={<AdminDeliver />} />
         <Route path="/order" element={<Order />} />
         <Route path="/order/complete" element={<Complete />} />

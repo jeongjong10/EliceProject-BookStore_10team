@@ -89,7 +89,7 @@ router.post("/", verifyUser(), async(req, res, next) => {
             throw new Error("req.body 확인에 실패하였습니다");
         }
         if (updateData.password) {
-            console.log("비밀번호 변경 감지")
+            console.log("비밀번호 변경 감지");
             updateData.password = getHash(req.body.password);
         }
         console.log("updateData : ", updateData);

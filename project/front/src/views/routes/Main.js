@@ -38,19 +38,23 @@ const Main = () => {
           <img
             src={`${process.env.PUBLIC_URL}/img/banner1.png`}
             className={cssMain.mainBg}
-          ></img>
+          />
         </Carousel.Item>
         <Carousel.Item>
           <img
             src={`${process.env.PUBLIC_URL}/img/banner2.png`}
             className={cssMain.mainBg}
-          ></img>
+            onClick={() => navigate("/products/63dcd6803f53abb02db79241")}
+            style={{ cursor: "pointer" }}
+          />
         </Carousel.Item>
         <Carousel.Item>
           <img
             src={`${process.env.PUBLIC_URL}/img/banner3.png`}
             className={cssMain.mainBg}
-          ></img>
+            onClick={() => navigate("/products/63dce18004bd32773d5bb73a")}
+            style={{ cursor: "pointer" }}
+          />
         </Carousel.Item>
       </Carousel>
 

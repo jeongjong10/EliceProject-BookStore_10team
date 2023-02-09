@@ -13,6 +13,7 @@ import cssCart from "../css/Cart.module.css";
 import cssOrder from "../css/Order.module.css";
 import Post from "../components/Post";
 import { customAxios } from "../../config/customAxios";
+import AccountPrivacyModal from "../components/AccountPrivacyModal";
 
 const AcountPrivacy = () => {
   const navigate = useNavigate();
@@ -23,8 +24,9 @@ const AcountPrivacy = () => {
   const [receiverPhone, setReceiverPhone] = useState("");
   const [address2, setAddress2] = useState("");
   const [address1, setAddress1] = useState("");
-  const [address, setAddress] = useState("");
+
   const [zonecode, setZonecode] = useState("");
+  const [modal, setModal] = useState(false);
 
   const [popup, setPopup] = React.useState(false);
   const [user, setUser] = useState([]);
@@ -32,6 +34,7 @@ const AcountPrivacy = () => {
     return await customAxios
       .get("/account")
       .then((res) => {
+        console.log(res.data);
         setUser(res.data);
         setReceiverName(res.data.userName);
         if (res.data.phone) {
@@ -47,6 +50,7 @@ const AcountPrivacy = () => {
   }
   useEffect(() => {
     getData();
+    setModal(true); // 페이지 진입시 모달 설정
   }, []);
 
   const onSubmitHandler = async (event) => {
@@ -86,9 +90,33 @@ const AcountPrivacy = () => {
       <Row>
         <Col xs lg="2">
           <Stack gap={3}>
-            <button className="order">주문조회</button>
-            <button className="manager">개인정보관리</button>
-            <button className="deleted">회원탈퇴</button>
+            <button
+              className="order"
+              onClick={() => navigate("/account/orders")}
+            >
+              주문조회
+            </button>
+            <AccountPrivacyModal
+              show={modal}
+              onHide={() => {
+                setModal(false);
+              }}
+            />
+            <button
+              className="manager"
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   setModal(true);
+              // }}
+            >
+              회원정보관리
+            </button>
+            <button
+              className="deleted"
+              onClick={() => navigate("/account/secession")}
+            >
+              회원탈퇴
+            </button>
           </Stack>
         </Col>
         <Col className={cssOrder.deliveryInfo}>
