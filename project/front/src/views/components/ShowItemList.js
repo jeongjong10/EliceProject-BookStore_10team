@@ -35,9 +35,8 @@ export const ShowItemList = ({ data, page }) => {
         } else {
           sessionStorage.removeItem("currentCategory");
         }
-        // 삭제 시 처리 로직
+
         alert("상품이 삭제 되었습니다.");
-        // window.location.reload();
       })
       .catch((err) => console.log(err));
   }

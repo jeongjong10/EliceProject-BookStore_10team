@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Container, Row, Col, Form, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { customAxios } from "../../config/customAxios";
-import axios from "axios";
+import axios from "axios"; // original axios가 필요한 페이지 입니다. 삭제 금지
 import cssCart from "../css/Cart.module.css";
 import cssOrder from "../css/Order.module.css";
 import Post from "../components/Post";
