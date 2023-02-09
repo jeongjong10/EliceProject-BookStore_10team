@@ -16,6 +16,7 @@ import Order from "./views/routes/Order";
 import Complete from "./views/routes/Complete";
 import AdminDeliver from "./views/routes/AdminDeliver";
 import AdminCategory from "./views/routes/AdminCategory";
+import AdminUsers from "./views/routes/AdminUsers";
 import AdminProductCorrection from "./views/routes/AdminProductCorrection";
 function App() {
   const navigate = useNavigate();
@@ -151,6 +152,7 @@ function App() {
           element={<AdminProductCorrection />}
         />
         <Route path="/admin/category" element={<AdminCategory />} />
+        <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/admin" element={<AdminDeliver />} />
         <Route path="/order" element={<Order />} />
         <Route path="/order/complete" element={<Complete />} />

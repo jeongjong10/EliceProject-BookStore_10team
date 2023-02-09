@@ -26,7 +26,6 @@ const Secession = () => {
       .then((response) => {
         if (response.data.message === "비밀번호가 일치하지 않음") {
           alert("비밀번호가 일치하지 않습니다.");
-          window.location.reload();
         } else {
           alert("회원 탈퇴 되었습니다. 다음에 다시 만나요! 👋");
           localStorage.removeItem("JWT");

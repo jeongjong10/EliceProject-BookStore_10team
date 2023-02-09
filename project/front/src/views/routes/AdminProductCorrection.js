@@ -11,7 +11,6 @@ const AdminProductCorrection = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [selected, setSelected] = useState("");
   const [productName, setProductName] = useState("");
   const [categoryLists, setCategoryLists] = useState([]); // 전체 카테고리
   const [category, setCategory] = useState(""); // select 카테고리

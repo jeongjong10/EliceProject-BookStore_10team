@@ -47,7 +47,6 @@ const Register = () => {
         .then((response) => {
           if (response.data.message === "이미 존재하는 이메일입니다.") {
             alert("이미 존재하는 이메일 입니다.");
-            window.location.reload();
           } else {
             alert("정상적으로 회원가입되었습니다.");
             console.log(response.data);

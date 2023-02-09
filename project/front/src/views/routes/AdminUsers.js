@@ -1,11 +1,10 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Stack, Tab, Tabs } from "react-bootstrap";
-import { OrderReady } from "../components/OrderReady";
-import { OrderStatus } from "../components/OrderStatus";
-import { OrderEnd } from "../components/OrderEnd";
+import { Users } from "../components/Users";
+import { FalseUsers } from "../components/FalseUsers";
 
-const AcountOrder = () => {
+const AdminUsers = () => {
   const navigate = useNavigate();
 
   return (
@@ -14,48 +13,42 @@ const AcountOrder = () => {
         <Row>
           <Col xs lg="2">
             <Stack gap={3}>
-              <button className="order">주문조회</button>
+              <button className="order">전체 회원 관리</button>
               <button
                 className="manager"
                 onClick={() => {
-                  navigate("/account/privacy");
+                  navigate("/admin/category");
                 }}
               >
-                개인정보관리
+                카테고리/상품 관리
               </button>
               <button
                 className="deleted"
                 onClick={() => {
-                  navigate("/account/secession");
+                  navigate("/admin/products");
                 }}
               >
-                회원탈퇴
+                상품 등록
               </button>
             </Stack>
           </Col>
           <Col>
-            <p>주문조회</p>
+            <p>전체 회원 관리</p>
             <Tabs
-              defaultActiveKey="orderStatus"
+              defaultActiveKey="Users"
               id="fill-tab-example"
               className="mb-3"
               fill
             >
-              <Tab eventKey="orderStatus" title="배송준비">
+              <Tab eventKey="Users" title="전체회원수">
                 <div>
-                  <OrderStatus />
+                  <Users />
                 </div>
               </Tab>
 
-              <Tab eventKey="orderReady" title="배송중">
+              <Tab eventKey="FalseUsers" title="비활성계정">
                 <div>
-                  <OrderReady />
-                </div>
-              </Tab>
-
-              <Tab eventKey="orderEnd" title="배송완료">
-                <div>
-                  <OrderEnd />
+                  <FalseUsers />
                 </div>
               </Tab>
             </Tabs>
@@ -66,4 +59,4 @@ const AcountOrder = () => {
   );
 };
 
-export default AcountOrder;
+export default AdminUsers;

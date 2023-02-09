@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, Row, Col, Form, Stack } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import uuid from "react-uuid";
 import cssCart from "../css/Cart.module.css";
 import cssOrder from "../css/Order.module.css";
 import { customAxios } from "../../config/customAxios";
@@ -8,9 +9,11 @@ import { customAxios } from "../../config/customAxios";
 const AdminProductRegister = () => {
   const navigate = useNavigate();
 
-  const [selected, setSelected] = useState("");
   const [productName, setProductName] = useState("");
-  const [category, setCategory] = useState(null);
+  const [categoryLists, setCategoryLists] = useState([]); // 전체 카테고리
+  const [category, setCategory] = useState(""); // select 카테고리
+  const [newCategory, setNewCategory] = useState(null); // 직접 입력 카테고리 (생성)
+  const [requestCategory, setRequestCategory] = useState(""); // 서버에 보낼 카테고리명
   const [publisher, setPublisher] = useState("");
   const [detail, setDetail] = useState("");
   const [price, setPrice] = useState("");
@@ -22,6 +25,34 @@ const AdminProductRegister = () => {
     setFiles(file);
   };
 
+  async function getData() {
+    return await customAxios
+      .get("/products")
+      .then((res) => {
+        // 데이터에서 카테고리만 빼서 list에 push
+        let list = [];
+        res.data.map((v, i) => {
+          list.push(v.categoryName);
+        });
+
+        list = [...new Set(list)]; // 중복 제거
+        setCategoryLists(list);
+        setCategory(list[0]);
+      })
+      .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    getData();
+  }, []);
+  // 서버에 보낼 카테고리 useEffect 처리
+  useEffect(() => {
+    if (newCategory == null) {
+      setRequestCategory(category);
+    } else {
+      setRequestCategory(newCategory);
+    }
+  }, [category, newCategory]);
+
   const onSubmitHandeler = async (e) => {
     e.preventDefault();
 
@@ -30,13 +61,13 @@ const AdminProductRegister = () => {
       detail.length == 0 ||
       publisher.length == 0 ||
       price.length == 0 ||
-      selected == 0
+      requestCategory == 0
     ) {
       return alert("값을 입력해주세요.");
     } else {
       const formdata = new FormData();
       formdata.append("productName", productName);
-      formdata.append("categoryName", selected);
+      formdata.append("categoryName", requestCategory);
       formdata.append("brand", publisher);
       formdata.append("detail", detail);
       formdata.append("img", files[0]);
@@ -55,14 +86,6 @@ const AdminProductRegister = () => {
           console.log(error.response);
         });
     }
-  };
-  const categories = {
-    0: "",
-    1: "소설",
-    2: "에세이",
-    3: "경제경영",
-    4: "예술",
-    5: "5",
   };
 
   return (
@@ -107,25 +130,30 @@ const AdminProductRegister = () => {
               <Form.Label>분류</Form.Label>
               <Form.Select
                 className="mb-1"
-                placeholder="분류를 선택해주세요."
+                defaultValue={category}
+                key={uuid()}
                 onChange={(e) => {
-                  setSelected(categories[e.target.value]);
+                  setCategory(e.target.value);
+                  setNewCategory(null);
                 }}
               >
-                <option value="0">분류를 선택해주세요.</option>
-                <option value="1">소설</option>
-                <option value="2">에세이</option>
-                <option value="3">경제경영</option>
-                <option value="4">예술</option>
-                <option value="5">직접 입력</option>
+                {categoryLists.map((v, i) => {
+                  return (
+                    <option value={v} key={i}>
+                      {v}
+                    </option>
+                  );
+                })}
+                <option value="직접 입력">직접 입력</option>
               </Form.Select>
               {/* Category 직접 입력 */}
-              {selected == "5" && (
+              {category == "직접 입력" && (
                 <Form.Control
                   type="text"
                   placeholder="직접 입력"
                   onChange={(e) => {
-                    setCategory(e.target.value);
+                    setNewCategory(e.target.value);
+                    console.log(newCategory);
                   }}
                 />
               )}
