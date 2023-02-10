@@ -5,7 +5,7 @@ import cssAdmin from "../css/Admin.module.css";
 import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";
 
-export const Users = () => {
+export const Users = (props) => {
   const [users, setUsers] = useState([]);
 
   async function getData() {
@@ -17,7 +17,7 @@ export const Users = () => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [props.isSelected]);
 
   const statusHandler = async (e, index) => {
     const id = e.target.id;

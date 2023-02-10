@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Nav, Tab, Tabs } from "react-bootstrap";
 import { Users } from "../components/Users";
@@ -6,7 +6,15 @@ import { FalseUsers } from "../components/FalseUsers";
 import cssList from "../css/List.module.css";
 
 const AdminUsers = () => {
+
+
+  const [isSelectedTab, setIsSelectedTab] = useState(false);
   const navigate = useNavigate();
+
+  const handleTabSelect = (activeKey) => {
+    // TODO: 2023/02/10 어떤 탭이 선택되었느냐에 따라 값을 분기처리해주면 api 호출을 줄일 수 있음
+    setIsSelectedTab(!isSelectedTab);
+  }
 
   return (
     <>
@@ -54,16 +62,17 @@ const AdminUsers = () => {
                 id="fill-tab-example"
                 className="mb-3"
                 fill
+                onSelect={(activeKey) => handleTabSelect(activeKey)}
               >
                 <Tab eventKey="Users" title="전체회원수">
                   <div>
-                    <Users />
+                    <Users isSelected={isSelectedTab}/>
                   </div>
                 </Tab>
 
                 <Tab eventKey="FalseUsers" title="비활성화계정">
                   <div>
-                    <FalseUsers />
+                    <FalseUsers isSelected={isSelectedTab} />
                   </div>
                 </Tab>
               </Tabs>
