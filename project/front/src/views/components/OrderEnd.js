@@ -11,6 +11,9 @@ export const OrderEnd = () => {
   // 데이터 가져오기 async function 부터 ~ useEffect까지 세트
   async function getData() {
     return await customAxios.get("/account/order").then((res) => {
+      if (res.data.message === "사용자의 주문 내역이 없습니다") {
+        return;
+      }
       const statusOrders = res.data.filter(
         (order) => order.status === "배송완료"
       );
@@ -20,49 +23,7 @@ export const OrderEnd = () => {
   useEffect(() => {
     getData();
   }, []);
-  const ModalCancel = (props) => {
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
 
-    const handleDataDelete = async (e) => {
-      await customAxios
-        .delete(`/orders/${props.orderId}`)
-        .then((res) => {
-          handleClose();
-          getData();
-        })
-        .catch((err) => console.log(err));
-    };
-
-    return (
-      <>
-        <Button variant="primary" onClick={handleShow}>
-          주문취소
-        </Button>
-
-        <Modal
-          show={show}
-          onHide={handleClose}
-          backdrop="static"
-          keyboard={false}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>주문취소</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>주문을 취소하시겠습니까?</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              아니요
-            </Button>
-            <Button variant="primary" onClick={handleDataDelete}>
-              예
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
-  };
   return (
     <>
       <Container className="subContainer">

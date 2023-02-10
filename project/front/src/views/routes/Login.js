@@ -55,10 +55,13 @@ const Login = () => {
       .then((response) => {
         if (response.data.message === "비밀번호가 일치하지 않음") {
           alert("비밀번호가 일치하지 않습니다.");
+          //window.location.reload()
         } else if (response.data.message === "일치하는 사용자 이메일이 없음") {
           alert("존재하지 않는 회원입니다. 다시 시도해 주세요.");
+          //window.location.reload()
         } else if (response.data.message === "비활성화 상태의 계정") {
           alert("존재하지 않는 회원입니다. 다시 시도해 주세요.");
+          //window.location.reload()
         } else if (sessionStorage.getItem("directOrder")) {
           alert("로그인 완료");
           localStorage.setItem("JWT", response.data.JWT);
