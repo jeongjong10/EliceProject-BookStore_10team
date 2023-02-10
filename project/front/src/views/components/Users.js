@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Container, Row, Col, Button, Table, Modal } from "react-bootstrap";
 import cssAdmin from "../css/Admin.module.css";
+import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";
 
 export const Users = () => {
@@ -105,18 +106,18 @@ export const Users = () => {
     <>
       <Container className="subContainer">
         <Container>
-          <Row>
+          <Row className={cssAdmin.infoBox}>
             <Col>
               <p>총 회원수</p>
-              <p>{users.length}</p>
+              <h3>{users.length}</h3>
             </Col>
             <Col>
               <p>일반 회원수</p>
-              <p>{StandardUser(users)}</p>
+              <h3>{StandardUser(users)}</h3>
             </Col>
             <Col>
               <p>관리자 수</p>
-              <p>{AdminUser(users)}</p>
+              <h3>{AdminUser(users)}</h3>
             </Col>
           </Row>
         </Container>
@@ -135,7 +136,9 @@ export const Users = () => {
               <tbody>
                 {!users.length ? (
                   <tr>
-                    <td>회원내역이 존재하지 않습니다.</td>
+                    <td colSpan={6} className={cssCart.emptyCart}>
+                      <h4>🤔 회원내역이 존재하지 않습니다.</h4>
+                    </td>
                   </tr>
                 ) : (
                   users.map((user, index) => {

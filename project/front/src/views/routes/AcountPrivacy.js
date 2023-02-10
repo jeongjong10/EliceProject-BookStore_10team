@@ -25,7 +25,6 @@ const AcountPrivacy = () => {
   const [address1, setAddress1] = useState("");
 
   const [zonecode, setZonecode] = useState("");
-  const [modal, setModal] = useState(false);
 
   const [popup, setPopup] = React.useState(false);
   const [user, setUser] = useState([]);

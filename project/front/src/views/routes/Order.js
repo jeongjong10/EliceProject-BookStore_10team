@@ -129,33 +129,42 @@ const Cart = () => {
       address1,
       address2,
     ]) {
-      console.log("133", item);
       if (item == "" || !item) {
         checked = false;
       }
     }
-    console.log(checked);
     return checked;
   }
 
   async function postNewOrder() {
     if (checkedRules()) {
-      const params = {
-        address: {
-          postalCode: zonecode,
-          address1: address1,
-          address2: address2,
-          receiverName: receiverName,
-          receiverPhoneNumber: receiverPhone,
-        },
-        orderList,
-        comment: finalCommentReq,
-        totalProductPrice: totalProductPrice,
-        totalPrice,
-      };
-      console.log("params", params);
+      // const params = {
+      //   address: {
+      //     postalCode: zonecode,
+      //     address1: address1,
+      //     address2: address2,
+      //     receiverName: receiverName,
+      //     receiverPhoneNumber: receiverPhone,
+      //   },
+      //   orderList,
+      //   comment: finalCommentReq,
+      //   totalProductPrice: totalProductPrice,
+      //   totalPrice,
+      // };
       return await customAxios
-        .post("/orders", { params })
+        .post("/orders", {
+          address: {
+            postalCode: zonecode,
+            address1: address1,
+            address2: address2,
+            receiverName: receiverName,
+            receiverPhoneNumber: receiverPhone,
+          },
+          orderList,
+          comment: finalCommentReq,
+          totalProductPrice: totalProductPrice,
+          totalPrice,
+        })
         .then((res) => {
           console.log(res.data);
           sessionStorage.setItem("orderNumber", res.data.orderNumber);
@@ -168,7 +177,6 @@ const Cart = () => {
   }
 
   function handleChange(e, variable) {
-    console.log(e.target.value);
     switch (variable) {
       case "name":
         setReceiverName(e.target.value);
@@ -203,6 +211,7 @@ const Cart = () => {
                 type="username"
                 placeholder="이름"
                 value={receiverName}
+                readOnly={false}
                 onChange={(e) => handleChange(e, "name")}
               />
             </Form.Group>
@@ -211,7 +220,8 @@ const Cart = () => {
               <Form.Control
                 type="phone"
                 placeholder="연락처 입력"
-                defaultValue={receiverPhone}
+                value={receiverPhone}
+                readOnly={false}
                 onChange={(e) => handleChange(e, "phone")}
               />
               <Form.Text className="text-muted"> 예시) 01012345678 </Form.Text>
@@ -222,7 +232,8 @@ const Cart = () => {
                 <Form.Control
                   className="mb-1"
                   placeholder="우편번호"
-                  defaultValue={zonecode}
+                  value={zonecode}
+                  readOnly={false}
                   onChange={(e) => handleChange(e, "zone")}
                 />
                 <Button
@@ -248,14 +259,17 @@ const Cart = () => {
                 className="mb-1"
                 type="text"
                 placeholder="주소"
-                defaultValue={address1}
+                value={address1}
+                readOnly={false}
                 onChange={(e) => handleChange(e, "address1")}
               />
               <Form.Control
                 className="mb-1"
                 type="text"
                 placeholder="상세주소 입력"
-                defaultValue={address2}
+                value={address2}
+                readOnly={false}
+                // defaultValue={address2}
                 onChange={(e) => handleChange(e, "address2")}
               />
             </Form.Group>

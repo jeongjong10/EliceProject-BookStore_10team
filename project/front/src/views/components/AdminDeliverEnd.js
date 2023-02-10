@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Table,
-  Modal,
-  Form,
-} from "react-bootstrap";
+import { Container, Row, Col, Button, Table, Modal } from "react-bootstrap";
 import cssAdmin from "../css/Admin.module.css";
+import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";
 import { OrderProduct } from "./OrderProduct";
 
@@ -93,7 +86,9 @@ export const AdminDeliverEnd = () => {
               <tbody>
                 {!adminOrders.length ? (
                   <tr>
-                    <td>주문취소내역이 존재하지 않습니다.</td>
+                    <td colSpan={6} className={cssCart.emptyCart}>
+                      <h4>🤔 주문취소내역이 존재하지 않습니다.</h4>
+                    </td>
                   </tr>
                 ) : (
                   adminOrders.map((adminOrders, index) => {
