@@ -1,11 +1,6 @@
-아래의 템플릿을 참고하여 README.md를 작성하세요.
-(테스트)리드미 수정.
-
-
 <hr />
 
-# (서비스 명)
-- 서비스 명을 위 괄호 부분에 작성하세요.
+# 십시일반 웹 개발 서비스
 - 서비스의 한 줄 소개를 작성하세요.
 
 
@@ -13,7 +8,9 @@
 
 ## 1. 서비스 소개
 
-- 기술 스택 (Bulma css, node, mongodb 등)
+- Javascript.js, React.js
+- Node.js, Express.js, MongoDB
+
 - 웹서비스에 대한 자세한 개요 등
 
 
@@ -25,8 +22,8 @@
 
 ## 3. 서비스 구성도
   - 서비스 구조도 그림 (사용한 기술 스택)
-  - 와이어프레임 링크 (예상 웹 화면 UI) e.g) figma 사용
-  - API 명세를 문서화한 링크
+  - 와이어프레임 figma : https://www.figma.com/file/yr7i1KO0DRpgRhR3tmml64/elice-1%EC%B0%A8-%ED%8C%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=311%3A2
+  - API 명세 : https://www.notion.so/API-d25a39b6f4ec4f18a1b6b9e2f92928d1
 
 ## 4. 프로젝트 팀원 역할 분담
 | 이름 | 담당 업무 |
@@ -49,16 +46,31 @@
 - 수정 단계: 피드백 반영해서 백엔드 설계 수정
 
 ## 5. 실행 방법
-- 백엔드 (예시):
+- 백엔드 :
   ```bash
-  1. mongodb 실행
-  2. yarn start (혹은 npm start)
+  1. mongodb 실행 (아틀라스)
+  2. npm start
   ```
+  - 프론트 엔드 :
+  ```bash
+  1. npm start)
+  ```
+## 6. 프로젝트 기반 구축
 
-## 6. 버전
+###  백엔드 : Express 서버 구축 및 DB 셋팅
+- npm install express-generator -g (express generator)
+- express --view=pug (메인 앱 생성)
+- npm install (필요한 파일 자동 다운로드)
+- npm i nodemon -D (코드 수정시 서버 자동으로 재시작(DevDependency))
+
+- -> 개발 단계 실행 : npm run dev 명령어
+- -> 릴리즈 단계 : npm start 명령어
+
+
+## 7. 버전
   - 프로젝트의 버전 기입 (예: 1.0.0)
 
-## 7. FAQ
+## 8. FAQ
   - 자주 받는 질문 정리
   - 예시) 이 서비스는 어떻게 실행하면 되나요?
     - git clone을 하신 후 아래 커맨드를 입력하시면 됩니다. ~~~
