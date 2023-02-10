@@ -60,7 +60,7 @@ export const Users = () => {
     const handleUserFalse = async (e) => {
       await customAxios
         .delete(`/admin/users/${props.userId}`)
-        .then((res) => console.log("👩‍🦰"))
+        // .then((res) => console.log(""))
         .catch((err) => console.log(err));
       handleClose();
       getData();
