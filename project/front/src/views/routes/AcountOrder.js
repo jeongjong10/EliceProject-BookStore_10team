@@ -51,7 +51,7 @@ const AcountOrder = () => {
             <h2 className={cssList.pageTitle}>주문 조회</h2>
             <div style={{ marginLeft: "24px" }}>
               <Tabs
-                defaultActiveKey="orderStatus"
+                defaultActiveKey="OrderStatus"
                 id="fill-tab-example"
                 className="mb-3"
                 fill
