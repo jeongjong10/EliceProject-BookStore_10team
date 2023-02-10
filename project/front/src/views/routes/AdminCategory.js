@@ -170,6 +170,15 @@ const AdminCategory = () => {
                   전체 주문 관리
                 </a>
               </Nav.Item>
+              <Nav.Item className={cssList.unSelected}>
+                <a
+                  onClick={() => {
+                    navigate("/admin/users");
+                  }}
+                >
+                  전체 회원 관리
+                </a>
+              </Nav.Item>
               <Nav.Item className={cssList.selected}>
                 <a>카테고리/상품 관리</a>
               </Nav.Item>

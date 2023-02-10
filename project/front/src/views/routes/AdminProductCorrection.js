@@ -129,6 +129,15 @@ const AdminProductCorrection = () => {
             <Nav.Item className={cssList.unSelected}>
               <a
                 onClick={() => {
+                  navigate("/admin/users");
+                }}
+              >
+                전체 회원 관리
+              </a>
+            </Nav.Item>
+            <Nav.Item className={cssList.unSelected}>
+              <a
+                onClick={() => {
                   navigate("/admin/category");
                 }}
               >
