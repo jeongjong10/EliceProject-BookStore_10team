@@ -24,14 +24,6 @@ const AdminCategory = () => {
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
 
-  // const childCategoryHandler = (childCategory) => {
-  //   setCategory(childCategory);
-  // };
-
-  // const childProductHandler = (childProduct) => {
-  //   setProducts(childProduct);
-  // };
-
   async function getData() {
     return await customAxios
       .get("/products")

@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 
-import { Container, Row, Col, Button, Table, Modal } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Table,
+  Modal,
+  Form,
+} from "react-bootstrap";
 import cssAdmin from "../css/Admin.module.css";
 import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";
@@ -141,7 +149,7 @@ export const Users = () => {
                         <td className={cssAdmin.tdAlignLeft}>{user.email}</td>
                         <td>{user.userName}</td>
                         <td>
-                          <select
+                          <Form.Select
                             id={user._id}
                             value={user.admin}
                             name="admin"
@@ -149,7 +157,7 @@ export const Users = () => {
                           >
                             <option value={false}>{"일반회원"}</option>
                             <option value={true}>{"관리자"}</option>
-                          </select>
+                          </Form.Select>
                         </td>
                         <td>
                           <FalseUser userId={user._id} />

@@ -20,6 +20,7 @@ const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   // query parameter로 보내야 하는 URL 가공
+  // ex ) /cartlist?_id=63dcd6803f53abb02db79241&_id=63e0900cffeb097384da75b3
   function getRouteURL() {
     let routeURL = "/cartlist?";
     cartItemsId.map((v, i) => {
@@ -28,7 +29,6 @@ const Cart = () => {
     routeURL = routeURL.slice(0, -1);
     return routeURL;
   }
-  // ex ) /cartlist?_id=63dcd6803f53abb02db79241&_id=63e0900cffeb097384da75b3
 
   // 데이터 통신
   const [products, setProducts] = useState([]);
@@ -221,16 +221,6 @@ const Cart = () => {
                               삭제
                             </Button>
                           </td>
-                          {/* <td>
-                            <Button
-                              variant="secondary"
-                              onClick={() => {
-                                removeProduct(i, v._id);
-                              }}
-                            >
-                              삭제
-                            </Button>
-                          </td> */}
                         </>
                       )}
                     </tr>

@@ -33,6 +33,7 @@ const AcountPrivacy = () => {
     return await customAxios
       .get("/account")
       .then((res) => {
+        console.log(res.data);
         setUser(res.data);
         setReceiverName(res.data.userName);
         if (res.data.phone) {
@@ -42,6 +43,7 @@ const AcountPrivacy = () => {
           setZonecode(res.data.address.postalCode);
           setAddress1(res.data.address.address1);
           setAddress2(res.data.address.address2);
+        } else {
         }
       })
       .catch((err) => console.log(err));

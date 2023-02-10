@@ -5,10 +5,11 @@ import cssComplete from "../css/Complete.module.css";
 
 const Complete = () => {
   const navigate = useNavigate();
+
+  // 주문 완료 후 세션에 담아둔 주문번호 저장 & 로컬스토리지 clear
   const orderNumber = sessionStorage.getItem("orderNumber");
   localStorage.removeItem("cart");
 
-  // * 주문 완료 후 로컬스토리지 cart clear
   return (
     <Container className="subContainer">
       <div className={cssComplete.alignCenter}>

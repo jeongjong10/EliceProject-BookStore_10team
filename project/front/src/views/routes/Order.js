@@ -86,7 +86,7 @@ const Cart = () => {
             if (res2.data.phone) {
               setReceiverPhone(res2.data.phone);
             }
-            if (res2.data.address.postalCode) {
+            if (res2.data.address) {
               setAddress1(res2.data.address.address1);
               setAddress2(res2.data.address.address2);
               setZonecode(res2.data.address.postalCode);
@@ -138,19 +138,6 @@ const Cart = () => {
 
   async function postNewOrder() {
     if (checkedRules()) {
-      // const params = {
-      //   address: {
-      //     postalCode: zonecode,
-      //     address1: address1,
-      //     address2: address2,
-      //     receiverName: receiverName,
-      //     receiverPhoneNumber: receiverPhone,
-      //   },
-      //   orderList,
-      //   comment: finalCommentReq,
-      //   totalProductPrice: totalProductPrice,
-      //   totalPrice,
-      // };
       return await customAxios
         .post("/orders", {
           address: {
@@ -166,7 +153,6 @@ const Cart = () => {
           totalPrice,
         })
         .then((res) => {
-          console.log(res.data);
           sessionStorage.setItem("orderNumber", res.data.orderNumber);
           navigate("/order/complete");
         })
@@ -205,7 +191,7 @@ const Cart = () => {
         <Col className={cssOrder.deliveryInfo}>
           <h3> 배송지 정보 </h3>
           <Form>
-            <Form.Group className="mb-3" controlId="formBasicUsername">
+            <Form.Group className="mb-3">
               <Form.Label> 이름 </Form.Label>
               <Form.Control
                 type="username"
@@ -215,7 +201,7 @@ const Cart = () => {
                 onChange={(e) => handleChange(e, "name")}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPhone">
+            <Form.Group className="mb-3">
               <Form.Label> 연락처 </Form.Label>
               <Form.Control
                 type="phone"
@@ -226,7 +212,7 @@ const Cart = () => {
               />
               <Form.Text className="text-muted"> 예시) 01012345678 </Form.Text>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicAddress">
+            <Form.Group className="mb-3">
               <Form.Label> 주소 </Form.Label>
               <InputGroup>
                 <Form.Control
@@ -269,11 +255,10 @@ const Cart = () => {
                 placeholder="상세주소 입력"
                 value={address2}
                 readOnly={false}
-                // defaultValue={address2}
                 onChange={(e) => handleChange(e, "address2")}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-3">
               <Form.Label> 요청사항 </Form.Label>
               <Form.Select
                 className="mb-1"
