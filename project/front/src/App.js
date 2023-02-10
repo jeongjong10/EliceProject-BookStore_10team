@@ -7,7 +7,7 @@ import Login from "./views/routes/Login";
 import Cart from "./views/routes/Cart";
 import Detail from "./views/routes/Detail";
 import List from "./views/routes/List";
-import Registerdone from "./views/routes/Registerdone";
+import RegisterComplete from "./views/routes/RegisterComplete";
 import AcountOrder from "./views/routes/AcountOrder";
 import AcountPrivacy from "./views/routes/AcountPrivacy";
 import Secession from "./views/routes/Secession";
@@ -142,7 +142,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/product/list" element={<List />} />
         <Route path="/products/:id" element={<Detail />} />
-        <Route path="/registerdone" element={<Registerdone />} />
+        <Route path="/registercomplete" element={<RegisterComplete />} />
         <Route path="/account/orders" element={<AcountOrder />} />
         <Route path="/account/privacy" element={<AcountPrivacy />} />
         <Route path="/account/secession" element={<Secession />} />

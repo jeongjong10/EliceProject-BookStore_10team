@@ -90,13 +90,6 @@ const AdminProductCorrection = () => {
       formdata.append("img", files[0]);
       formdata.append("price", price);
 
-      for (var key of formdata.keys()) {
-        console.log(key); //formdata에 담긴 key 확인
-      }
-      for (var value of formdata.values()) {
-        console.log(value); //formdata에 담긴 value 확인
-      }
-
       return await customAxios
         .patch(`/admin/products/${id}`, formdata, {
           headers: { "Content-Type": "multipart/form-data" },
@@ -152,7 +145,7 @@ const AdminProductCorrection = () => {
         <Col>
           <h2 className={cssList.pageTitle}>상품 수정</h2>
           <Form style={{ marginLeft: "24px" }}>
-            <Form.Group className="mb-3" controlId="formBasicProductname">
+            <Form.Group className="mb-3">
               <Form.Label>상품명</Form.Label>
               <Form.Control
                 placeholder="이상한 나라의 엘리스"
@@ -160,7 +153,7 @@ const AdminProductCorrection = () => {
                 onChange={(e) => setProductName(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicCategory">
+            <Form.Group className="mb-3">
               <Form.Label>분류</Form.Label>
               <Form.Select
                 className="mb-1"
@@ -192,7 +185,7 @@ const AdminProductCorrection = () => {
                 />
               )}
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPublisher">
+            <Form.Group className="mb-3">
               <Form.Label>출판사</Form.Label>
               <Form.Control
                 placeholder="엘리스"
@@ -200,7 +193,7 @@ const AdminProductCorrection = () => {
                 onChange={(e) => setPublisher(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicDetail">
+            <Form.Group className="mb-3">
               <Form.Label>발행</Form.Label>
               <Form.Control
                 placeholder="2000년 01월"
@@ -209,7 +202,7 @@ const AdminProductCorrection = () => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPrice">
+            <Form.Group className="mb-3">
               <Form.Label>가격</Form.Label>
               <Form.Control
                 placeholder="1000"
@@ -217,7 +210,7 @@ const AdminProductCorrection = () => {
                 onChange={(e) => setPrice(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicImg">
+            <Form.Group className="mb-3">
               <Form.Label>사진</Form.Label>
               <Form.Control
                 type="file"
