@@ -4,7 +4,6 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { customAxios } from "../../config/customAxios";
 import { useNavigate } from "react-router-dom";
-import collapse from "bootstrap/js/src/collapse";
 
 function AccountPrivacyModal({ show, onHide }) {
   const navigate = useNavigate();
@@ -17,48 +16,46 @@ function AccountPrivacyModal({ show, onHide }) {
 
   const checkUser = async () => {
     await customAxios
-        .post("/modalCheck", { password })
-        .then((response) => {
-          if (
-              response.data.message === "사용자 입력 패스워드가 일치하지 않습니다"
-          ) {
-            alert("비밀번호가 일치하지 않습니다.");
-          } else {
-            alert("비밀번호가 일치합니다.");
+      .post("/modalCheck", { password })
+      .then((response) => {
+        if (
+          response.data.message === "사용자 입력 패스워드가 일치하지 않습니다"
+        ) {
+          alert("비밀번호가 일치하지 않습니다.");
+        } else {
+          alert("비밀번호가 일치합니다.");
 
-            navigate("/account/privacy");
-          }
-        })
-        .catch((e) => e.message);
-  }
+          navigate("/account/privacy");
+        }
+      })
+      .catch((e) => e.message);
+  };
 
   const handlePassword = (e) => {
     setPassword(e.target.value);
   };
 
   const handleSubmit = (e) => {
-    console.log('handleSubmit');
+    console.log("handleSubmit");
     e.preventDefault();
   };
 
   const handleKeyPress = async (e) => {
-    console.log('handleKeyPress');
+    console.log("handleKeyPress");
     if (e.keyCode === 13) {
-      console.log('enter pressed');
+      console.log("enter pressed");
       await checkUser();
     }
   };
 
   return (
     <>
-      <Modal show={show} onHide={onHide} backdrop="static"
-             keyboard={false}
-      >
+      <Modal show={show} onHide={onHide} backdrop="static" keyboard={false}>
         <Modal.Header closeButton>
           <Modal.Title>비밀번호 확인</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={event => handleSubmit(event)}>
+          <Form onSubmit={(event) => handleSubmit(event)}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>본인확인을 위해 비밀번호를 입력해 주세요.</Form.Label>
               <Form.Control
