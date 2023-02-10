@@ -19,6 +19,9 @@ const AdminProductRegister = () => {
   const [files, setFiles] = useState("");
   const [isCreate, setIsCreate] = useState(false);
 
+  function isNum(val) {
+    return !isNaN(val);
+  }
   useEffect(() => {}, [isCreate]);
 
   const onLoadFile = (e) => {
@@ -65,6 +68,10 @@ const AdminProductRegister = () => {
       requestCategory == 0
     ) {
       return alert("값을 입력해주세요.");
+    } else if (!isNum(price)) {
+      return alert("올바른 가격을 입력해 주세요.");
+    } else if (files === "") {
+      return alert("이미지를 등록해주세요.");
     } else {
       const formdata = new FormData();
       formdata.append("productName", productName);

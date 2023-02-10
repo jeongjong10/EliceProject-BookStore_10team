@@ -21,7 +21,9 @@ const AdminProductCorrection = () => {
   const [files, setFiles] = useState("");
   const [product, setProduct] = useState({});
 
-  // 요한님 🙋‍♀️ 데이터 patch 보내실 때 -> categoryName: requestCategory
+  function isNum(val) {
+    return !isNaN(val);
+  }
 
   async function getData() {
     Promise.all(
@@ -80,6 +82,8 @@ const AdminProductCorrection = () => {
       category == 0
     ) {
       return alert("값을 입력해주세요.");
+    } else if (!isNum(price)) {
+      return alert("올바른 가격을 입력해 주세요.");
     } else {
       const formdata = new FormData();
       formdata.append("productName", productName);

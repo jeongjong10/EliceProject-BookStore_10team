@@ -119,6 +119,7 @@ const Detail = () => {
                     type="number"
                     value={count}
                     onChange={getCount}
+                    min="1"
                   />
                 </Form.Group>
               </Form>
