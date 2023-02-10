@@ -27,7 +27,6 @@ export const FalseUsers = (props) => {
     const handleDataDelete = async (e) => {
       await customAxios
         .delete(`admin/falseUsers/${props.userId}`)
-        .then((res) => console.log(res))
         .catch((err) => console.log(err));
       handleClose();
       getData();

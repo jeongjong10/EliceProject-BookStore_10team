@@ -10,11 +10,12 @@ import cssList from "../css/List.module.css";
 const AcountOrder = () => {
   const [modal, setModal] = useState(false);
   const [isSelectedTab, setIsSelectedTab] = useState(false);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const handleTabSelect = (activeKey) => {
     setIsSelectedTab(!isSelectedTab);
   };
+
   return (
     <>
       <Container className="subContainer">

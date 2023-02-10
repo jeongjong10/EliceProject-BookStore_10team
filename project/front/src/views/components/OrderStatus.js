@@ -11,6 +11,7 @@ export const OrderStatus = (props) => {
   async function getData() {
     return await customAxios.get("/account/order").then((res) => {
       if (res.data.message === "사용자의 주문 내역이 없습니다") {
+        setOrders([]);
         return;
       }
       const statusOrders = res.data.filter(

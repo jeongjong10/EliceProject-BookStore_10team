@@ -88,7 +88,6 @@ export const AdminOrderby = (props) => {
     const handleDataDelete = async (e) => {
       await customAxios
         .delete(`/admin/orders/${props.orderId}`)
-        // .then((res) => console.log(""))
         .catch((err) => console.log(err));
       handleClose();
       getData();
