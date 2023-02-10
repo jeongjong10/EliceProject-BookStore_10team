@@ -61,7 +61,7 @@ const AdminUsers = () => {
                   </div>
                 </Tab>
 
-                <Tab eventKey="FalseUsers" title="비활성계정">
+                <Tab eventKey="FalseUsers" title="비활성화계정">
                   <div>
                     <FalseUsers />
                   </div>

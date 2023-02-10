@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Nav, Tab, Tabs } from "react-bootstrap";
-import { OrderReady } from "../components/OrderReady";
+import { OrderShipping } from "../components/OrderShipping";
 import { OrderStatus } from "../components/OrderStatus";
 import { OrderEnd } from "../components/OrderEnd";
 import AccountPrivacyModal from "../components/AccountPrivacyModal";
@@ -56,19 +56,19 @@ const AcountOrder = () => {
                 className="mb-3"
                 fill
               >
-                <Tab eventKey="orderStatus" title="배송준비">
+                <Tab eventKey="OrderStatus" title="배송준비">
                   <div>
                     <OrderStatus />
                   </div>
                 </Tab>
 
-                <Tab eventKey="orderReady" title="배송중">
+                <Tab eventKey="OrderShipping" title="배송중">
                   <div>
-                    <OrderReady />
+                    <OrderShipping />
                   </div>
                 </Tab>
 
-                <Tab eventKey="orderEnd" title="배송완료">
+                <Tab eventKey="OrderEnd" title="배송완료">
                   <div>
                     <OrderEnd />
                   </div>

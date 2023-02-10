@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Nav, Tab, Tabs } from "react-bootstrap";
-import { AdminDeliverEnd } from "../components/AdminDeliverEnd";
+import { AdminOrderEnd } from "../components/AdminOrderEnd";
 import { AdminOrderby } from "../components/AdminOrderby";
 import cssList from "../css/List.module.css";
 
@@ -50,20 +50,20 @@ const AdminDeliver = () => {
             <h2 className={cssList.pageTitle}>전체 주문 관리</h2>
             <div style={{ marginLeft: "24px" }}>
               <Tabs
-                defaultActiveKey="orderby"
+                defaultActiveKey="AdminOrderby"
                 id="fill-tab-example"
                 className="mb-3"
                 fill
               >
-                <Tab eventKey="orderby" title="배송">
+                <Tab eventKey="AdminOrderby" title="배송">
                   <div>
                     <AdminOrderby />
                   </div>
                 </Tab>
 
-                <Tab eventKey="orderEnd" title="주문취소">
+                <Tab eventKey="AdminOrderEnd" title="주문취소">
                   <div>
-                    <AdminDeliverEnd />
+                    <AdminOrderEnd />
                   </div>
                 </Tab>
               </Tabs>

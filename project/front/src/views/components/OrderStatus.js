@@ -16,7 +16,7 @@ export const OrderStatus = () => {
       const statusOrders = res.data.filter(
         (order) => order.status === "배송준비"
       );
-      console.log(statusOrders);
+
       setOrders(statusOrders);
     });
   }
@@ -78,10 +78,8 @@ export const OrderStatus = () => {
                   <th>주문번호</th>
                   <th>상품명</th>
                   <th>주문날짜</th>
-
                   <th>배송상태</th>
                   <th>가격</th>
-
                   <th>주문취소</th>
                 </tr>
               </thead>

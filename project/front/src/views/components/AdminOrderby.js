@@ -18,6 +18,9 @@ export const AdminOrderby = () => {
 
   async function getData() {
     return await customAxios.get("admin/orders").then((res) => {
+      if (res.data.message === "관리자 :  존재하는 주문 내역이 없습니다.") {
+        return;
+      }
       const AdminOrders = res.data.filter(
         (order) =>
           order.activate &&
@@ -57,7 +60,7 @@ export const AdminOrderby = () => {
     return count;
   };
 
-  const DeliverCount = (props) => {
+  const ShippingCount = (props) => {
     let count = 0;
     for (let orders of props) {
       if (orders.status === "배송중") {
@@ -135,7 +138,7 @@ export const AdminOrderby = () => {
             </Col>
             <Col>
               <p>배송중</p>
-              <h3>{DeliverCount(adminOrders)}</h3>
+              <h3>{ShippingCount(adminOrders)}</h3>
             </Col>
             <Col>
               <p>배송완료</p>

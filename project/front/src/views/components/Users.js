@@ -18,6 +18,7 @@ export const Users = () => {
   useEffect(() => {
     getData();
   }, []);
+
   const statusHandler = async (e, index) => {
     const id = e.target.id;
     const admin = e.target.value;

@@ -5,7 +5,7 @@ import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";
 import { OrderProduct } from "./OrderProduct";
 
-export const AdminDeliverEnd = () => {
+export const AdminOrderEnd = () => {
   const [adminOrders, setAdminOrders] = useState([]);
 
   async function getData() {

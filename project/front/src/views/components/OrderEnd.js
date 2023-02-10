@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Container, Row, Col, Table, Button, Modal } from "react-bootstrap";
+import { Container, Row, Col, Table } from "react-bootstrap";
 import cssAccount from "../css/Account.module.css";
 import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";

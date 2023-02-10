@@ -10,8 +10,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const [emailValid, setEmailValid] = useState(false);
-  const [passwordValid, setPasswordValid] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
 
   useEffect(() => {
@@ -21,12 +21,12 @@ const Login = () => {
   }, []);
 
   useEffect(() => {
-    if (emailValid && passwordValid) {
+    if (isEmailValid && isPasswordValid) {
       setNotAllow(false);
       return;
     }
     setNotAllow(true);
-  }, [emailValid, passwordValid]);
+  }, [isEmailValid, isPasswordValid]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,21 +35,20 @@ const Login = () => {
   const handleEmail = (e) => {
     setEmail(e.target.value);
     if (Regex(e.target.value)) {
-      setEmailValid(true);
+      setIsEmailValid(true);
     } else {
-      setEmailValid(false);
+      setIsEmailValid(false);
     }
   };
   const handlePassword = (e) => {
     setPassword(e.target.value);
     if (Regex(e.target.value)) {
-      setPasswordValid(true);
+      setIsPasswordValid(true);
     } else {
-      setPasswordValid(false);
+      setIsPasswordValid(false);
     }
   };
   const onClickConfirmButton = async (e) => {
-    console.log(e);
     await customAxios
       .post("/login", { email, password })
       .then((response) => {
@@ -96,7 +95,7 @@ const Login = () => {
           <Form.Control type="email" placeholder="example@elice.com" />
         </FloatingLabel>
         <div className={styles.errorMessageWrap}>
-          {!emailValid && email.length > 0 && (
+          {!isEmailValid && email.length > 0 && (
             <div>올바른 이메일을 입력해주세요</div>
           )}
         </div>
@@ -114,7 +113,7 @@ const Login = () => {
           <Form.Control type="password" placeholder="Password" />
         </FloatingLabel>
         <div className={styles.errorMessageWrap}>
-          {!passwordValid && password.length > 0 && (
+          {!isPasswordValid && password.length > 0 && (
             <div>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.</div>
           )}
         </div>
