@@ -8,9 +8,8 @@ const Post = (props) => {
   const setZonecode = props.setZonecode;
   //내장함수 onCompletePost 주소 검색 후 클릭 시 저절로 닫히면서 data값들 넘어옴.
   const onCompletePost = (data) => {
-    console.log(data.address);
     setAddress(data.address);
-    console.log(data.zonecode);
+
     setZonecode(data.zonecode);
   };
 

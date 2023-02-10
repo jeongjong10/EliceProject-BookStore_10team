@@ -79,7 +79,6 @@ const AdminProductRegister = () => {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
-          console.log(response.data);
           alert("상품 등록이 완료되었습니다.");
           navigate("/admin/category");
         })
@@ -129,7 +128,7 @@ const AdminProductRegister = () => {
         <Col>
           <h2 className={cssList.pageTitle}>상품 등록</h2>
           <Form style={{ marginLeft: "24px" }}>
-            <Form.Group className="mb-3" controlId="formBasicProductname">
+            <Form.Group className="mb-3">
               <Form.Label>상품명</Form.Label>
               <Form.Control
                 placeholder="이상한 나라의 엘리스"
@@ -137,7 +136,7 @@ const AdminProductRegister = () => {
                 onChange={(e) => setProductName(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicCategory">
+            <Form.Group className="mb-3">
               <Form.Label>분류</Form.Label>
               <Form.Select
                 className="mb-1"
