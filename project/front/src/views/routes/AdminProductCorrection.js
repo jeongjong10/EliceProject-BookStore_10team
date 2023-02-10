@@ -66,7 +66,6 @@ const AdminProductCorrection = () => {
 
   const onLoadFile = (e) => {
     const file = e.target.files;
-    console.log(file);
     setFiles(file);
   };
 
@@ -95,7 +94,6 @@ const AdminProductCorrection = () => {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
-          console.log(response.data);
           alert("상품 수정이 완료되었습니다.");
           navigate("/admin/category");
         })
@@ -180,7 +178,6 @@ const AdminProductCorrection = () => {
                   placeholder="생성할 카테고리 이름 입력"
                   onChange={(e) => {
                     setNewCategory(e.target.value);
-                    console.log(newCategory);
                   }}
                 />
               )}

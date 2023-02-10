@@ -49,7 +49,7 @@ const Register = () => {
             alert("이미 존재하는 이메일 입니다.");
           } else {
             alert("정상적으로 회원가입되었습니다.");
-            console.log(response.data);
+
             navigate("/registerdone");
           }
         })

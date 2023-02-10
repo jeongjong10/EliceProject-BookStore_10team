@@ -163,7 +163,6 @@ const AdminProductRegister = () => {
                   placeholder="직접 입력"
                   onChange={(e) => {
                     setNewCategory(e.target.value);
-                    console.log(newCategory);
                   }}
                 />
               )}
