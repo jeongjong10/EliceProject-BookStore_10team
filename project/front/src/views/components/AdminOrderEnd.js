@@ -5,7 +5,7 @@ import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";
 import { OrderProduct } from "./OrderProduct";
 
-export const AdminOrderEnd = () => {
+export const AdminOrderEnd = (props) => {
   const [adminOrders, setAdminOrders] = useState([]);
 
   async function getData() {
@@ -17,7 +17,7 @@ export const AdminOrderEnd = () => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [props.isSelected]);
 
   const AdminModalDelete = (props) => {
     const [show, setShow] = useState(false);

@@ -13,7 +13,7 @@ import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";
 import { OrderProduct } from "./OrderProduct";
 
-export const AdminOrderby = () => {
+export const AdminOrderby = (props) => {
   const [adminOrders, setAdminOrders] = useState([]);
 
   async function getData() {
@@ -34,7 +34,7 @@ export const AdminOrderby = () => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [props.isSelected]);
 
   const statusHandler = async (e, index) => {
     const id = e.target.id;
@@ -50,7 +50,7 @@ export const AdminOrderby = () => {
       });
   };
 
-  const StateCount = (props) => {
+  const CountState = (props) => {
     let count = 0;
     for (let orders of props) {
       if (orders.status === "배송준비") {
@@ -60,7 +60,7 @@ export const AdminOrderby = () => {
     return count;
   };
 
-  const ShippingCount = (props) => {
+  const CountShipping = (props) => {
     let count = 0;
     for (let orders of props) {
       if (orders.status === "배송중") {
@@ -70,7 +70,7 @@ export const AdminOrderby = () => {
     return count;
   };
 
-  const EndCount = (props) => {
+  const CountEnd = (props) => {
     let count = 0;
     for (let orders of props) {
       if (orders.status === "배송완료") {
@@ -134,15 +134,15 @@ export const AdminOrderby = () => {
             </Col>
             <Col>
               <p>배송대기중</p>
-              <h3>{StateCount(adminOrders)}</h3>
+              <h3>{CountState(adminOrders)}</h3>
             </Col>
             <Col>
               <p>배송중</p>
-              <h3>{ShippingCount(adminOrders)}</h3>
+              <h3>{CountShipping(adminOrders)}</h3>
             </Col>
             <Col>
               <p>배송완료</p>
-              <h3>{EndCount(adminOrders)}</h3>
+              <h3>{CountEnd(adminOrders)}</h3>
             </Col>
           </Row>
         </Container>

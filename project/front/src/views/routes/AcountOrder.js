@@ -9,8 +9,12 @@ import cssList from "../css/List.module.css";
 
 const AcountOrder = () => {
   const [modal, setModal] = useState(false);
+  const [isSelectedTab, setIsSelectedTab] = useState(false);
   const navigate = useNavigate();
 
+  const handleTabSelect = (activeKey) => {
+    setIsSelectedTab(!isSelectedTab);
+  };
   return (
     <>
       <Container className="subContainer">
@@ -51,26 +55,27 @@ const AcountOrder = () => {
             <h2 className={cssList.pageTitle}>주문 조회</h2>
             <div style={{ marginLeft: "24px" }}>
               <Tabs
-                defaultActiveKey="orderStatus"
+                defaultActiveKey="OrderStatus"
                 id="fill-tab-example"
                 className="mb-3"
                 fill
+                onSelect={(activeKey) => handleTabSelect(activeKey)}
               >
                 <Tab eventKey="OrderStatus" title="배송준비">
                   <div>
-                    <OrderStatus />
+                    <OrderStatus isSelected={isSelectedTab} />
                   </div>
                 </Tab>
 
                 <Tab eventKey="OrderShipping" title="배송중">
                   <div>
-                    <OrderShipping />
+                    <OrderShipping isSelected={isSelectedTab} />
                   </div>
                 </Tab>
 
                 <Tab eventKey="OrderEnd" title="배송완료">
                   <div>
-                    <OrderEnd />
+                    <OrderEnd isSelected={isSelectedTab} />
                   </div>
                 </Tab>
               </Tabs>
