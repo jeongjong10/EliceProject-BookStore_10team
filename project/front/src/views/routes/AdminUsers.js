@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Nav, Tab, Tabs } from "react-bootstrap";
 import { Users } from "../components/Users";
@@ -6,7 +6,12 @@ import { FalseUsers } from "../components/FalseUsers";
 import cssList from "../css/List.module.css";
 
 const AdminUsers = () => {
+  const [isSelectedTab, setIsSelectedTab] = useState(false);
   const navigate = useNavigate();
+
+  const handleTabSelect = (activeKey) => {
+    setIsSelectedTab(!isSelectedTab);
+  };
 
   return (
     <>
@@ -54,16 +59,17 @@ const AdminUsers = () => {
                 id="fill-tab-example"
                 className="mb-3"
                 fill
+                onSelect={(activeKey) => handleTabSelect(activeKey)}
               >
                 <Tab eventKey="Users" title="전체회원수">
                   <div>
-                    <Users />
+                    <Users isSelected={isSelectedTab} />
                   </div>
                 </Tab>
 
                 <Tab eventKey="FalseUsers" title="비활성화계정">
                   <div>
-                    <FalseUsers />
+                    <FalseUsers isSelected={isSelectedTab} />
                   </div>
                 </Tab>
               </Tabs>

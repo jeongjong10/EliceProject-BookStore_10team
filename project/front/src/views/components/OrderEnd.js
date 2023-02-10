@@ -5,7 +5,7 @@ import cssAccount from "../css/Account.module.css";
 import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";
 import { OrderProduct } from "./OrderProduct";
-export const OrderEnd = () => {
+export const OrderEnd = (props) => {
   const [orders, setOrders] = useState([]);
 
   // 데이터 가져오기 async function 부터 ~ useEffect까지 세트
@@ -22,7 +22,7 @@ export const OrderEnd = () => {
   }
   useEffect(() => {
     getData();
-  }, []);
+  }, [props.isSelected]);
 
   return (
     <>

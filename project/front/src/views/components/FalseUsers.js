@@ -5,7 +5,7 @@ import cssAdmin from "../css/Admin.module.css";
 import cssCart from "../css/Cart.module.css";
 import { customAxios } from "../../config/customAxios";
 
-export const FalseUsers = () => {
+export const FalseUsers = (props) => {
   const [usersFalse, setUsersFalse] = useState([]);
 
   async function getData() {
@@ -17,7 +17,7 @@ export const FalseUsers = () => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [props.isSelected]);
 
   const UserDelete = (props) => {
     const [show, setShow] = useState(false);

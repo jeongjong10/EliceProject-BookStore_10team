@@ -6,7 +6,7 @@ import cssCart from "../css/Cart.module.css";
 import { OrderProduct } from "./OrderProduct";
 import { customAxios } from "../../config/customAxios";
 
-export const OrderShipping = () => {
+export const OrderShipping = (props) => {
   const [orders, setOrders] = useState([]);
 
   async function getData() {
@@ -22,7 +22,7 @@ export const OrderShipping = () => {
   }
   useEffect(() => {
     getData();
-  }, []);
+  }, [props.isSelected]);
   const ModalCancel = (props) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);

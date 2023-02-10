@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Nav, Tab, Tabs } from "react-bootstrap";
 import { AdminOrderEnd } from "../components/AdminOrderEnd";
@@ -6,7 +6,13 @@ import { AdminOrderby } from "../components/AdminOrderby";
 import cssList from "../css/List.module.css";
 
 const AdminDeliver = () => {
+  const [isSelectedTab, setIsSelectedTab] = useState(false);
+
   const navigate = useNavigate();
+
+  const handleTabSelect = (activeKey) => {
+    setIsSelectedTab(!isSelectedTab);
+  };
 
   return (
     <>
@@ -54,16 +60,17 @@ const AdminDeliver = () => {
                 id="fill-tab-example"
                 className="mb-3"
                 fill
+                onSelect={(activeKey) => handleTabSelect(activeKey)}
               >
                 <Tab eventKey="AdminOrderby" title="배송">
                   <div>
-                    <AdminOrderby />
+                    <AdminOrderby isSelected={isSelectedTab} />
                   </div>
                 </Tab>
 
                 <Tab eventKey="AdminOrderEnd" title="주문취소">
                   <div>
-                    <AdminOrderEnd />
+                    <AdminOrderEnd isSelected={isSelectedTab} />
                   </div>
                 </Tab>
               </Tabs>
