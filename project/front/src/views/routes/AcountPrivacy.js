@@ -25,6 +25,7 @@ const AcountPrivacy = () => {
   const [address1, setAddress1] = useState("");
 
   const [zonecode, setZonecode] = useState("");
+  const [modal, setModal] = useState(false);
 
   const [popup, setPopup] = React.useState(false);
   const [user, setUser] = useState([]);
@@ -37,7 +38,7 @@ const AcountPrivacy = () => {
         if (res.data.phone) {
           setReceiverPhone(res.data.phone);
         }
-        if (res.data.address.postalCode) {
+        if (res.data.address) {
           setZonecode(res.data.address.postalCode);
           setAddress1(res.data.address.address1);
           setAddress2(res.data.address.address2);

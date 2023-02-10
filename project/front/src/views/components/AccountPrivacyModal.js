@@ -14,14 +14,11 @@ function AccountPrivacyModal({ show, onHide }) {
     await customAxios
       .post("/modalCheck", { password })
       .then((response) => {
-        console.log("account axios" + response.data.message);
         if (
           response.data.message === "사용자 입력 패스워드가 일치하지 않습니다"
         ) {
-          console.log("account axios failed");
           alert("비밀번호가 일치하지 않습니다.");
         } else {
-          console.log("account axios successful");
           alert("비밀번호가 일치합니다.");
 
           navigate("/account/privacy");

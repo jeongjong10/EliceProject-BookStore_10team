@@ -3,7 +3,7 @@ import { Container, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import cssComplete from "../css/Complete.module.css";
 
-const Registerdone = () => {
+const RegisterComplete = () => {
   const navigate = useNavigate();
   return (
     <Container className="subContainer">
@@ -41,4 +41,4 @@ const Registerdone = () => {
   );
 };
 
-export default Registerdone;
+export default RegisterComplete;
