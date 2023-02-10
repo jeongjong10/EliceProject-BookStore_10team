@@ -50,7 +50,7 @@ const Register = () => {
           } else {
             alert("정상적으로 회원가입되었습니다.");
 
-            navigate("/registerdone");
+            navigate("/registercomplete");
           }
         })
         .catch((error) => {

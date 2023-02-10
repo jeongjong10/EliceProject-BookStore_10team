@@ -36,14 +36,11 @@ function AccountPrivacyModal({ show, onHide }) {
   };
 
   const handleSubmit = (e) => {
-    console.log("handleSubmit");
     e.preventDefault();
   };
 
   const handleKeyPress = async (e) => {
-    console.log("handleKeyPress");
     if (e.keyCode === 13) {
-      console.log("enter pressed");
       await checkUser();
     }
   };
