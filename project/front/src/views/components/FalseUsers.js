@@ -11,7 +11,6 @@ export const FalseUsers = () => {
   async function getData() {
     return await customAxios.get("admin/users").then((res) => {
       const FalseUser = res.data.filter((user) => user.activate === false);
-      console.log(FalseUser);
       setUsersFalse(FalseUser);
     });
   }
@@ -26,7 +25,6 @@ export const FalseUsers = () => {
     const handleShow = () => setShow(true);
 
     const handleDataDelete = async (e) => {
-      console.log(props.userId);
       await customAxios
         .delete(`admin/falseUsers/${props.userId}`)
         .then((res) => console.log(res))
@@ -37,7 +35,7 @@ export const FalseUsers = () => {
 
     return (
       <>
-        <Button variant="primary" onClick={handleShow}>
+        <Button variant="secondary" onClick={handleShow}>
           회원삭제
         </Button>
 

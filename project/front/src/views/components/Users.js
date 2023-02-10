@@ -10,31 +10,23 @@ export const Users = () => {
 
   async function getData() {
     return await customAxios.get("admin/users").then((res) => {
-      console.log(res.data);
       const User = res.data.filter((user) => user.activate === true);
-      console.log(User);
       setUsers(User);
     });
   }
 
   useEffect(() => {
     getData();
-    console.log(users);
   }, []);
-  console.log(users);
   const statusHandler = async (e, index) => {
     const id = e.target.id;
     const admin = e.target.value;
-    console.log(id);
-    console.log(admin);
     if (window.confirm("정말 수정하시겠습니까?") === false) {
       return;
     }
     return await customAxios
       .patch(`admin/users/${id}`, { admin })
       .then((res) => {
-        console.log(res);
-
         getData();
       });
   };
@@ -75,7 +67,7 @@ export const Users = () => {
 
     return (
       <>
-        <Button variant="primary" onClick={handleShow}>
+        <Button variant="secondary" onClick={handleShow}>
           회원 비활성화
         </Button>
 
