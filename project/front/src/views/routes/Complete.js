@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import cssComplete from "../css/Complete.module.css";
@@ -9,6 +9,12 @@ const Complete = () => {
   // 주문 완료 후 세션에 담아둔 주문번호 저장 & 로컬스토리지 clear
   const orderNumber = sessionStorage.getItem("orderNumber");
   localStorage.removeItem("cart");
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem("orderNumber");
+    };
+  }, []);
 
   return (
     <Container className="subContainer">

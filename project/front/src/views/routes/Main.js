@@ -13,7 +13,10 @@ const Main = () => {
     return await customAxios
       .get("/products")
       .then((res) => {
-        setProducts(res.data);
+        const filteredData = res.data.filter(
+          (f) => f.categoryName !== "None-category"
+        );
+        setProducts(filteredData);
       })
       .catch((err) => console.log(err));
   }
