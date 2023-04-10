@@ -47,10 +47,6 @@ router.post("/", verifyUser(), async (req, res, next) => {
     // 현재 유저 불러오기
     const verifiedUser_id = req.verifiedUser_id;
 
-    // req.body: address(postalCode, address1, address2, recieverName, recieverPhone),
-    // orderNumber, comment, status, orderList(productName, count),
-    // totalProductPrice, shipping, totalPrice
-
     const orders = req.body;
     console.log("주문 요청 데이터", orders);
     if (Object.keys(orders).length == 0) {
@@ -61,15 +57,10 @@ router.post("/", verifyUser(), async (req, res, next) => {
       throw new Error("req.body 내용이 없습니다.");
     }
 
-    // userId는 직접 추가
-    // User의 userId와 혼동이 올 수 있음 (쥬문의 userId에는 User의 _id 값이 들어가기 때문 )
-
     const newOrder = await Order.create({
       ...orders,
       userId: verifiedUser_id,
     });
-
-    // create 자체에서 required된 값들에 대한 에러를 검사한다.
 
     console.log("생성된 주문 데이터 : ", newOrder);
     console.log(

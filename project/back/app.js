@@ -15,7 +15,7 @@ const registerRouter = require("./routes/register");
 
 // ------ 몽고DB 연결 ------
 mongoose.set("strictQuery", false);
-mongoose.connect("mongodb+srv://10team:1111@10team.yfnfhkm.mongodb.net/test");
+mongoose.connect(process.env.MongoDB_URI);
 mongoose.connection.on("connected", () => {
   console.log("정상적으로 DB와 연결되었습니다.   MongoDB Connected");
   console.log("--------------------------------------------");
