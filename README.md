@@ -4,7 +4,7 @@
 
 - [십시일반 프로젝트 노션](https://www.notion.so/jeongjong10/10-9ef4a4280f4e4d838ababa958e3ec6f0)
 - [십시일반 프로젝트 PT](https://run.wunderpresentation.com/63e5d1dde3aba5c8e8b70e25#0,0)
-
+- [십시일반 프로젝트 시연 영상](https://drive.google.com/file/d/14NiarDoJ2YKd9BtHTzIitbxn6-LmJExK/view?usp=share_link)
 
 ## 서비스 구성 안내
 
