@@ -2,7 +2,7 @@
 
 # 십시일반 <오늘의  책> 프로젝트
 
-- [십시일반 프로젝트 노션](https://www.notion.so/elice/10-5f3598adce9e48a2a1eaa4cf39dc6b76)
+- [십시일반 프로젝트 노션](https://www.notion.so/jeongjong10/10-9ef4a4280f4e4d838ababa958e3ec6f0)
 - [십시일반 프로젝트 PT](https://run.wunderpresentation.com/63e5d1dde3aba5c8e8b70e25#0,0)
 
 
